@@ -335,14 +335,34 @@ def initSmallMulti():
 			habOuter = curSys._star._habFar
 			habInner = curSys._star._habNear
 
-			## get habitable zone if it is in the range
+			if caveutil.isCAVE():
+				t = Text3D.create('fonts/arial.ttf', 120, name + " - " + curSys._star._type) # type
+			else:
+				t = Text3D.create('fonts/arial.ttf', 10, name + " - " + curSys._star._type) # type
+#           t.setPosition(Vector3(-0.2, 0.05, -0.5))
+			t.setPosition(Vector3(-0.2, 0.05, -0.05))
+			t.yaw(3.14159)
+			#t.setFontResolution(120)
+		   # t.getMaterial().setDoubleFace(1)
+			t.getMaterial().setTransparent(False)
+			t.getMaterial().setDepthTestEnabled(False)
+#                    t.setFixedSize(True)
+			t.setColor(Color('white'))
+			sn_smallTrans.addChild(t)
+
+			model = BoxShape.create(100, 25000, 2000)
+			model.setPosition(Vector3(0.0, 0.0, 48000)# - thisSystem[name][1] * XorbitScaleFactor * user2ScaleFactor))
+			sn_smallSys.addChild(model)
+			model.setEffect("textured -v emissive -d "+curSys._star._texture)
+
+			### get habitable zone if it is in the range
 			if habInner < wallLimit:
 				if habOuter > wallLimit:
 					habOuter = wallLimit
 				habCenter = (habOuter+habInner)/2.0
 				bs_goldi = BoxShape.create(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
 				bs_goldi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
-				sn_sSystem.addChild(bs_goldi)
+				sn_smallSys.addChild(bs_goldi)
 				bs_goldi.setEffect('colored -e #006110')
 #				bs_goldi.getMaterial().setTransparent(True)
 
@@ -373,45 +393,8 @@ def initSmallMulti():
 
 			sn_smallMulti.addChild(sn_smallTrans)
 
-			## end here
 
-			for name, info in curSys.iteritems():
-
-				mode = None
-
-				# only show planets out to orbit of asteroid belt
-				# ideally this scale should be on the menu
-
-				else: # star
-					curSys._star.getHabZone(todo = 0)
-
-					if caveutil.isCAVE():
-						t = Text3D.create('fonts/arial.ttf', 80, name + " - " + info[7]) # type
-					else:
-						t = Text3D.create('fonts/arial.ttf', 10, name + " - " + info[7]) # type
-#                    t = Text3D.create('./arial.ttf', 1, name + " - " + info[7])
-#                    t.setPosition(Vector3(-0.2, 0.05, -0.5))
-					t.setPosition(Vector3(-0.2, 0.05, -0.05))
-					t.yaw(3.14159)
-					t.setFontResolution(120)
-#                    t.setFontSize(120) # 120 works for CAVE2 but not for desktop version
-					t.setFontSize(0.05) # 120 works for CAVE2 but not for desktop version
-				   # t.getMaterial().setDoubleFace(1)
-					t.getMaterial().setTransparent(False)
-					t.getMaterial().setDepthTestEnabled(False)
-#                    t.setFixedSize(True)
-					t.setColor(Color('white'))
-					sn_screenCenter.addChild(t)
-
-					# star is a box in this view
-					# need to make the colors more obvious
-					model = BoxShape.create(100, 25000, 2000)
-
-				model.setPosition(Vector3(0.0, 0.0, 48000 - info[1] * XorbitScaleFactor * user2ScaleFactor))
-				sn_sSystem.addChild(model)
-				model.setEffect("textured -v emissive -d "+[])
-
-				panelCounter += 1
+			smallCount += 1
 
 			# should add a name and some other statistics in here as well
 
@@ -459,4 +442,3 @@ def onUpdate(frame, t, dt):
 
 setEventFunction(onEvent)
 setUpdateFunction(onUpdate)
-
