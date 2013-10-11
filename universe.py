@@ -15,17 +15,25 @@ starTy = enum()
 planetTy = enum()
 
 ## constants
-c_scaleWall_size = 0.01
-c_scaleWall_dist = 0.2
+wallLimit = 400000000
+
+c_scaleWall_size = 0.2
+c_scaleWall_dist = 320000.0 / wallLimit
 
 c_scaleCenter_size = 0.01
-c_scaleCenter_dist = 0.2
-c_scaleCenter_overall = 0.001
+c_scaleCenter_dist = 0.000005
+c_scaleCenter_overall = 0.00025
+
+R_jupiter = 69911# in KM
 
 ## global scale factors
 g_scale_size = 1
 g_scale_dist = 1
 g_scale_time = 1
+
+## font size
+g_ftszdesk = 0.03
+g_ftszcave = 0
 
 ## unit conversion functions
 def M_from_AU(n): # exact
@@ -58,11 +66,17 @@ def LY_from_PC(n):
 def PC_from_LY(n):
 	return PC_from_M(M_from_LY(n))
 
+def KM_from_AU(n): # exact
+	return n * 149597870.7
+
 ## column names in data file
 g_c = {'name':0, 'star':1, 'size':2, 'distance':3, 'orbit':3, 'texture':4, 'rs':5, 'dec':6, 'app_mag':7, 'class':8, 'type':9, 'num':10, 'day':11, 'year':12, 'inc':13, 'detection':14}
 
 ## bolometric correction constant for calculating habitable zone
 g_BC = {'B':-2.0,'A':-0.3,'F':-0.15,'G':-0.4,'K':-0.8,'M':-2.0}
+
+def CAVE():
+	return caveutil.isCAVE();
 
 ##############################################################################################################
 # CLASSES
@@ -70,7 +84,7 @@ class planet:
 	def __init__(self,size,texture,orbit,name,day,year,inc,detection):
 		self._size = float(size)
 		self._texture = texture
-		self._orbit = float(orbit)
+		self._orbit = KM_from_AU(float(orbit))
 		self._name = name
 		self._day = float(day)
 		self._year = float(year)
@@ -78,24 +92,13 @@ class planet:
 		self._detection = detection
 
 class star:
-	# _texture = ''
-	# _mv = 0 # apparent magnitude
-	# _radius = 0
-	# _name = 'star'
-	# _dis = 0 # distance to us in ly
-	# _type = None # TO DO: starTy.xx
-	# _class = 'Q' # class is the first letter of _type
-	# _numChildren = 0
-	# _children = []
-	# _habNear = 0
-	# _habFar = 0
 
 	def __init__(self,t,mv,r,n,dis,c,ty,num):
 		self._texture = t
 		self._mv = float(mv)
-		#print "mv:",mv
-		#print "slef._mv:",self._mv
-		self._radius = float(r)
+		#print 'mv:',mv
+		#print 'slef._mv:',self._mv
+		self._size = float(r)
 		self._name = n
 		self._dis = float(dis) # TO DO: int?
 		self._class = c
@@ -114,13 +117,13 @@ class star:
 			return ri,ro
 		else:
 			d = dis / 3.26156 # ly to parsec
-			#print "d:",d
+			#print 'd:',d
 			Mv = mv - 5 * math.log10( d/10.0 )
 			Mbol = Mv + g_BC[classs]
 			Lstar = math.pow(10, ((Mbol - 4.72)/-2.5))
 			ri = math.sqrt(Lstar/1.1)
 			ro = math.sqrt(Lstar/0.53)
-			return ri,ro
+			return KM_from_AU(ri),KM_from_AU(ro)
 
 class plaSys:
 	def __init__(self,star,dis,name):
@@ -133,9 +136,9 @@ class plaSys:
 sdEnv = getSoundEnvironment()
 sdEnv.setAssetDirectory('syin_p2')
 
-sd_warn = SoundInstance(sdEnv.loadSoundFromFile('warn',"sound/warn.wav"))
-sd_bgm = SoundInstance(sdEnv.loadSoundFromFile('backgroundmusic',"sound/bgm.wav"))
-sd_load = SoundInstance(sdEnv.loadSoundFromFile('load',"sound/load.wav"))
+sd_warn = SoundInstance(sdEnv.loadSoundFromFile('warn','sound/warn.wav'))
+sd_bgm = SoundInstance(sdEnv.loadSoundFromFile('backgroundmusic','sound/bgm.wav'))
+sd_load = SoundInstance(sdEnv.loadSoundFromFile('load','sound/load.wav'))
 
 def playSound(sd, pos, vol):
 	sd.setPosition(pos)
@@ -162,11 +165,11 @@ scaleSizeBtnContainer = Container.create(ContainerLayout.LayoutVertical, scaleCo
 scaleSizeBtnContainer.setPadding(-4)
 
 scaleSizeUpBtn = Button.create(scaleSizeBtnContainer)
-scaleSizeUpBtn.setText("+")
+scaleSizeUpBtn.setText('+')
 scaleSizeUpBtn.setUIEventCommand('changeScale("size", True)')
 
 scaleSizeDownBtn = Button.create(scaleSizeBtnContainer)
-scaleSizeDownBtn.setText("-")
+scaleSizeDownBtn.setText('-')
 scaleSizeDownBtn.setUIEventCommand('changeScale("size", False)')
 
 scaleDistLabel = Label.create(scaleContainer)
@@ -296,6 +299,10 @@ sn_root.addChild(sn_centerSys)
 sn_root.addChild(sn_smallMulti)
 #sn_smallMulti.addChild(sn_allSystems)
 
+# fix small multiples, no move
+if CAVE():
+	cam.addChild(sn_smallMulti)
+
 ## Create a directional light
 light1 = Light.create()
 light1.setLightType(LightType.Point)
@@ -306,14 +313,13 @@ light1.setEnabled(True)
 
 ## Load default sphere model
 mi = ModelInfo()
-mi.name = "defaultSphere"
-mi.path = "sphere.obj"
+mi.name = 'defaultSphere'
+mi.path = 'sphere.obj'
 scene.loadModel(mi)
 
 ##############################################################################################################
 # LOAD DATA FROM FILE
 
-curStar = None
 li_allSys = [];
 
 atLine = 0
@@ -323,7 +329,7 @@ for p in lines:
 	atLine+=1
 	if (atLine == 1):
 		continue
-	#print "line:",atLine
+	#print 'line:',atLine
 	#print p
 	if int(p[g_c['star']])==1: # star
 		# def __init__(self,t,mv,r,n,dis,c,ty,num):
@@ -335,20 +341,20 @@ for p in lines:
 		# def __init__(self,size,texture,orbit,name,day,year,inc,detection):
 		curPla = planet(p[g_c['size']], p[g_c['texture']], p[g_c['orbit']], p[g_c['name']], p[g_c['day']], p[g_c['year']], p[g_c['inc']], p[g_c['detection']])
 		curStar.addPlanet(curPla)
+
 print 'number of systems generated:', len(li_allSys)
 
 ##############################################################################################################
 # INITIALIZE SMALL MULTIPLES
 
 def initSmallMulti():
-	global li_allSys
 
 	smallCount = 0
 
-	for col in xrange(0, 18):
+	for col in xrange(0, 9):
 
 		# leave a 'hole' in the center of the cave to see the far planets through
-		if col>=6 and col<=11:
+		if col>=3 and col<=5:
 			continue
 
 		for row in xrange(0, 8):
@@ -358,22 +364,25 @@ def initSmallMulti():
 
 			bs_outlineBox = BoxShape.create(2.0, 0.25, 0.001)
 			bs_outlineBox.setPosition(Vector3(-0.5, 0, 0.01))
-			bs_outlineBox.setEffect('colored -e #111111')
+			bs_outlineBox.setEffect('colored -e #01b2f144')
+			bs_outlineBox.getMaterial().setTransparent(True)
 
-			sn_smallTrans = SceneNode.create("smallTrans"+str(smallCount))
-			sn_smallSys = SceneNode.create("smallSys"+str(smallCount))
+			sn_smallTrans = SceneNode.create('smallTrans'+str(smallCount))
+			sn_smallSys = SceneNode.create('smallSys'+str(smallCount))
 
 			## get star
 			habOuter = curSys._star._habFar
 			habInner = curSys._star._habNear
 
-			if caveutil.isCAVE():
-				t = Text3D.create('fonts/arial.ttf', 120, curSys._name + " - " + curSys._star._type) # type
+			t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name + ' - ' + curSys._star._type + ' - ' + str(curSys._star._dis) + ' (ly)')
+			if CAVE():
+				t.setFontResolution(120)
 			else:
-				t = Text3D.create('fonts/arial.ttf', 10, curSys._name + " - " + curSys._star._type) # type
+				#t.setFontResolution(10)
+				t.setFontSize(g_ftszdesk)
 			#t.setPosition(Vector3(-0.2, 0.05, -0.5))
 			t.setPosition(Vector3(-0.2, 0.05, -0.05))
-			t.yaw(3.14159)
+			t.yaw(math.pi) # back to face, face to back
 			#t.setFontResolution(120)
 			#t.getMaterial().setDoubleFace(1)
 			t.getMaterial().setTransparent(False)
@@ -382,27 +391,28 @@ def initSmallMulti():
 			t.setColor(Color('white'))
 			sn_smallTrans.addChild(t)
 
-			model = BoxShape.create(100, 25000, 2000)
-			model.setPosition(Vector3(0.0, 0.0, 48000))# - thisSystem[name][1] * XorbitScaleFactor * user2ScaleFactor))
-			sn_smallSys.addChild(model)
-			model.setEffect("textured -v emissive -d "+curSys._star._texture)
+			bs_model = BoxShape.create(100, 25000, 2000)
+			bs_model.setPosition(Vector3(0.0, 0.0, 48000))# - thisSystem[name][1] * XorbitScaleFactor * user2ScaleFactor))
+			bs_model.setEffect('textured -v emissive -d '+curSys._star._texture)
+			sn_smallSys.addChild(bs_model)
 
-			### get habitable zone if it is in the range
+			## get habitable zone if it is in the range
 			if habInner < wallLimit:
 				if habOuter > wallLimit:
 					habOuter = wallLimit
 				habCenter = (habOuter+habInner)/2.0
-				bs_goldi = BoxShape.create(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
-				bs_goldi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
-				sn_smallSys.addChild(bs_goldi)
-				bs_goldi.setEffect('colored -e #006110')
-				#bs_goldi.getMaterial().setTransparent(True)
+				bs_habi = BoxShape.create(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
+				bs_habi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
+				sn_smallSys.addChild(bs_habi)
+				bs_habi.setEffect('colored -e #00611055')
+				bs_habi.getMaterial().setTransparent(True)
 
 			## get planets
 			outCounter = 0
 			for p in curSys._star._children:
-				model = StaticObject.create("defaultSphere")
-				model.setScale(Vector3(p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size))
+				#model = StaticObject.create('defaultSphere')
+				model = SphereShape.create(p._size * c_scaleWall_size * g_scale_size, 4)
+				#model.setScale(Vector3(p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size))
 				model.setPosition(Vector3(0.0,0.0,48000 - p._orbit * c_scaleWall_dist * g_scale_dist))
 				model.setEffect('textured -v emissive -d '+p._texture)
 				sn_smallSys.addChild(model)
@@ -410,14 +420,13 @@ def initSmallMulti():
 					outCounter+=1
 					model.setVisible(False)
 
-
-			sn_smallSys.yaw(pi/2.0)
+			sn_smallSys.yaw(math.pi/2.0)
 			sn_smallSys.setScale(0.0000001, 0.00001, 0.00001) #scale for panels - flat to screen
 
 			hLoc = col + 0.5
-			degreeConvert = 36.0/360.0*2*pi #18 degrees per panel times 2 panels per viz = 36
+			degreeConvert = 36.0/360.0*2*math.pi #18 degrees per panel times 2 panels per viz = 36
 			caveRadius = 3.25
-			sn_smallTrans.setPosition(Vector3(sin(hLoc*degreeConvert)*caveRadius, row * 0.29 + 0.41, cos(hLoc*degreeConvert)*caveRadius))
+			sn_smallTrans.setPosition(Vector3(math.sin(hLoc*degreeConvert)*caveRadius, row * 0.29 + 0.41, math.cos(hLoc*degreeConvert)*caveRadius))
 			sn_smallTrans.yaw(hLoc*degreeConvert)
 
 			sn_smallTrans.addChild(sn_smallSys)
@@ -432,7 +441,7 @@ initSmallMulti()
 ##############################################################################################################
 # INIT 3D SOLAR SYSTEM
 
-def addOrbit(orbit, thick):
+def addOrbit(orbit, thick, sn_centerTrans):
 	circle = LineSet.create()
 
 	segments = 128
@@ -469,14 +478,17 @@ def initCenter(verticalHeight, theSys):
 	sn_centerSys.addChild(sn_centerTrans)
 
 	## the star
-	model = StaticObject.create('defaultSphere')
-	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size))
+	#model = StaticObject.create('defaultSphere')
+	model = SphereShape.create(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, 4)
+	#model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size))
 	model.getMaterial().setProgram('textured')
-	model.setEffect("textured -v emissive -d "+theSys._star._texture)
+	model.setEffect('textured -v emissive -d '+theSys._star._texture)
+
+
 
 	# activePlanets[name] = model
 
-	sunDot = StaticObject.create("defaultSphere")
+	sunDot = StaticObject.create('defaultSphere')
 	#sunDot.setPosition(Vector3(0.0, 0.0, 0.0))
 	sunDot.setScale(Vector3(10, 10, 10))
 	sn_centerTrans.addChild(sunDot)
@@ -508,7 +520,12 @@ def initCenter(verticalHeight, theSys):
 	# addOrbit(theSystem[name][1]*orbitScaleFactor*userScaleFactor, 0, 0.01)
 
 	# deal with labelling everything
-	v = Text3D.create('fonts/arial.ttf', 120, theSys._star._name)
+	v = Text3D.create('fonts/helvetica.ttf', 1, theSys._star._name)
+	if CAVE():
+		v.setFontResolution(120)
+	else:
+		#v.setFontResolution(10)
+		v.setFontSize(g_ftszdesk*10)
 	v.setPosition(Vector3(0, 500, 0))
 	#v.setFontResolution(120)
 
@@ -520,8 +537,10 @@ def initCenter(verticalHeight, theSys):
 
 	## the planets
 	for p in theSys._star._children:
-		model.setPosition(Vector3(0.0, 0.0, -p._orbit*g_scale_dist*c_scaleCanter_dist))
-		model.setScale(Vector3(p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size))
+		#model = StaticObject.create('defaultSphere')
+		model = SphereShape.create(p._size * c_scaleCenter_size * g_scale_size, 4)
+		model.setPosition(Vector3(0.0, 0.0, -p._orbit*g_scale_dist*c_scaleCenter_dist))
+		#model.setScale(Vector3(p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size))
 		model.getMaterial().setProgram('textured')
 		model.setEffect('textured -d '+p._texture)
 
@@ -544,11 +563,17 @@ def initCenter(verticalHeight, theSys):
 		#activeRotCenters[name] = rotCenter
 		sn_centerTrans.addChild(sn_rotCenter)
 
-		addOrbit(p._orbit*g_scale_dist*c_scaleCanter_dist, 0.01)
+		addOrbit(p._orbit*g_scale_dist*c_scaleCenter_dist, 0.01, sn_centerTrans)
 
 		# deal with labelling everything
-		v = Text3D.create('fonts/arial.ttf', 120, p._name)
-		v.setPosition(Vector3(0, p._orbit*c_scaleCenter_dist*g_scale_dist, - p._orbit*c_scaleCenter_dist*g_scale_dist))
+		v = Text3D.create('fonts/helvetica.ttf', 1, p._name)
+		if CAVE():
+			v.setFontResolution(120)
+		else:
+			#v.setFontResolution(10)
+			v.setFontSize(g_ftszdesk*10)
+		#v.setPosition(Vector3(0, p._orbit*c_scaleCenter_dist*g_scale_dist, - p._orbit*c_scaleCenter_dist*g_scale_dist))
+		v.setPosition(Vector3(0.0, 0.0, 0.0))
 		#v.setFontResolution(120)
 
 		#v.setFontSize(160)
@@ -559,19 +584,19 @@ def initCenter(verticalHeight, theSys):
 
 	## deal with the habitable zone
 
-	cs_inner = CylinderShape.create(1, theSys._star._habNear*c_scaleCanter_dist*g_scale_dist, theSys._star._habNear*c_scaleCanter_dist*g_scale_dist, 8, 128)
+	cs_inner = CylinderShape.create(1, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, 8, 128)
 	cs_inner.setEffect('colored -e #ff000055')
 	cs_inner.getMaterial().setTransparent(True)
 	cs_inner.pitch(-3.14159*0.5)
 	cs_inner.setScale(Vector3(1, 1, 1.0))
 
-	cs_outer = CylinderShape.create(1, theSys._star._habFar*c_scaleCanter_dist*g_scale_dist, theSys._star._habFar*c_scaleCanter_dist*g_scale_dist, 8, 128)
+	cs_outer = CylinderShape.create(1, theSys._star._habFar*c_scaleCenter_dist*g_scale_dist, theSys._star._habFar*c_scaleCenter_dist*g_scale_dist, 8, 128)
 	cs_outer.setEffect('colored -e #00FF0055')
 	cs_outer.getMaterial().setTransparent(True)
 	cs_outer.pitch(-3.14159*0.5)
 	cs_outer.setScale(Vector3(1, 1, 0.1))
 
-	sn_habZone = SceneNode.create("habZone")
+	sn_habZone = SceneNode.create('habZone')
 	sn_habZone.addChild(cs_outer)
 	sn_habZone.addChild(cs_inner)
 
@@ -580,10 +605,11 @@ def initCenter(verticalHeight, theSys):
 
 	## add everything to the sn_centerTrans node for scaling and default positioning
 	sn_centerTrans.setScale(Vector3(c_scaleCenter_overall, c_scaleCenter_overall, c_scaleCenter_overall))
-	sn_centerTrans.setPosition(Vector3(0, verticalHeight, 1))
+	sn_centerTrans.setPosition(Vector3(0, verticalHeight, -2))
 
 	## end here
 
+initCenter(1.5, li_allSys[0])
 
 ##############################################################################################################
 # EVENT FUNCTION
@@ -634,4 +660,4 @@ def onUpdate(frame, t, dt):
 setUpdateFunction(onUpdate)
 
 
-#### THE END #################################################################################################
+# THE END ####################################################################################################
