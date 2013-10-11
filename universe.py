@@ -4,6 +4,7 @@ import math
 from caveutil import *
 from csv import reader
 
+wallLimit = 1000000000000
 
 ##############################################################################################################
 # GLOBAL VARIABLES
@@ -73,7 +74,7 @@ class planet:
 		self._name = name
 		self._day = float(day)
 		self._year = float(year)
-		self._inc = inc # TO DO
+		self._inc = float(inc)
 		self._detection = detection
 
 class star:
@@ -92,26 +93,34 @@ class star:
 	def __init__(self,t,mv,r,n,dis,c,ty,num):
 		self._texture = t
 		self._mv = float(mv)
+		#print "mv:",mv
+		#print "slef._mv:",self._mv
 		self._radius = float(r)
 		self._name = n
 		self._dis = float(dis) # TO DO: int?
 		self._class = c
 		self._type = ty
 		self._numChildren = int(num)
-		self._habNear, _habFar = self.getHabZone(self._mv, self._dis, self._class)
+		self._habNear, self._habFar = self.getHabZone(self._mv, self._dis, self._class)
 		self._children = []
 
 	def addPlanet(self,pla):
 		self._children.append(pla)
 
-	def getHabZone(mv, dis, classs): # apparent magnitude, distance to us in ly, spectral class
-		d = dis / 3.26156 # ly to parsec
-		Mv = mv – 5*math.log10(d/10.0)
-		Mbol = Mv + g_BC[classs]
-		Lstar = math.pow(10, ((Mbol - 4.72)/-2.5))
-		ri = math.sqrt(Lstar/1.1)
-		ro = math.sqrt(Lstar/0.53)
-		return ri,ro
+	def getHabZone(self, mv, dis, classs): # apparent magnitude, distance to us in ly, spectral class
+		if cmp(self._name,'Sun') == 0:
+			ri = math.sqrt(1.0/1.1)
+			ro = math.sqrt(1.0/0.53)
+			return ri,ro
+		else:
+			d = dis / 3.26156 # ly to parsec
+			#print "d:",d
+			Mv = mv - 5 * math.log10( d/10.0 )
+			Mbol = Mv + g_BC[classs]
+			Lstar = math.pow(10, ((Mbol - 4.72)/-2.5))
+			ri = math.sqrt(Lstar/1.1)
+			ro = math.sqrt(Lstar/0.53)
+			return ri,ro
 
 class plaSys:
 	def __init__(self,star,dis,name):
@@ -307,10 +316,16 @@ scene.loadModel(mi)
 curStar = None
 li_allSys = [];
 
-f = open('data.csv','rb')
+atLine = 0
+f = open('data_test.csv','rU')
 lines = reader(f)
 for p in lines:
-	if p[g_c['star']]==1: # star
+	atLine+=1
+	if (atLine == 1):
+		continue
+	#print "line:",atLine
+	#print p
+	if int(p[g_c['star']])==1: # star
 		# def __init__(self,t,mv,r,n,dis,c,ty,num):
 		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']])
 		curSys = plaSys(curStar,curStar._dis,curStar._name)
@@ -318,7 +333,7 @@ for p in lines:
 
 	else: # planet
 		# def __init__(self,size,texture,orbit,name,day,year,inc,detection):
-		curPla = planet(p[g_c['size']], p[g_c['texture']], p[g_c['size']], p[g_c['orbit']], p[g_c['name']], p[g_c['day']], p[g_c['year']], p[g_c['inc']], p[g_c['detection']])
+		curPla = planet(p[g_c['size']], p[g_c['texture']], p[g_c['orbit']], p[g_c['name']], p[g_c['day']], p[g_c['year']], p[g_c['inc']], p[g_c['detection']])
 		curStar.addPlanet(curPla)
 print 'number of systems generated:', len(li_allSys)
 
@@ -338,7 +353,8 @@ def initSmallMulti():
 
 		for row in xrange(0, 8):
 
-			curSys = li_allSys[smallCount]
+			#print 'smallCount:',smallCount
+			curSys = li_allSys[smallCount%2]
 
 			bs_outlineBox = BoxShape.create(2.0, 0.25, 0.001)
 			bs_outlineBox.setPosition(Vector3(-0.5, 0, 0.01))
@@ -352,9 +368,9 @@ def initSmallMulti():
 			habInner = curSys._star._habNear
 
 			if caveutil.isCAVE():
-				t = Text3D.create('fonts/arial.ttf', 120, name + " - " + curSys._star._type) # type
+				t = Text3D.create('fonts/arial.ttf', 120, curSys._name + " - " + curSys._star._type) # type
 			else:
-				t = Text3D.create('fonts/arial.ttf', 10, name + " - " + curSys._star._type) # type
+				t = Text3D.create('fonts/arial.ttf', 10, curSys._name + " - " + curSys._star._type) # type
 			#t.setPosition(Vector3(-0.2, 0.05, -0.5))
 			t.setPosition(Vector3(-0.2, 0.05, -0.05))
 			t.yaw(3.14159)
@@ -367,7 +383,7 @@ def initSmallMulti():
 			sn_smallTrans.addChild(t)
 
 			model = BoxShape.create(100, 25000, 2000)
-			model.setPosition(Vector3(0.0, 0.0, 48000)# - thisSystem[name][1] * XorbitScaleFactor * user2ScaleFactor))
+			model.setPosition(Vector3(0.0, 0.0, 48000))# - thisSystem[name][1] * XorbitScaleFactor * user2ScaleFactor))
 			sn_smallSys.addChild(model)
 			model.setEffect("textured -v emissive -d "+curSys._star._texture)
 
@@ -398,7 +414,7 @@ def initSmallMulti():
 			sn_smallSys.yaw(pi/2.0)
 			sn_smallSys.setScale(0.0000001, 0.00001, 0.00001) #scale for panels - flat to screen
 
-			hLoc = h + 0.5
+			hLoc = col + 0.5
 			degreeConvert = 36.0/360.0*2*pi #18 degrees per panel times 2 panels per viz = 36
 			caveRadius = 3.25
 			sn_smallTrans.setPosition(Vector3(sin(hLoc*degreeConvert)*caveRadius, row * 0.29 + 0.41, cos(hLoc*degreeConvert)*caveRadius))
@@ -480,7 +496,6 @@ def initCenter(verticalHeight, theSys):
 	sn_tiltCenter = SceneNode.create('tiltCenter'+theSys._star._name)
 	sn_planetCenter.addChild(sn_tiltCenter)
 	sn_tiltCenter.addChild(model)
-	#sn_tiltCenter.roll(theSystem[name][6]/180.0*math.pi)
 
 	## rotation
 	sn_rotCenter = SceneNode.create('rotCenter'+theSys._star._name)
@@ -519,7 +534,7 @@ def initCenter(verticalHeight, theSys):
 		sn_tiltCenter = SceneNode.create('tiltCenter'+theSys._name+p._name)
 		sn_planetCenter.addChild(sn_tiltCenter)
 		sn_tiltCenter.addChild(model)
-		#sn_tiltCenter.roll(theSystem[name][6]/180.0*math.pi)
+		sn_tiltCenter.roll(p._inc/180.0*math.pi)
 
 		# deal with rotating the planets around the sun
 		sn_rotCenter = SceneNode.create('rotCenter'+theSys._name+p._name)
@@ -611,7 +626,7 @@ setEventFunction(onEvent)
 def onUpdate(frame, t, dt):
 
 	# ALL THINGS IN 3D ROTATE AS TIME PASSES BY
-	for i in xrange(sn_centerSys.numChild()):
+	for i in xrange(sn_centerSys.numChildren()):
 		sn_centerSys.getChildByIndex(i)
 		activeRotCenters[name].yaw(dt/40*(1.0 / currentSystem[name][3])) #revolution (year)
 		activePlanets[name].yaw(dt/40*365*(1.0 / currentSystem[name][4])) #rotation (day)
