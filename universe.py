@@ -14,7 +14,12 @@ starTy = enum()
 planetTy = enum()
 
 ## constants
-c_scaleWall = 0.2
+c_scaleWall_size = 0.01
+c_scaleWall_dist = 0.2
+
+c_scaleCenter_size = 0.01
+c_scaleCenter_dist = 0.2
+c_scaleCenter_overall = 0.001
 
 ## global scale factors
 g_scale_size = 1
@@ -230,6 +235,8 @@ def changeScale(name, add):
 			if g_scale_dist>5:
 				g_scale_dist=5
 				return False
+			else: # update the scene
+				foreach
 		else: # -
 			g_scale_dist=g_scale_dist-0.25
 			if g_scale_dist<0.25:
@@ -262,12 +269,21 @@ def changeScale(name, add):
 
 ##############################################################################################################
 # INITIALIZE THE SCENE
+scene = getSceneManager()
+cam = getDefaultCamera()
+
+#set the background to black - kinda spacy
+scene.setBackgroundColor(Color(0, 0, 0, 1))
+
+#set the far clipping plane back a bit
+setNearFarZ(0.1, 1000000)
+
 sn_root = SceneNode.create('root')
 sn_centerSys = SceneNode.create('centerSystem')
 sn_smallMulti = SceneNode.create('smallMulti')
 #sn_allSystems = SceneNode.create('allSystems')
 
-sn_root.addChild(sn_centerSystem)
+sn_root.addChild(sn_centerSys)
 sn_root.addChild(sn_smallMulti)
 #sn_smallMulti.addChild(sn_allSystems)
 
@@ -339,14 +355,14 @@ def initSmallMulti():
 				t = Text3D.create('fonts/arial.ttf', 120, name + " - " + curSys._star._type) # type
 			else:
 				t = Text3D.create('fonts/arial.ttf', 10, name + " - " + curSys._star._type) # type
-#           t.setPosition(Vector3(-0.2, 0.05, -0.5))
+			#t.setPosition(Vector3(-0.2, 0.05, -0.5))
 			t.setPosition(Vector3(-0.2, 0.05, -0.05))
 			t.yaw(3.14159)
 			#t.setFontResolution(120)
-		   # t.getMaterial().setDoubleFace(1)
+			#t.getMaterial().setDoubleFace(1)
 			t.getMaterial().setTransparent(False)
 			t.getMaterial().setDepthTestEnabled(False)
-#                    t.setFixedSize(True)
+			#t.setFixedSize(True)
 			t.setColor(Color('white'))
 			sn_smallTrans.addChild(t)
 
@@ -364,13 +380,13 @@ def initSmallMulti():
 				bs_goldi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
 				sn_smallSys.addChild(bs_goldi)
 				bs_goldi.setEffect('colored -e #006110')
-#				bs_goldi.getMaterial().setTransparent(True)
+				#bs_goldi.getMaterial().setTransparent(True)
 
 			## get planets
 			outCounter = 0
 			for p in curSys._star._children:
 				model = StaticObject.create("defaultSphere")
-				model.setScale(Vector3(p._size * c_scaleWall * g_scale_size, p._size * g_wallScale * g_scale_size, p._size * g_wallScale * g_scale_size))
+				model.setScale(Vector3(p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size))
 				model.setPosition(Vector3(0.0,0.0,48000 - p._orbit * c_scaleWall_dist * g_scale_dist))
 				model.setEffect('textured -v emissive -d '+p._texture)
 				sn_smallSys.addChild(model)
@@ -393,18 +409,170 @@ def initSmallMulti():
 
 			sn_smallMulti.addChild(sn_smallTrans)
 
-
 			smallCount += 1
 
-			# should add a name and some other statistics in here as well
-
 initSmallMulti()
+
 ##############################################################################################################
 # INIT 3D SOLAR SYSTEM
 
+def addOrbit(orbit, thick):
+	circle = LineSet.create()
+
+	segments = 128
+	radius = 1
+	thickness = thick   #0.01 for orbit
+
+	a = 0.0
+	while a <= 360:
+		x = cos(radians(a)) * radius
+		y = sin(radians(a)) * radius
+		a += 360.0 / segments
+		nx = cos(radians(a)) * radius
+		ny = sin(radians(a)) * radius
+
+		l = circle.addLine()
+		l.setStart(Vector3(x, 0, y))
+		l.setEnd(Vector3(nx, 0, ny))
+		l.setThickness(thickness)
+
+		circle.setPosition(Vector3(0, 2, -4))
+
+		circle.setEffect('colored -e white')
+
+		# Squish z to turn the torus into a disc-like shape.
+
+		circle.setScale(Vector3(orbit, 1000.0, orbit))
+
+		sn_centerTrans.addChild(circle)
+
+def initCenter(verticalHeight, theSys):
+	#global sn_centerSys
+
+	sn_centerTrans = SceneNode.create('centerTrans'+theSys._name)
+	sn_centerSys.addChild(sn_centerTrans)
+
+	## the star
+	model = StaticObject.create('defaultSphere')
+	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size))
+	model.getMaterial().setProgram('textured')
+	model.setEffect("textured -v emissive -d "+theSys._star._texture)
+
+	# activePlanets[name] = model
+
+	sunDot = StaticObject.create("defaultSphere")
+	#sunDot.setPosition(Vector3(0.0, 0.0, 0.0))
+	sunDot.setScale(Vector3(10, 10, 10))
+	sn_centerTrans.addChild(sunDot)
+
+	sunLine = LineSet.create()
+
+	l = sunLine.addLine()
+	l.setStart(Vector3(0, 0, 0))
+	l.setEnd(Vector3(0, 1000, 0))
+	l.setThickness(1)
+	sunLine.setEffect('colored -e white')
+	sn_centerTrans.addChild(sunLine)
+
+	sn_planetCenter = SceneNode.create('planetCenter'+theSys._star._name)
+
+	## tilt
+	sn_tiltCenter = SceneNode.create('tiltCenter'+theSys._star._name)
+	sn_planetCenter.addChild(sn_tiltCenter)
+	sn_tiltCenter.addChild(model)
+	#sn_tiltCenter.roll(theSystem[name][6]/180.0*math.pi)
+
+	## rotation
+	sn_rotCenter = SceneNode.create('rotCenter'+theSys._star._name)
+	sn_rotCenter.setPosition(Vector3(0,0,0))
+	sn_rotCenter.addChild(sn_planetCenter)
+
+	#activeRotCenters[name] = rotCenter
+	sn_centerTrans.addChild(sn_rotCenter)
+
+	# addOrbit(theSystem[name][1]*orbitScaleFactor*userScaleFactor, 0, 0.01)
+
+	# deal with labelling everything
+	v = Text3D.create('fonts/arial.ttf', 120, theSys._star._name)
+	v.setPosition(Vector3(0, 500, 0))
+	#v.setFontResolution(120)
+
+	#v.setFontSize(160)
+	v.getMaterial().setDoubleFace(1)
+	v.setFixedSize(True)
+	v.setColor(Color('white'))
+	sn_planetCenter.addChild(v)
+
+	## the planets
+	for p in theSys._star._children:
+		model.setPosition(Vector3(0.0, 0.0, -p._orbit*g_scale_dist*c_scaleCanter_dist))
+		model.setScale(Vector3(p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size))
+		model.getMaterial().setProgram('textured')
+		model.setEffect('textured -d '+p._texture)
+
+		#activePlanets[name] = model
+
+		#set up for planet name on top of planet
+		sn_planetCenter = SceneNode.create('planetCenter'+theSys._name+p._name)
+
+		# deal with the axial tilt of the sun & planets
+		sn_tiltCenter = SceneNode.create('tiltCenter'+theSys._name+p._name)
+		sn_planetCenter.addChild(sn_tiltCenter)
+		sn_tiltCenter.addChild(model)
+		#sn_tiltCenter.roll(theSystem[name][6]/180.0*math.pi)
+
+		# deal with rotating the planets around the sun
+		sn_rotCenter = SceneNode.create('rotCenter'+theSys._name+p._name)
+		sn_rotCenter.setPosition(Vector3(0,0,0))
+		sn_rotCenter.addChild(sn_planetCenter)
+
+		#activeRotCenters[name] = rotCenter
+		sn_centerTrans.addChild(sn_rotCenter)
+
+		addOrbit(p._orbit*g_scale_dist*c_scaleCanter_dist, 0.01)
+
+		# deal with labelling everything
+		v = Text3D.create('fonts/arial.ttf', 120, p._name)
+		v.setPosition(Vector3(0, p._orbit*c_scaleCenter_dist*g_scale_dist, - p._orbit*c_scaleCenter_dist*g_scale_dist))
+		#v.setFontResolution(120)
+
+		#v.setFontSize(160)
+		v.getMaterial().setDoubleFace(1)
+		v.setFixedSize(True)
+		v.setColor(Color('white'))
+		sn_planetCenter.addChild(v)
+
+	## deal with the habitable zone
+
+	cs_inner = CylinderShape.create(1, theSys._star._habNear*c_scaleCanter_dist*g_scale_dist, theSys._star._habNear*c_scaleCanter_dist*g_scale_dist, 8, 128)
+	cs_inner.setEffect('colored -e #ff000055')
+	cs_inner.getMaterial().setTransparent(True)
+	cs_inner.pitch(-3.14159*0.5)
+	cs_inner.setScale(Vector3(1, 1, 1.0))
+
+	cs_outer = CylinderShape.create(1, theSys._star._habFar*c_scaleCanter_dist*g_scale_dist, theSys._star._habFar*c_scaleCanter_dist*g_scale_dist, 8, 128)
+	cs_outer.setEffect('colored -e #00FF0055')
+	cs_outer.getMaterial().setTransparent(True)
+	cs_outer.pitch(-3.14159*0.5)
+	cs_outer.setScale(Vector3(1, 1, 0.1))
+
+	sn_habZone = SceneNode.create("habZone")
+	sn_habZone.addChild(cs_outer)
+	sn_habZone.addChild(cs_inner)
+
+	sn_centerTrans.addChild(sn_habZone)
+	sn_centerTrans.addChild(light1)
+
+	## add everything to the sn_centerTrans node for scaling and default positioning
+	sn_centerTrans.setScale(Vector3(c_scaleCenter_overall, c_scaleCenter_overall, c_scaleCenter_overall))
+	sn_centerTrans.setPosition(Vector3(0, verticalHeight, 1))
+
+	## end here
+
 
 ##############################################################################################################
-# EVENT AND UPDATE FUNCTIONS
+# EVENT FUNCTION
+
 def onEvent():
 	global g_scale_size
 	global g_scale_dist
@@ -435,10 +603,20 @@ def onEvent():
 		if not changeScale('time',False):
 			playSound(sd_warn, e.getPosition(), 1.0)
 
-def onUpdate(frame, t, dt):
-	# ALL THINGS IN 3D ROTATE AS TIME PASSES BY
-	dt * g_scale_time
-
-
 setEventFunction(onEvent)
+
+##############################################################################################################
+# UPDATE FUNCTION
+
+def onUpdate(frame, t, dt):
+
+	# ALL THINGS IN 3D ROTATE AS TIME PASSES BY
+	for i in xrange(sn_centerSys.numChild()):
+		sn_centerSys.getChildByIndex(i)
+		activeRotCenters[name].yaw(dt/40*(1.0 / currentSystem[name][3])) #revolution (year)
+		activePlanets[name].yaw(dt/40*365*(1.0 / currentSystem[name][4])) #rotation (day)
+
 setUpdateFunction(onUpdate)
+
+
+#### THE END #################################################################################################
