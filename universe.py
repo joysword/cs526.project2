@@ -32,6 +32,7 @@ c_scaleCenter_dist = 0.000005
 c_scaleCenter_overall = 0.00025
 
 R_jupiter = 69911 # in KM
+R_sun = 695500 # in KM
 
 ## global scale factors
 g_scale_size = 1.0
@@ -100,12 +101,12 @@ class planet:
 		#self._model = None
 
 class star:
-	def __init__(self,t,mv,r,n,dis,c,ty,num):
+	def __init__(self,t,mv,size,n,dis,c,ty,num):
 		self._texture = t
 		self._mv = float(mv)
 		#print 'mv:',mv
 		#print 'slef._mv:',self._mv
-		self._size = float(r)
+		self._size = float(size) * R_sun
 		self._name = n
 		self._dis = float(dis) # TO DO: int?
 		self._class = c
