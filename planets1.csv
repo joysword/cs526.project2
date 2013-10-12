@@ -1,0 +1,924 @@
+# This file was produced by the NASA Exoplanet Archive  http://exoplanetarchive.ipac.caltech.edu,,,,,,,,,,,,,,,,
+# Sat Oct 12 01:44:50 2013,,,,,,,,,,,,,,,,
+#,,,,,,,,,,,,,,,,
+# COLUMN pl_hostname:    Host Name,,,,,,,,,,,,,,,,
+# COLUMN pl_letter:      Planet Letter,,,,,,,,,,,,,,,,
+# COLUMN pl_discmethod:  Discovery Method,,,,,,,,,,,,,,,,
+# COLUMN pl_orbper:      Orbital Period [days],,,,,,,,,,,,,,,,
+# COLUMN pl_orbsmax:     Semi-Major Axis [AU],,,,,,,,,,,,,,,,
+# COLUMN pl_orbincl:     Inclination [deg],,,,,,,,,,,,,,,,
+# COLUMN pl_radj:        Planet Radius [Jupiter],,,,,,,,,,,,,,,,
+# COLUMN pl_radlim:      Planet Radius (limit flag),,,,,,,,,,,,,,,,
+#,,,,,,,,,,,,,,,,
+rowid,pl_hostname,pl_letter,star,pl_radj,pl_orbsmax,texture,,,,,,,day,year,pl_orbincl,pl_discmethod
+1,4 UMa,b,0,,0.87,textures/earth.jpg,-,-,-,-,-,-,,0.737808219,,Radial Velocity
+2,6 Lyn,b,0,,2.18,textures/earth.jpg,-,-,-,-,-,-,,2.396641096,,Radial Velocity
+3,7 CMa,b,0,,1.9,textures/earth.jpg,-,-,-,-,-,-,,2.090410959,,Radial Velocity
+4,11 Com,b,0,,1.29,textures/earth.jpg,-,-,-,-,-,-,,0.893232877,,Radial Velocity
+5,11 UMi,b,0,,1.54,textures/earth.jpg,-,-,-,-,-,-,,1.41430137,,Radial Velocity
+6,14 And,b,0,,0.83,textures/earth.jpg,-,-,-,-,-,-,,0.509150685,,Radial Velocity
+7,14 Her,b,0,,2.77,textures/earth.jpg,-,-,-,-,-,-,,4.858630137,,Radial Velocity
+8,16 Cyg B,b,0,,1.681,textures/earth.jpg,-,-,-,-,-,-,,2.187671233,,Radial Velocity
+9,18 Del,b,0,,2.6,textures/earth.jpg,-,-,-,-,-,-,,2.721369863,,Radial Velocity
+10,24 Sex,b,0,,1.333,textures/earth.jpg,-,-,-,-,-,-,,1.240547945,,Radial Velocity
+11,24 Sex,c,0,,2.08,textures/earth.jpg,-,-,-,-,-,-,,2.419178082,,Radial Velocity
+12,30 Ari B,b,0,,0.995,textures/earth.jpg,-,-,-,-,-,-,,0.918082192,,Radial Velocity
+13,42 Dra,b,0,,1.19,textures/earth.jpg,-,-,-,-,-,-,,1.31260274,,Radial Velocity
+14,47 UMa,b,0,,2.1,textures/earth.jpg,-,-,-,-,-,-,,2.953424658,,Radial Velocity
+15,47 UMa,c,0,,3.6,textures/earth.jpg,-,-,-,-,-,-,,6.550684932,,Radial Velocity
+16,47 UMa,d,0,,11.6,textures/earth.jpg,-,-,-,-,-,-,,38.36164384,,Radial Velocity
+17,51 Peg,b,0,,0.0527,textures/earth.jpg,-,-,-,-,-,-,,0.011591192,,Radial Velocity
+18,55 Cnc,b,0,,0.1134,textures/earth.jpg,-,-,-,-,-,-,,0.040139726,,Radial Velocity
+19,55 Cnc,c,0,,0.237,textures/earth.jpg,-,-,-,-,-,-,,0.121589041,,Radial Velocity
+20,55 Cnc,d,0,,5.47,textures/earth.jpg,-,-,-,-,-,-,,13.44931507,,Radial Velocity
+21,55 Cnc,e,0,0.194,0.01583,textures/earth.jpg,-,-,-,-,-,-,,0.002017934,82.5,Radial Velocity
+22,55 Cnc,f,0,,0.77,textures/earth.jpg,-,-,-,-,-,-,,0.715616438,,Radial Velocity
+23,61 Vir,b,0,,0.050201,textures/earth.jpg,-,-,-,-,-,-,,0.011547945,,Radial Velocity
+24,61 Vir,c,0,,0.2175,textures/earth.jpg,-,-,-,-,-,-,,0.104167123,,Radial Velocity
+25,61 Vir,d,0,,0.476,textures/earth.jpg,-,-,-,-,-,-,,0.337013699,,Radial Velocity
+26,70 Vir,b,0,,0.484,textures/earth.jpg,-,-,-,-,-,-,,0.319694247,,Radial Velocity
+27,75 Cet,b,0,,2.1,textures/earth.jpg,-,-,-,-,-,-,,1.895616438,,Radial Velocity
+28,81 Cet,b,0,,2.5,textures/earth.jpg,-,-,-,-,-,-,,2.610136986,,Radial Velocity
+29,91 Aqr,b,0,,0.7,textures/earth.jpg,-,-,-,-,-,-,,0.496986301,,Radial Velocity
+30,AB Pic,b,0,,260,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+31,CT Cha,b,0,2.2,440,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+32,DH Tau,b,0,,330,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+33,DP Leo,b,0,,8.19,textures/earth.jpg,-,-,-,-,-,-,,28,,Eclipse Timing Variations
+34,FU Tau,b,0,,800,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+35,GQ Lup,b,0,3,100,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+36,HN Peg,b,0,1.051,773,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+37,HW Vir,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,15.8,,Eclipse Timing Variations
+38,HW Vir,c,0,,,textures/earth.jpg,-,-,-,-,-,-,,9.098630137,,Eclipse Timing Variations
+39,NN Ser,c,0,,5.38,textures/earth.jpg,-,-,-,-,-,-,,15.50684932,,Eclipse Timing Variations
+40,NN Ser,d,0,,3.39,textures/earth.jpg,-,-,-,-,-,-,,7.753424658,,Eclipse Timing Variations
+41,NY Vir,b,0,,3.3,textures/earth.jpg,-,-,-,-,-,-,,7.945205479,,Eclipse Timing Variations
+42,RR Cae,b,0,,5.3,textures/earth.jpg,-,-,-,-,-,-,,11.9,17.6,Eclipse Timing Variations
+43,alpha Ari,b,0,,1.2,textures/earth.jpg,-,-,-,-,-,-,,1.043287671,,Radial Velocity
+44,alpha Cen B,b,0,,0.04,textures/earth.jpg,-,-,-,-,-,-,,0.008864932,,Radial Velocity
+45,beta Pic,b,0,,8,textures/earth.jpg,-,-,-,-,-,-,,16.43835616,,Imaging
+46,epsilon Eri,b,0,,3.39,textures/earth.jpg,-,-,-,-,-,-,,6.854794521,30.1,Radial Velocity
+47,epsilon CrB,b,0,,1.3,textures/earth.jpg,-,-,-,-,-,-,,1.144931507,,Radial Velocity
+48,epsilon Tau,b,0,,1.93,textures/earth.jpg,-,-,-,-,-,-,,1.629863014,,Radial Velocity
+49,gamma 1 Leo,b,0,,1.19,textures/earth.jpg,-,-,-,-,-,-,,1.173972603,,Radial Velocity
+50,gamma Cep,b,0,,2.05,textures/earth.jpg,-,-,-,-,-,-,,2.474794521,,Radial Velocity
+51,kappa CrB,b,0,,2.6,textures/earth.jpg,-,-,-,-,-,-,,3.42739726,,Radial Velocity
+52,kappa And,b,0,,55,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+53,ksi Aql,b,0,,0.68,textures/earth.jpg,-,-,-,-,-,-,,0.374657534,,Radial Velocity
+54,nu Oph,b,0,,1.9,textures/earth.jpg,-,-,-,-,-,-,,1.452931507,,Radial Velocity
+55,nu Oph,c,0,,6.1,textures/earth.jpg,-,-,-,-,-,-,,8.728767123,,Radial Velocity
+56,omega Ser,b,0,,1.1,textures/earth.jpg,-,-,-,-,-,-,,0.758958904,,Radial Velocity
+57,omicron CrB,b,0,,0.83,textures/earth.jpg,-,-,-,-,-,-,,0.51460274,,Radial Velocity
+58,omicron UMa,b,0,,3.9,textures/earth.jpg,-,-,-,-,-,-,,4.465753425,,Radial Velocity
+59,rho CrB,b,0,,0.22,textures/earth.jpg,-,-,-,-,-,-,,0.109164384,,Radial Velocity
+60,tau Boo,b,0,,0.046,textures/earth.jpg,-,-,-,-,-,-,,0.009078082,,Radial Velocity
+61,tau Gem,b,0,,1.17,textures/earth.jpg,-,-,-,-,-,-,,0.836986301,,Radial Velocity
+62,upsilon And,b,0,,0.059222,textures/earth.jpg,-,-,-,-,-,-,,0.012649405,,Radial Velocity
+63,upsilon And,c,0,,0.827774,textures/earth.jpg,-,-,-,-,-,-,,0.660980822,,Radial Velocity
+64,upsilon And,d,0,,2.51329,textures/earth.jpg,-,-,-,-,-,-,,3.497150685,,Radial Velocity
+65,upsilon And,e,0,,5.24558,textures/earth.jpg,-,-,-,-,-,-,,10.54482192,,Radial Velocity
+66,Fomalhaut,b,0,1.2,115,textures/earth.jpg,-,-,-,-,-,-,,872,,Imaging
+67,1RXS J160929.1-210524,b,0,1.664,330,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+68,2MASS J01225093-2439505,b,0,,52,textures/earth.jpg,-,-,-,-,-,-,,0,,Imaging
+69,2MASS J04414489+2301513,b,0,,15,textures/earth.jpg,-,-,-,-,-,-,,0,,Imaging
+70,2MASS J07464256+2000321A,b,0,0.97,2.897,textures/earth.jpg,-,-,-,-,-,-,,12.71,138.2,Imaging
+71,2MASS J12073346-3932539,b,0,,46,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+72,2MASS J21402931+1625183A,b,0,0.92,,textures/earth.jpg,-,-,-,-,-,-,,20.1,46.2,Imaging
+73,2MASS J22062280-2047058A,b,0,1.3,,textures/earth.jpg,-,-,-,-,-,-,,23.78,44.3,Imaging
+74,BD-17 63,b,0,,1.34,textures/earth.jpg,-,-,-,-,-,-,,1.796164384,,Radial Velocity
+75,BD-13 2130,b,0,,2.1,textures/earth.jpg,-,-,-,-,-,-,,1.956986301,,Radial Velocity
+76,BD-10 3166,b,0,,0.0452,textures/earth.jpg,-,-,-,-,-,-,,0.009555534,,Radial Velocity
+77,BD-08 2823,b,0,,0.056,textures/earth.jpg,-,-,-,-,-,-,,0.015342466,,Radial Velocity
+78,BD-08 2823,c,0,,0.68,textures/earth.jpg,-,-,-,-,-,-,,0.650958904,,Radial Velocity
+79,BD-06 1339,b,0,,0.0428,textures/earth.jpg,-,-,-,-,-,-,,0.010610411,,Radial Velocity
+80,BD-06 1339,c,0,,0.435,textures/earth.jpg,-,-,-,-,-,-,,0.345041096,,Radial Velocity
+81,BD+14 4559,b,0,,0.777,textures/earth.jpg,-,-,-,-,-,-,,0.736821918,,Radial Velocity
+82,BD+15 2940,b,0,,0.539,textures/earth.jpg,-,-,-,-,-,-,,0.376657534,,Radial Velocity
+83,BD+20 2457,b,0,,1.45,textures/earth.jpg,-,-,-,-,-,-,,1.040082192,,Radial Velocity
+84,BD+20 2457,c,0,,2.01,textures/earth.jpg,-,-,-,-,-,-,,1.704082192,,Radial Velocity
+85,BD+20 274,b,0,,1.3,textures/earth.jpg,-,-,-,-,-,-,,1.584109589,,Radial Velocity
+86,BD+48 738,b,0,,1,textures/earth.jpg,-,-,-,-,-,-,,1.075616438,,Radial Velocity
+87,CFBDSIR J145829+101343,b,0,,2.6,textures/earth.jpg,-,-,-,-,-,-,,27.5,,Imaging
+88,CHXR 73,b,0,,210,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+89,CoRoT-1,b,0,1.49,,textures/earth.jpg,-,-,-,-,-,-,,0.004134125,85.1,Transit
+90,CoRoT-2,b,0,1.466,0.02798,textures/earth.jpg,-,-,-,-,-,-,,0.004775325,88.08,Transit
+91,CoRoT-3,b,0,1.01,,textures/earth.jpg,-,-,-,-,-,-,,0.011662466,85.9,Transit
+92,CoRoT-4,b,0,1.19,0.09,textures/earth.jpg,-,-,-,-,-,-,,0.025211096,90,Transit
+93,CoRoT-5,b,0,1.388,0.04947,textures/earth.jpg,-,-,-,-,-,-,,0.011062729,85.83,Transit
+94,CoRoT-6,b,0,1.166,0.0855,textures/earth.jpg,-,-,-,-,-,-,,0.02434683,89.07,Transit
+95,CoRoT-7,b,0,0.15,0.0172,textures/earth.jpg,-,-,-,-,-,-,,0.002338589,80.1,Transit
+96,CoRoT-7,c,0,,0.046,textures/earth.jpg,-,-,-,-,-,-,,0.010131507,,Radial Velocity
+97,CoRoT-8,b,0,0.57,0.063,textures/earth.jpg,-,-,-,-,-,-,,0.017019973,88.4,Transit
+98,CoRoT-9,b,0,1.05,0.407,textures/earth.jpg,-,-,-,-,-,-,,0.26102411,89.99,Transit
+99,CoRoT-10,b,0,0.97,0.1055,textures/earth.jpg,-,-,-,-,-,-,,0.036275616,88.55,Transit
+100,CoRoT-11,b,0,1.43,0.0436,textures/earth.jpg,-,-,-,-,-,-,,0.008203644,83.17,Transit
+101,CoRoT-12,b,0,1.44,0.04016,textures/earth.jpg,-,-,-,-,-,-,,0.00774806,85.48,Transit
+102,CoRoT-13,b,0,0.885,0.051,textures/earth.jpg,-,-,-,-,-,-,,0.011055315,88.02,Transit
+103,CoRoT-14,b,0,1.09,0.027,textures/earth.jpg,-,-,-,-,-,-,,0.004142849,79.6,Transit
+104,CoRoT-16,b,0,1.17,0.0618,textures/earth.jpg,-,-,-,-,-,-,,0.014663753,85.01,Transit
+105,CoRoT-17,b,0,1.02,0.0461,textures/earth.jpg,-,-,-,-,-,-,,0.010323562,88.34,Transit
+106,CoRoT-18,b,0,1.31,0.0295,textures/earth.jpg,-,-,-,-,-,-,,0.005205669,86.5,Transit
+107,CoRoT-19,b,0,1.29,0.0518,textures/earth.jpg,-,-,-,-,-,-,,0.010677068,88,Transit
+108,CoRoT-20,b,0,0.84,0.0902,textures/earth.jpg,-,-,-,-,-,-,,0.025322877,88.21,Transit
+109,CoRoT-23,b,0,1.05,0.048,textures/earth.jpg,-,-,-,-,-,-,,0.009948767,85.7,Transit
+110,DENIS-P J082303.1-491201,b,0,,0.36,textures/earth.jpg,-,-,-,-,-,-,,0.674958904,56.6,Astrometry
+111,GJ 86,b,0,,0.113,textures/earth.jpg,-,-,-,-,-,-,,0.043191534,,Radial Velocity
+112,GJ 163,b,0,,0.061,textures/earth.jpg,-,-,-,-,-,-,,0.023646575,,Radial Velocity
+113,GJ 163,c,0,,0.13,textures/earth.jpg,-,-,-,-,-,-,,0.070136986,,Radial Velocity
+114,GJ 163,d,0,,1,textures/earth.jpg,-,-,-,-,-,-,,1.652054795,,Radial Velocity
+115,GJ 179,b,0,,2.41,textures/earth.jpg,-,-,-,-,-,-,,6.268493151,,Radial Velocity
+116,GJ 317,b,0,,1.15,textures/earth.jpg,-,-,-,-,-,-,,1.895890411,45,Radial Velocity
+117,GJ 317,c,0,,5.5,textures/earth.jpg,-,-,-,-,-,-,,19.45205479,,Radial Velocity
+118,GJ 328,b,0,,4.5,textures/earth.jpg,-,-,-,-,-,-,,11.23287671,,Radial Velocity
+119,GJ 433,b,0,,0.058,textures/earth.jpg,-,-,-,-,-,-,,0.020194247,,Radial Velocity
+120,GJ 436,b,0,0.377,0.02872,textures/earth.jpg,-,-,-,-,-,-,,0.007243425,86.36,Radial Velocity
+121,GJ 504,b,0,,43.5,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+122,GJ 581,b,0,,0.04,textures/earth.jpg,-,-,-,-,-,-,,0.014708877,,Radial Velocity
+123,GJ 581,c,0,,0.07,textures/earth.jpg,-,-,-,-,-,-,,0.035422466,,Radial Velocity
+124,GJ 581,d,0,,0.22,textures/earth.jpg,-,-,-,-,-,-,,0.183013699,,Radial Velocity
+125,GJ 581,e,0,,0.03,textures/earth.jpg,-,-,-,-,-,-,,0.008628548,,Radial Velocity
+126,GJ 649,b,0,,1.135,textures/earth.jpg,-,-,-,-,-,-,,1.639178082,,Radial Velocity
+127,GJ 667C,b,0,,0.0505,textures/earth.jpg,-,-,-,-,-,-,,0.019727123,,Radial Velocity
+128,GJ 667C,c,0,,0.125,textures/earth.jpg,-,-,-,-,-,-,,0.07709589,,Radial Velocity
+129,GJ 667C,d,0,,0.276,textures/earth.jpg,-,-,-,-,-,-,,0.250986301,,Radial Velocity
+130,GJ 667C,e,0,,0.213,textures/earth.jpg,-,-,-,-,-,-,,0.170520548,,Radial Velocity
+131,GJ 667C,f,0,,0.156,textures/earth.jpg,-,-,-,-,-,-,,0.106920548,,Radial Velocity
+132,GJ 667C,g,0,,0.549,textures/earth.jpg,-,-,-,-,-,-,,0.701917808,,Radial Velocity
+133,GJ 674,b,0,,0.039,textures/earth.jpg,-,-,-,-,-,-,,0.012859726,,Radial Velocity
+134,GJ 676A,b,0,,1.8,textures/earth.jpg,-,-,-,-,-,-,,2.877534247,,Radial Velocity
+135,GJ 676A,d,0,,0.0413,textures/earth.jpg,-,-,-,-,-,-,,0.009863014,,Radial Velocity
+136,GJ 676A,e,0,,0.187,textures/earth.jpg,-,-,-,-,-,-,,0.09690411,,Radial Velocity
+137,GJ 832,b,0,,3.4,textures/earth.jpg,-,-,-,-,-,-,,9.35890411,,Radial Velocity
+138,GJ 849,b,0,,2.32,textures/earth.jpg,-,-,-,-,-,-,,5.054794521,,Radial Velocity
+139,GJ 876,b,0,,0.208317,textures/earth.jpg,-,-,-,-,-,-,,0.16744274,59,Radial Velocity
+140,GJ 876,c,0,,0.12959,textures/earth.jpg,-,-,-,-,-,-,,0.082433151,59,Radial Velocity
+141,GJ 876,d,0,,0.020807,textures/earth.jpg,-,-,-,-,-,-,,0.005308986,59,Radial Velocity
+142,GJ 876,e,0,,0.3343,textures/earth.jpg,-,-,-,-,-,-,,0.340438356,59,Radial Velocity
+143,GJ 1214,b,0,0.203,,textures/earth.jpg,-,-,-,-,-,-,,0.004329876,90,Transit
+144,GJ 3021,b,0,,0.49,textures/earth.jpg,-,-,-,-,-,-,,0.366328767,,Radial Velocity
+145,GJ 3470,b,0,0.37,0.0348,textures/earth.jpg,-,-,-,-,-,-,,0.009142849,88.8,Radial Velocity
+146,GJ 3634,b,0,,0.0287,textures/earth.jpg,-,-,-,-,-,-,,0.007248247,59,Radial Velocity
+147,GSC 06214-00210,b,0,,300,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+148,HAT-P-1,b,0,1.225,,textures/earth.jpg,-,-,-,-,-,-,,0.012233681,86.28,Transit
+149,HAT-P-2,b,0,1.157,0.06878,textures/earth.jpg,-,-,-,-,-,-,,0.015434172,86.72,Transit
+150,HAT-P-3,b,0,0.827,0.03866,textures/earth.jpg,-,-,-,-,-,-,,0.007944482,87.07,Transit
+151,HAT-P-4,b,0,1.274,0.04438,textures/earth.jpg,-,-,-,-,-,-,,0.008374071,89.91,Transit
+152,HAT-P-5,b,0,1.26,0.04075,textures/earth.jpg,-,-,-,-,-,-,,0.007639701,86.75,Transit
+153,HAT-P-6,b,0,1.33,0.05235,textures/earth.jpg,-,-,-,-,-,-,,0.010556123,85.51,Transit
+154,HAT-P-8,b,0,1.5,0.0487,textures/earth.jpg,-,-,-,-,-,-,,0.008428432,87.5,Transit
+155,HAT-P-9,b,0,1.4,0.053,textures/earth.jpg,-,-,-,-,-,-,,0.010747644,86.5,Transit
+156,HAT-P-12,b,0,0.959,0.0384,textures/earth.jpg,-,-,-,-,-,-,,0.008802904,89,Transit
+157,HAT-P-13,b,0,1.271,0.0427,textures/earth.jpg,-,-,-,-,-,-,,0.007989753,83.4,Transit
+158,HAT-P-13,c,0,,1.188,textures/earth.jpg,-,-,-,-,-,-,,1.173972603,,Radial Velocity
+159,HAT-P-14,b,0,1.15,0.0606,textures/earth.jpg,-,-,-,-,-,-,,0.012678545,83.5,Transit
+160,HAT-P-15,b,0,1.072,0.0964,textures/earth.jpg,-,-,-,-,-,-,,0.029763019,89.1,Transit
+161,HAT-P-16,b,0,1.289,0.0413,textures/earth.jpg,-,-,-,-,-,-,,0.00760537,86.6,Transit
+162,HAT-P-17,b,0,1.01,0.0882,textures/earth.jpg,-,-,-,-,-,-,,0.028324721,89.2,Transit
+163,HAT-P-17,c,0,,5.6,textures/earth.jpg,-,-,-,-,-,-,,15.29863014,,Radial Velocity
+164,HAT-P-18,b,0,0.995,0.0559,textures/earth.jpg,-,-,-,-,-,-,,0.015090474,88.8,Transit
+165,HAT-P-19,b,0,1.132,0.0466,textures/earth.jpg,-,-,-,-,-,-,,0.010982953,88.2,Transit
+166,HAT-P-20,b,0,0.867,0.0361,textures/earth.jpg,-,-,-,-,-,-,,0.007877581,86.8,Transit
+167,HAT-P-21,b,0,1.024,0.0494,textures/earth.jpg,-,-,-,-,-,-,,0.011299948,87.2,Transit
+168,HAT-P-22,b,0,1.08,0.0414,textures/earth.jpg,-,-,-,-,-,-,,0.008800603,86.9,Transit
+169,HAT-P-23,b,0,1.368,0.0232,textures/earth.jpg,-,-,-,-,-,-,,0.00332297,85.1,Transit
+170,HAT-P-24,b,0,1.242,0.0465,textures/earth.jpg,-,-,-,-,-,-,,0.009192438,88.6,Transit
+171,HAT-P-25,b,0,1.19,0.0466,textures/earth.jpg,-,-,-,-,-,-,,0.01000777,87.6,Transit
+172,HAT-P-26,b,0,0.565,0.0479,textures/earth.jpg,-,-,-,-,-,-,,0.011601414,88.6,Transit
+173,HAT-P-27,b,0,1.02,0.04,textures/earth.jpg,-,-,-,-,-,-,,0.008327608,85,Transit
+174,HAT-P-28,b,0,1.212,0.0434,textures/earth.jpg,-,-,-,-,-,-,,0.008923877,88,Transit
+175,HAT-P-29,b,0,1.107,0.0667,textures/earth.jpg,-,-,-,-,-,-,,0.015679962,87.1,Transit
+176,HAT-P-30,b,0,1.34,0.0419,textures/earth.jpg,-,-,-,-,-,-,,0.00770026,83.6,Transit
+177,HAT-P-31,b,0,1.07,0.055,textures/earth.jpg,-,-,-,-,-,-,,0.013713493,87.1,Transit
+178,HAT-P-31,c,0,,,textures/earth.jpg,-,-,-,-,-,-,,2.8,,Radial Velocity
+179,HAT-P-32,b,0,1.789,0.0343,textures/earth.jpg,-,-,-,-,-,-,,0.005890433,88.9,Transit
+180,HAT-P-33,b,0,1.686,0.0499,textures/earth.jpg,-,-,-,-,-,-,,0.009519107,87.2,Transit
+181,HAT-P-34,b,0,1.197,0.0677,textures/earth.jpg,-,-,-,-,-,-,,0.014938778,87.1,Transit
+182,HAT-P-35,b,0,1.332,0.0498,textures/earth.jpg,-,-,-,-,-,-,,0.009990975,87.3,Transit
+183,HAT-P-36,b,0,1.264,0.0238,textures/earth.jpg,-,-,-,-,-,-,,0.003636567,86,Transit
+184,HAT-P-37,b,0,1.178,0.0379,textures/earth.jpg,-,-,-,-,-,-,,0.007664208,86.9,Transit
+185,HAT-P-38,b,0,0.825,0.0523,textures/earth.jpg,-,-,-,-,-,-,,0.012713375,88.3,Transit
+186,HAT-P-39,b,0,1.571,0.0509,textures/earth.jpg,-,-,-,-,-,-,,0.009709233,87,Transit
+187,HAT-P-40,b,0,1.73,0.0608,textures/earth.jpg,-,-,-,-,-,-,,0.012211625,88.3,Transit
+188,HAT-P-41,b,0,1.685,0.0426,textures/earth.jpg,-,-,-,-,-,-,,0.007380951,87.7,Transit
+189,HATS-1,b,0,1.302,0.0444,textures/earth.jpg,-,-,-,-,-,-,,0.009442353,85.6,Transit
+190,HATS-2,b,0,1.168,0.023,textures/earth.jpg,-,-,-,-,-,-,,0.003709953,87.2,Transit
+191,HATS-3,b,0,1.381,0.0485,textures/earth.jpg,-,-,-,-,-,-,,0.00972014,86.2,Transit
+192,HD 142,b,0,,1.02,textures/earth.jpg,-,-,-,-,-,-,,0.958082192,,Radial Velocity
+193,HD 142,c,0,,6.8,textures/earth.jpg,-,-,-,-,-,-,,16.45205479,,Radial Velocity
+194,HD 1461,b,0,,0.063438,textures/earth.jpg,-,-,-,-,-,-,,0.015815616,,Radial Velocity
+195,HD 1461,c,0,,0.1117,textures/earth.jpg,-,-,-,-,-,-,,0.037,,Radial Velocity
+196,HD 1502,b,0,,1.31,textures/earth.jpg,-,-,-,-,-,-,,1.183013699,,Radial Velocity
+197,HD 1690,b,0,,1.3,textures/earth.jpg,-,-,-,-,-,-,,1.460273973,,Radial Velocity
+198,HD 2039,b,0,,2.2,textures/earth.jpg,-,-,-,-,-,-,,3.24109589,,Radial Velocity
+199,HD 2638,b,0,,0.044,textures/earth.jpg,-,-,-,-,-,-,,0.009436164,,Radial Velocity
+200,HD 2952,b,0,,1.2,textures/earth.jpg,-,-,-,-,-,-,,0.85369863,,Radial Velocity
+201,HD 3651,b,0,,0.295,textures/earth.jpg,-,-,-,-,-,-,,0.170460274,,Radial Velocity
+202,HD 4113,b,0,,1.28,textures/earth.jpg,-,-,-,-,-,-,,1.442794521,,Radial Velocity
+203,HD 4208,b,0,,1.7,textures/earth.jpg,-,-,-,-,-,-,,2.271232877,,Radial Velocity
+204,HD 4308,b,0,,0.118,textures/earth.jpg,-,-,-,-,-,-,,0.042764384,,Radial Velocity
+205,HD 4203,b,0,,1.164,textures/earth.jpg,-,-,-,-,-,-,,1.183232877,,Radial Velocity
+206,HD 4313,b,0,,1.19,textures/earth.jpg,-,-,-,-,-,-,,0.975342466,,Radial Velocity
+207,HD 4732,b,0,,1.19,textures/earth.jpg,-,-,-,-,-,-,,0.986849315,,Radial Velocity
+208,HD 4732,c,0,,4.6,textures/earth.jpg,-,-,-,-,-,-,,7.484931507,,Radial Velocity
+209,HD 5319,b,0,,1.75,textures/earth.jpg,-,-,-,-,-,-,,1.849315068,,Radial Velocity
+210,HD 5388,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,2.128767123,,Radial Velocity
+211,HD 5608,b,0,,1.9,textures/earth.jpg,-,-,-,-,-,-,,2.171506849,,Radial Velocity
+212,HD 5891,b,0,,0.76,textures/earth.jpg,-,-,-,-,-,-,,0.485232877,,Radial Velocity
+213,HD 6434,b,0,,0.15,textures/earth.jpg,-,-,-,-,-,-,,0.060520548,,Radial Velocity
+214,HD 6718,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,6.838356164,,Radial Velocity
+215,HD 7199,b,0,,1.36,textures/earth.jpg,-,-,-,-,-,-,,1.684931507,,Radial Velocity
+216,HD 7449,b,0,,2.3,textures/earth.jpg,-,-,-,-,-,-,,3.493150685,,Radial Velocity
+217,HD 7449,c,0,,4.96,textures/earth.jpg,-,-,-,-,-,-,,11.08493151,,Radial Velocity
+218,HD 7924,b,0,,0.057,textures/earth.jpg,-,-,-,-,-,-,,0.014788493,,Radial Velocity
+219,HD 8535,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,3.597260274,,Radial Velocity
+220,HD 8574,b,0,,0.757,textures/earth.jpg,-,-,-,-,-,-,,0.621917808,,Radial Velocity
+221,HD 8673,b,0,,3.02,textures/earth.jpg,-,-,-,-,-,-,,4.476712329,,Radial Velocity
+222,HD 9446,b,0,,0.189,textures/earth.jpg,-,-,-,-,-,-,,0.082334247,,Radial Velocity
+223,HD 9446,c,0,,0.654,textures/earth.jpg,-,-,-,-,-,-,,0.528493151,,Radial Velocity
+224,HD 10180,c,0,,0.0641,textures/earth.jpg,-,-,-,-,-,-,,0.015780247,,Radial Velocity
+225,HD 10180,d,0,,0.1286,textures/earth.jpg,-,-,-,-,-,-,,0.044816164,,Radial Velocity
+226,HD 10180,e,0,,0.2699,textures/earth.jpg,-,-,-,-,-,-,,0.136287671,,Radial Velocity
+227,HD 10180,f,0,,0.4929,textures/earth.jpg,-,-,-,-,-,-,,0.336328767,,Radial Velocity
+228,HD 10180,g,0,,1.422,textures/earth.jpg,-,-,-,-,-,-,,1.647123288,,Radial Velocity
+229,HD 10180,h,0,,3.4,textures/earth.jpg,-,-,-,-,-,-,,6.087671233,,Radial Velocity
+230,HD 10647,b,0,,2.015,textures/earth.jpg,-,-,-,-,-,-,,2.710136986,,Radial Velocity
+231,HD 10697,b,0,,2.131,textures/earth.jpg,-,-,-,-,-,-,,2.945753425,,Radial Velocity
+232,HD 11506,b,0,,2.43,textures/earth.jpg,-,-,-,-,-,-,,3.48,,Radial Velocity
+233,HD 11506,c,0,,0.639,textures/earth.jpg,-,-,-,-,-,-,,0.467,,Radial Velocity
+234,HD 11977,b,0,,1.93,textures/earth.jpg,-,-,-,-,-,-,,1.947945205,,Radial Velocity
+235,HD 11964,b,0,,3.16,textures/earth.jpg,-,-,-,-,-,-,,5.328767123,,Radial Velocity
+236,HD 11964,c,0,,0.229,textures/earth.jpg,-,-,-,-,-,-,,0.103863014,,Radial Velocity
+237,HD 12661,b,0,,0.831,textures/earth.jpg,-,-,-,-,-,-,,0.719750685,,Radial Velocity
+238,HD 12661,c,0,,2.9,textures/earth.jpg,-,-,-,-,-,-,,4.679452055,,Radial Velocity
+239,HD 13189,b,0,,1.85,textures/earth.jpg,-,-,-,-,-,-,,1.292054795,,Radial Velocity
+240,HD 13808,b,0,,0.1017,textures/earth.jpg,-,-,-,-,-,-,,0.038854795,,Radial Velocity
+241,HD 13808,c,0,,0.2476,textures/earth.jpg,-,-,-,-,-,-,,0.147484932,,Radial Velocity
+242,HD 13931,b,0,,5.15,textures/earth.jpg,-,-,-,-,-,-,,11.55616438,,Radial Velocity
+243,HD 16141,b,0,,0.363,textures/earth.jpg,-,-,-,-,-,-,,0.206912329,,Radial Velocity
+244,HD 16417,b,0,,0.14,textures/earth.jpg,-,-,-,-,-,-,,0.047232877,,Radial Velocity
+245,HD 16175,b,0,,2.1,textures/earth.jpg,-,-,-,-,-,-,,2.712328767,,Radial Velocity
+246,HD 16760,b,0,,1.13,textures/earth.jpg,-,-,-,-,-,-,,1.274246575,,Radial Velocity
+247,HD 17092,b,0,,1.29,textures/earth.jpg,-,-,-,-,-,-,,0.986027397,,Radial Velocity
+248,HD 17156,b,0,1.087,0.1614,textures/earth.jpg,-,-,-,-,-,-,,0.058127753,86.89,Radial Velocity
+249,HD 18742,b,0,,1.92,textures/earth.jpg,-,-,-,-,-,-,,2.115068493,,Radial Velocity
+250,HD 19994,b,0,,1.305,textures/earth.jpg,-,-,-,-,-,-,,1.277260274,,Radial Velocity
+251,HD 20003,b,0,,0.0974,textures/earth.jpg,-,-,-,-,-,-,,0.032463014,,Radial Velocity
+252,HD 20003,c,0,,0.1961,textures/earth.jpg,-,-,-,-,-,-,,0.092665753,,Radial Velocity
+253,HD 20367,b,0,,1.25,textures/earth.jpg,-,-,-,-,-,-,,1.369863014,,Radial Velocity
+254,HD 20794,b,0,,0.1207,textures/earth.jpg,-,-,-,-,-,-,,0.050178082,,Radial Velocity
+255,HD 20794,c,0,,0.2036,textures/earth.jpg,-,-,-,-,-,-,,0.10990137,,Radial Velocity
+256,HD 20794,d,0,,0.3499,textures/earth.jpg,-,-,-,-,-,-,,0.247421918,,Radial Velocity
+257,HD 20781,b,0,,0.169,textures/earth.jpg,-,-,-,-,-,-,,0.079863014,,Radial Velocity
+258,HD 20781,c,0,,0.3456,textures/earth.jpg,-,-,-,-,-,-,,0.233235616,,Radial Velocity
+259,HD 20782,b,0,,1.381,textures/earth.jpg,-,-,-,-,-,-,,1.621643836,,Radial Velocity
+260,HD 20868,b,0,,0.947,textures/earth.jpg,-,-,-,-,-,-,,1.043424658,,Radial Velocity
+261,HD 21693,b,0,,0.1484,textures/earth.jpg,-,-,-,-,-,-,,0.062071233,,Radial Velocity
+262,HD 21693,c,0,,0.2644,textures/earth.jpg,-,-,-,-,-,-,,0.147619178,,Radial Velocity
+263,HD 23127,b,0,,2.4,textures/earth.jpg,-,-,-,-,-,-,,3.326027397,,Radial Velocity
+264,HD 23079,b,0,,1.65,textures/earth.jpg,-,-,-,-,-,-,,2.023175342,,Radial Velocity
+265,HD 22781,b,0,,1.167,textures/earth.jpg,-,-,-,-,-,-,,1.446767123,,Radial Velocity
+266,HD 23596,b,0,,2.72,textures/earth.jpg,-,-,-,-,-,-,,4.268493151,,Radial Velocity
+267,HD 24040,b,0,,4.92,textures/earth.jpg,-,-,-,-,-,-,,10.04931507,,Radial Velocity
+268,HD 25171,b,0,,3.02,textures/earth.jpg,-,-,-,-,-,-,,5.054794521,,Radial Velocity
+269,HD 27442,b,0,,1.18,textures/earth.jpg,-,-,-,-,-,-,,1.161208219,,Radial Velocity
+270,HD 27631,b,0,,3.25,textures/earth.jpg,-,-,-,-,-,-,,6.049315068,,Radial Velocity
+271,HD 27894,b,0,,0.122,textures/earth.jpg,-,-,-,-,-,-,,0.049290411,,Radial Velocity
+272,HD 28254,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,3.060273973,,Radial Velocity
+273,HD 28185,b,0,,1.03,textures/earth.jpg,-,-,-,-,-,-,,1.049315068,,Radial Velocity
+274,HD 28678,b,0,,1.24,textures/earth.jpg,-,-,-,-,-,-,,1.060547945,,Radial Velocity
+275,HD 30177,b,0,,3.86,textures/earth.jpg,-,-,-,-,-,-,,7.725079452,,Radial Velocity
+276,HD 30562,b,0,,2.315,textures/earth.jpg,-,-,-,-,-,-,,3.175890411,,Radial Velocity
+277,HD 30856,b,0,,2,textures/earth.jpg,-,-,-,-,-,-,,2.498630137,,Radial Velocity
+278,HD 31253,b,0,,1.26,textures/earth.jpg,-,-,-,-,-,-,,1.276712329,,Radial Velocity
+279,HD 31527,b,0,,0.1253,textures/earth.jpg,-,-,-,-,-,-,,0.045331507,,Radial Velocity
+280,HD 31527,c,0,,0.2665,textures/earth.jpg,-,-,-,-,-,-,,0.14050411,,Radial Velocity
+281,HD 31527,d,0,,0.8181,textures/earth.jpg,-,-,-,-,-,-,,0.752027397,,Radial Velocity
+282,HD 33142,b,0,,1.06,textures/earth.jpg,-,-,-,-,-,-,,0.894794521,,Radial Velocity
+283,HD 33283,b,0,,0.168,textures/earth.jpg,-,-,-,-,-,-,,0.049805479,,Radial Velocity
+284,HD 32518,b,0,,0.59,textures/earth.jpg,-,-,-,-,-,-,,0.431616438,,Radial Velocity
+285,HD 34445,b,0,,2.07,textures/earth.jpg,-,-,-,-,-,-,,2.873972603,,Radial Velocity
+286,HD 33564,b,0,,1.1,textures/earth.jpg,-,-,-,-,-,-,,1.063013699,,Radial Velocity
+287,HD 38283,b,0,,1.02,textures/earth.jpg,-,-,-,-,-,-,,0.995068493,,Radial Velocity
+288,HD 37124,b,0,,0.53,textures/earth.jpg,-,-,-,-,-,-,,0.423178082,,Radial Velocity
+289,HD 37124,c,0,,3.19,textures/earth.jpg,-,-,-,-,-,-,,6.287671233,,Radial Velocity
+290,HD 37124,d,0,,1.64,textures/earth.jpg,-,-,-,-,-,-,,2.311232877,,Radial Velocity
+291,HD 39091,b,0,,3.29,textures/earth.jpg,-,-,-,-,-,-,,5.65429589,,Radial Velocity
+292,HD 37605,b,0,,0.25,textures/earth.jpg,-,-,-,-,-,-,,0.150684932,,Radial Velocity
+293,HD 37605,c,0,,3.814,textures/earth.jpg,-,-,-,-,-,-,,7.452054795,,Radial Velocity
+294,HD 39194,b,0,,0.0519,textures/earth.jpg,-,-,-,-,-,-,,0.015441918,,Radial Velocity
+295,HD 39194,c,0,,0.0954,textures/earth.jpg,-,-,-,-,-,-,,0.038424658,,Radial Velocity
+296,HD 39194,d,0,,0.172,textures/earth.jpg,-,-,-,-,-,-,,0.092989041,,Radial Velocity
+297,HD 38529,b,0,,0.129,textures/earth.jpg,-,-,-,-,-,-,,0.03920274,,Radial Velocity
+298,HD 38529,c,0,,3.68,textures/earth.jpg,-,-,-,-,-,-,,5.956986301,,Radial Velocity
+299,HD 38801,b,0,,1.7,textures/earth.jpg,-,-,-,-,-,-,,1.907671233,,Radial Velocity
+300,HD 38858,b,0,,1.0376,textures/earth.jpg,-,-,-,-,-,-,,1.115479452,,Radial Velocity
+301,HD 40307,b,0,,0.0468,textures/earth.jpg,-,-,-,-,-,-,,0.011814521,,Radial Velocity
+302,HD 40307,c,0,,0.0799,textures/earth.jpg,-,-,-,-,-,-,,0.026351781,,Radial Velocity
+303,HD 40307,d,0,,0.1321,textures/earth.jpg,-,-,-,-,-,-,,0.055978082,,Radial Velocity
+304,HD 40307,e,0,,0.1886,textures/earth.jpg,-,-,-,-,-,-,,0.094849315,,Radial Velocity
+305,HD 40307,f,0,,0.247,textures/earth.jpg,-,-,-,-,-,-,,0.141808219,,Radial Velocity
+306,HD 40307,g,0,,0.6,textures/earth.jpg,-,-,-,-,-,-,,0.541917808,,Radial Velocity
+307,HD 40979,b,0,,0.811,textures/earth.jpg,-,-,-,-,-,-,,0.732054795,,Radial Velocity
+308,HD 41004A,b,0,,1.64,textures/earth.jpg,-,-,-,-,-,-,,2.638356164,,Radial Velocity
+309,HD 41004B,b,0,,0.0177,textures/earth.jpg,-,-,-,-,-,-,,0.003639178,,Radial Velocity
+310,HD 41248,b,0,,0.137,textures/earth.jpg,-,-,-,-,-,-,,0.050293151,,Radial Velocity
+311,HD 41248,c,0,,0.172,textures/earth.jpg,-,-,-,-,-,-,,0.070268493,,Radial Velocity
+312,HD 43197,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.898082192,,Radial Velocity
+313,HD 43848,b,0,,3.4,textures/earth.jpg,-,-,-,-,-,-,,6.495890411,,Radial Velocity
+314,HD 43691,b,0,,0.24,textures/earth.jpg,-,-,-,-,-,-,,0.101260274,,Radial Velocity
+315,HD 44219,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,1.293150685,,Radial Velocity
+316,HD 45184,b,0,,0.0638,textures/earth.jpg,-,-,-,-,-,-,,0.016129315,,Radial Velocity
+317,HD 45364,b,0,,0.6813,textures/earth.jpg,-,-,-,-,-,-,,0.621726027,,Radial Velocity
+318,HD 45364,c,0,,0.8972,textures/earth.jpg,-,-,-,-,-,-,,0.939315068,,Radial Velocity
+319,HD 45350,b,0,,1.92,textures/earth.jpg,-,-,-,-,-,-,,2.440438356,,Radial Velocity
+320,HD 45652,b,0,,0.23,textures/earth.jpg,-,-,-,-,-,-,,0.119452055,,Radial Velocity
+321,HD 46375,b,0,,0.041,textures/earth.jpg,-,-,-,-,-,-,,0.008284932,,Radial Velocity
+322,HD 47186,b,0,,0.05,textures/earth.jpg,-,-,-,-,-,-,,0.011190411,,Radial Velocity
+323,HD 47186,c,0,,2.395,textures/earth.jpg,-,-,-,-,-,-,,3.708493151,,Radial Velocity
+324,HD 47536,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,1.178082192,,Radial Velocity
+325,HD 47536,c,0,,,textures/earth.jpg,-,-,-,-,-,-,,6.849315068,,Radial Velocity
+326,HD 48265,b,0,,1.51,textures/earth.jpg,-,-,-,-,-,-,,1.917808219,,Radial Velocity
+327,HD 49674,b,0,,0.058,textures/earth.jpg,-,-,-,-,-,-,,0.013544384,,Radial Velocity
+328,HD 50499,b,0,,3.86,textures/earth.jpg,-,-,-,-,-,-,,7.075890411,,Radial Velocity
+329,HD 50554,b,0,,2.38,textures/earth.jpg,-,-,-,-,-,-,,3.504109589,,Radial Velocity
+330,HD 51608,b,0,,0.1059,textures/earth.jpg,-,-,-,-,-,-,,0.038547945,,Radial Velocity
+331,HD 51608,c,0,,0.3791,textures/earth.jpg,-,-,-,-,-,-,,0.261410959,,Radial Velocity
+332,HD 52265,b,0,,0.49,textures/earth.jpg,-,-,-,-,-,-,,0.325917808,,Radial Velocity
+333,HD 59686,b,0,,0.911,textures/earth.jpg,-,-,-,-,-,-,,0.830136986,,Radial Velocity
+334,HD 60532,b,0,,0.77,textures/earth.jpg,-,-,-,-,-,-,,0.552958904,20,Radial Velocity
+335,HD 60532,c,0,,1.58,textures/earth.jpg,-,-,-,-,-,-,,1.663178082,20,Radial Velocity
+336,HD 63454,b,0,,0.036,textures/earth.jpg,-,-,-,-,-,-,,0.00772006,,Radial Velocity
+337,HD 62509,b,0,,1.69,textures/earth.jpg,-,-,-,-,-,-,,1.615452055,,Radial Velocity
+338,HD 63765,b,0,,0.94,textures/earth.jpg,-,-,-,-,-,-,,0.980821918,,Radial Velocity
+339,HD 65216,b,0,,1.3,textures/earth.jpg,-,-,-,-,-,-,,1.568219178,,Radial Velocity
+340,HD 65216,c,0,,0.54,textures/earth.jpg,-,-,-,-,-,-,,0.418082192,,Radial Velocity
+341,HD 66141,b,0,,1.2,textures/earth.jpg,-,-,-,-,-,-,,1.316438356,,Radial Velocity
+342,HD 66428,b,0,,3.18,textures/earth.jpg,-,-,-,-,-,-,,5.405479452,,Radial Velocity
+343,HD 68988,b,0,,0.071,textures/earth.jpg,-,-,-,-,-,-,,0.017194521,,Radial Velocity
+344,HD 69830,b,0,,0.0785,textures/earth.jpg,-,-,-,-,-,-,,0.023745205,,Radial Velocity
+345,HD 69830,c,0,,0.186,textures/earth.jpg,-,-,-,-,-,-,,0.086465753,,Radial Velocity
+346,HD 69830,d,0,,0.63,textures/earth.jpg,-,-,-,-,-,-,,0.539726027,,Radial Velocity
+347,HD 70573,b,0,,1.76,textures/earth.jpg,-,-,-,-,-,-,,2.33369863,,Radial Velocity
+348,HD 70642,b,0,,3.3,textures/earth.jpg,-,-,-,-,-,-,,6.112328767,,Radial Velocity
+349,HD 72659,b,0,,4.16,textures/earth.jpg,-,-,-,-,-,-,,8.705205479,,Radial Velocity
+350,HD 73267,b,0,,2.198,textures/earth.jpg,-,-,-,-,-,-,,3.452054795,,Radial Velocity
+351,HD 73256,b,0,,0.037,textures/earth.jpg,-,-,-,-,-,-,,0.006982411,,Radial Velocity
+352,HD 73526,b,0,,0.66,textures/earth.jpg,-,-,-,-,-,-,,0.515890411,,Radial Velocity
+353,HD 73526,c,0,,1.05,textures/earth.jpg,-,-,-,-,-,-,,1.035068493,,Radial Velocity
+354,HD 73534,b,0,,3.15,textures/earth.jpg,-,-,-,-,-,-,,4.931506849,,Radial Velocity
+355,HD 74156,b,0,,0.294,textures/earth.jpg,-,-,-,-,-,-,,0.141506849,,Radial Velocity
+356,HD 74156,c,0,,3.85,textures/earth.jpg,-,-,-,-,-,-,,6.783561644,,Radial Velocity
+357,HD 74156,d,0,,1.01,textures/earth.jpg,-,-,-,-,-,-,,0.949589041,,Radial Velocity
+358,HD 75289,b,0,,0.046,textures/earth.jpg,-,-,-,-,-,-,,0.009616438,,Radial Velocity
+359,HD 75898,b,0,,1.19,textures/earth.jpg,-,-,-,-,-,-,,1.145753425,,Radial Velocity
+360,HD 76700,b,0,,0.049,textures/earth.jpg,-,-,-,-,-,-,,0.010879452,,Radial Velocity
+361,HD 77338,b,0,,0.0614,textures/earth.jpg,-,-,-,-,-,-,,0.015715342,,Radial Velocity
+362,HD 79498,b,0,,3.13,textures/earth.jpg,-,-,-,-,-,-,,5.386575342,,Radial Velocity
+363,HD 80606,b,0,0.98,0.449,textures/earth.jpg,-,-,-,-,-,-,,0.305303288,89.32,Radial Velocity
+364,HD 81040,b,0,,1.94,textures/earth.jpg,-,-,-,-,-,-,,2.744383562,,Radial Velocity
+365,HD 81688,b,0,,0.81,textures/earth.jpg,-,-,-,-,-,-,,0.504164384,,Radial Velocity
+366,HD 82943,b,0,,1.18,textures/earth.jpg,-,-,-,-,-,-,,1.208767123,,Radial Velocity
+367,HD 82943,c,0,,0.747,textures/earth.jpg,-,-,-,-,-,-,,0.600821918,,Radial Velocity
+368,HD 82886,b,0,,1.65,textures/earth.jpg,-,-,-,-,-,-,,1.931506849,,Radial Velocity
+369,HD 83443,b,0,,0.0406,textures/earth.jpg,-,-,-,-,-,-,,0.008179795,,Radial Velocity
+370,HD 85390,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,2.139726027,,Radial Velocity
+371,HD 85512,b,0,,0.26,textures/earth.jpg,-,-,-,-,-,-,,0.160082192,,Radial Velocity
+372,HD 86081,b,0,,0.039,textures/earth.jpg,-,-,-,-,-,-,,0.005856164,,Radial Velocity
+373,HD 86226,b,0,,2.84,textures/earth.jpg,-,-,-,-,-,-,,4.643835616,,Radial Velocity
+374,HD 86264,b,0,,2.86,textures/earth.jpg,-,-,-,-,-,-,,4.04109589,,Radial Velocity
+375,HD 87883,b,0,,3.6,textures/earth.jpg,-,-,-,-,-,-,,7.545205479,,Radial Velocity
+376,HD 88133,b,0,,0.047,textures/earth.jpg,-,-,-,-,-,-,,0.009358904,,Radial Velocity
+377,HD 89307,b,0,,3.27,textures/earth.jpg,-,-,-,-,-,-,,5.909589041,,Radial Velocity
+378,HD 89744,b,0,,0.89,textures/earth.jpg,-,-,-,-,-,-,,0.703027397,,Radial Velocity
+379,HD 90156,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.136438356,,Radial Velocity
+380,HD 92788,b,0,,0.97,textures/earth.jpg,-,-,-,-,-,-,,0.892630137,,Radial Velocity
+381,HD 93083,b,0,,0.477,textures/earth.jpg,-,-,-,-,-,-,,0.393369863,,Radial Velocity
+382,HD 93385,b,0,,0.1116,textures/earth.jpg,-,-,-,-,-,-,,0.036126027,,Radial Velocity
+383,HD 93385,c,0,,0.257,textures/earth.jpg,-,-,-,-,-,-,,0.12609589,,Radial Velocity
+384,HD 95086,b,0,,56.4,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+385,HD 95089,b,0,,1.51,textures/earth.jpg,-,-,-,-,-,-,,1.389041096,,Radial Velocity
+386,HD 96063,b,0,,0.99,textures/earth.jpg,-,-,-,-,-,-,,0.989315068,,Radial Velocity
+387,HD 96167,b,0,,1.3,textures/earth.jpg,-,-,-,-,-,-,,1.366849315,,Radial Velocity
+388,HD 96127,b,0,,1.4,textures/earth.jpg,-,-,-,-,-,-,,1.773424658,,Radial Velocity
+389,HD 96700,b,0,,0.0774,textures/earth.jpg,-,-,-,-,-,-,,0.022261918,,Radial Velocity
+390,HD 96700,c,0,,0.422,textures/earth.jpg,-,-,-,-,-,-,,0.283534247,,Radial Velocity
+391,HD 97658,b,0,,0.0831,textures/earth.jpg,-,-,-,-,-,-,,0.026010959,,Radial Velocity
+392,HD 98219,b,0,,1.23,textures/earth.jpg,-,-,-,-,-,-,,1.196986301,,Radial Velocity
+393,HD 98649,b,0,,5.6,textures/earth.jpg,-,-,-,-,-,-,,13.56438356,,Radial Velocity
+394,HD 99109,b,0,,1.105,textures/earth.jpg,-,-,-,-,-,-,,1.203561644,,Radial Velocity
+395,HD 99492,b,0,,0.12186,textures/earth.jpg,-,-,-,-,-,-,,0.046723288,,Radial Velocity
+396,HD 99492,c,0,,5.4,textures/earth.jpg,-,-,-,-,-,-,,13.61643836,,Radial Velocity
+397,HD 99706,b,0,,2.14,textures/earth.jpg,-,-,-,-,-,-,,2.378082192,,Radial Velocity
+398,HD 100655,b,0,,0.76,textures/earth.jpg,-,-,-,-,-,-,,0.43169863,,Radial Velocity
+399,HD 100777,b,0,,1.03,textures/earth.jpg,-,-,-,-,-,-,,1.051232877,,Radial Velocity
+400,HD 101930,b,0,,0.302,textures/earth.jpg,-,-,-,-,-,-,,0.193041096,,Radial Velocity
+401,HD 102117,b,0,,0.1532,textures/earth.jpg,-,-,-,-,-,-,,0.057007945,,Radial Velocity
+402,HD 102195,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.011270616,,Radial Velocity
+403,HD 102272,b,0,,0.614,textures/earth.jpg,-,-,-,-,-,-,,0.349534247,,Radial Velocity
+404,HD 102272,c,0,,1.57,textures/earth.jpg,-,-,-,-,-,-,,1.424657534,,Radial Velocity
+405,HD 102365,b,0,,0.46,textures/earth.jpg,-,-,-,-,-,-,,0.334520548,,Radial Velocity
+406,HD 102329,b,0,,2.01,textures/earth.jpg,-,-,-,-,-,-,,2.131780822,,Radial Velocity
+407,HD 102956,b,0,,0.081,textures/earth.jpg,-,-,-,-,-,-,,0.017794521,,Radial Velocity
+408,HD 103197,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.130958904,,Radial Velocity
+409,HD 103774,b,0,,0.07,textures/earth.jpg,-,-,-,-,-,-,,0.016131781,,Radial Velocity
+410,HD 104067,b,0,,0.2643,textures/earth.jpg,-,-,-,-,-,-,,0.152893151,,Radial Velocity
+411,HD 104985,b,0,,0.78,textures/earth.jpg,-,-,-,-,-,-,,0.543013699,,Radial Velocity
+412,HD 106252,b,0,,2.611,textures/earth.jpg,-,-,-,-,-,-,,4.194520548,,Radial Velocity
+413,HD 106270,b,0,,4.3,textures/earth.jpg,-,-,-,-,-,-,,7.917808219,,Radial Velocity
+414,HD 106515A,b,0,,4.59,textures/earth.jpg,-,-,-,-,-,-,,9.945205479,,Radial Velocity
+415,HD 107148,b,0,,0.269,textures/earth.jpg,-,-,-,-,-,-,,0.131660274,,Radial Velocity
+416,HD 108147,b,0,,0.102,textures/earth.jpg,-,-,-,-,-,-,,0.029858904,,Radial Velocity
+417,HD 108863,b,0,,1.4,textures/earth.jpg,-,-,-,-,-,-,,1.214794521,,Radial Velocity
+418,HD 108874,b,0,,1.053,textures/earth.jpg,-,-,-,-,-,-,,1.080767123,,Radial Velocity
+419,HD 108874,c,0,,2.77,textures/earth.jpg,-,-,-,-,-,-,,4.602739726,,Radial Velocity
+420,HD 109246,b,0,,0.33,textures/earth.jpg,-,-,-,-,-,-,,0.187041096,,Radial Velocity
+421,HD 109271,b,0,,0.079,textures/earth.jpg,-,-,-,-,-,-,,0.02151863,,Radial Velocity
+422,HD 109271,c,0,,0.196,textures/earth.jpg,-,-,-,-,-,-,,0.084739726,,Radial Velocity
+423,HD 109749,b,0,,0.0635,textures/earth.jpg,-,-,-,-,-,-,,0.014356164,,Radial Velocity
+424,HD 110014,b,0,,2.14,textures/earth.jpg,-,-,-,-,-,-,,2.288978082,,Radial Velocity
+425,HD 111232,b,0,,1.97,textures/earth.jpg,-,-,-,-,-,-,,3.131506849,,Radial Velocity
+426,HD 113538,b,0,,0.71,textures/earth.jpg,-,-,-,-,-,-,,0.721369863,,Radial Velocity
+427,HD 113538,c,0,,2.43,textures/earth.jpg,-,-,-,-,-,-,,4.539726027,,Radial Velocity
+428,HD 114386,b,0,,1.65,textures/earth.jpg,-,-,-,-,-,-,,2.569041096,,Radial Velocity
+429,HD 114386,c,0,,,textures/earth.jpg,-,-,-,-,-,-,,2.865753425,,Radial Velocity
+430,HD 114762,b,0,,0.363,textures/earth.jpg,-,-,-,-,-,-,,0.229830137,,Radial Velocity
+431,HD 114783,b,0,,1.16,textures/earth.jpg,-,-,-,-,-,-,,1.35260274,,Radial Velocity
+432,HD 114729,b,0,,2.11,textures/earth.jpg,-,-,-,-,-,-,,3.052054795,,Radial Velocity
+433,HD 116029,b,0,,1.73,textures/earth.jpg,-,-,-,-,-,-,,1.836164384,,Radial Velocity
+434,HD 117207,b,0,,3.79,textures/earth.jpg,-,-,-,-,-,-,,7.115068493,,Radial Velocity
+435,HD 117618,b,0,,0.176,textures/earth.jpg,-,-,-,-,-,-,,0.070758904,,Radial Velocity
+436,HD 118203,b,0,,0.07,textures/earth.jpg,-,-,-,-,-,-,,0.01680411,,Radial Velocity
+437,HD 120084,b,0,,4.3,textures/earth.jpg,-,-,-,-,-,-,,5.704109589,,Radial Velocity
+438,HD 121504,b,0,,0.33,textures/earth.jpg,-,-,-,-,-,-,,0.173506849,,Radial Velocity
+439,HD 122430,b,0,,1.02,textures/earth.jpg,-,-,-,-,-,-,,0.945068493,,Radial Velocity
+440,HD 125612,b,0,,1.37,textures/earth.jpg,-,-,-,-,-,-,,1.53260274,,Radial Velocity
+441,HD 125612,c,0,,0.05,textures/earth.jpg,-,-,-,-,-,-,,0.01138274,,Radial Velocity
+442,HD 125612,d,0,,4.2,textures/earth.jpg,-,-,-,-,-,-,,8.24109589,,Radial Velocity
+443,HD 125595,b,0,,0.0809,textures/earth.jpg,-,-,-,-,-,-,,0.026503288,,Radial Velocity
+444,HD 126614,b,0,,2.35,textures/earth.jpg,-,-,-,-,-,-,,3.408219178,,Radial Velocity
+445,HD 126525,b,0,,1.8105,textures/earth.jpg,-,-,-,-,-,-,,2.597589041,,Radial Velocity
+446,HD 128311,b,0,,1.086,textures/earth.jpg,-,-,-,-,-,-,,1.244383562,,Radial Velocity
+447,HD 128311,c,0,,1.745,textures/earth.jpg,-,-,-,-,-,-,,2.530958904,,Radial Velocity
+448,HD 129445,b,0,,2.9,textures/earth.jpg,-,-,-,-,-,-,,5.04109589,,Radial Velocity
+449,HD 130322,b,0,,0.0896,textures/earth.jpg,-,-,-,-,-,-,,0.029338356,,Radial Velocity
+450,HD 131496,b,0,,2.09,textures/earth.jpg,-,-,-,-,-,-,,2.419178082,,Radial Velocity
+451,HD 132406,b,0,,1.98,textures/earth.jpg,-,-,-,-,-,-,,2.668493151,,Radial Velocity
+452,HD 132563,b,0,,2.62,textures/earth.jpg,-,-,-,-,-,-,,4.230136986,,Radial Velocity
+453,HD 131664,b,0,,3.17,textures/earth.jpg,-,-,-,-,-,-,,5.345205479,,Radial Velocity
+454,HD 134060,b,0,,0.0444,textures/earth.jpg,-,-,-,-,-,-,,0.008958904,,Radial Velocity
+455,HD 134060,c,0,,2.2263,textures/earth.jpg,-,-,-,-,-,-,,3.180547945,,Radial Velocity
+456,HD 134987,b,0,,0.81,textures/earth.jpg,-,-,-,-,-,-,,0.707369863,,Radial Velocity
+457,HD 134987,c,0,,5.8,textures/earth.jpg,-,-,-,-,-,-,,13.69863014,,Radial Velocity
+458,HD 134606,b,0,,0.1023,textures/earth.jpg,-,-,-,-,-,-,,0.03310411,,Radial Velocity
+459,HD 134606,c,0,,0.2962,textures/earth.jpg,-,-,-,-,-,-,,0.163065753,,Radial Velocity
+460,HD 134606,d,0,,1.1567,textures/earth.jpg,-,-,-,-,-,-,,1.258246575,,Radial Velocity
+461,HD 136418,b,0,,1.32,textures/earth.jpg,-,-,-,-,-,-,,1.272054795,,Radial Velocity
+462,HD 136352,b,0,,0.0933,textures/earth.jpg,-,-,-,-,-,-,,0.031717808,,Radial Velocity
+463,HD 136352,c,0,,0.1665,textures/earth.jpg,-,-,-,-,-,-,,0.075567123,,Radial Velocity
+464,HD 136352,d,0,,0.411,textures/earth.jpg,-,-,-,-,-,-,,0.292383562,,Radial Velocity
+465,HD 139357,b,0,,2.36,textures/earth.jpg,-,-,-,-,-,-,,3.084109589,,Radial Velocity
+466,HD 137388A,b,0,,0.89,textures/earth.jpg,-,-,-,-,-,-,,0.904109589,,Radial Velocity
+467,HD 330075,b,0,,0.043,textures/earth.jpg,-,-,-,-,-,-,,0.009230137,,Radial Velocity
+468,HD 141937,b,0,,1.52,textures/earth.jpg,-,-,-,-,-,-,,1.789643836,,Radial Velocity
+469,HD 142245,b,0,,2.77,textures/earth.jpg,-,-,-,-,-,-,,3.55890411,,Radial Velocity
+470,HD 142415,b,0,,1.05,textures/earth.jpg,-,-,-,-,-,-,,1.058356164,,Radial Velocity
+471,HD 143361,b,0,,2,textures/earth.jpg,-,-,-,-,-,-,,2.895890411,,Radial Velocity
+472,HD 145457,b,0,,0.76,textures/earth.jpg,-,-,-,-,-,-,,0.483013699,,Radial Velocity
+473,HD 142022A,b,0,,3.03,textures/earth.jpg,-,-,-,-,-,-,,5.282191781,,Radial Velocity
+474,HD 145377,b,0,,0.45,textures/earth.jpg,-,-,-,-,-,-,,0.284794521,,Radial Velocity
+475,HD 147018,b,0,,0.2388,textures/earth.jpg,-,-,-,-,-,-,,0.121194521,,Radial Velocity
+476,HD 147018,c,0,,1.922,textures/earth.jpg,-,-,-,-,-,-,,2.761643836,,Radial Velocity
+477,HD 147513,b,0,,1.32,textures/earth.jpg,-,-,-,-,-,-,,1.447671233,,Radial Velocity
+478,HD 148156,b,0,,2.45,textures/earth.jpg,-,-,-,-,-,-,,2.81369863,,Radial Velocity
+479,HD 148427,b,0,,0.93,textures/earth.jpg,-,-,-,-,-,-,,0.908219178,,Radial Velocity
+480,HD 149026,b,0,0.813,0.04288,textures/earth.jpg,-,-,-,-,-,-,,0.007879154,88,Radial Velocity
+481,HD 149143,b,0,,0.053,textures/earth.jpg,-,-,-,-,-,-,,0.011156164,,Radial Velocity
+482,HD 149382,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.006550685,39,Radial Velocity
+483,HD 150433,b,0,,1.9303,textures/earth.jpg,-,-,-,-,-,-,,3.003287671,,Radial Velocity
+484,HD 152079,b,0,,3.2,textures/earth.jpg,-,-,-,-,-,-,,5.745205479,,Radial Velocity
+485,HD 152581,b,0,,1.48,textures/earth.jpg,-,-,-,-,-,-,,1.887671233,,Radial Velocity
+486,HD 154345,b,0,,4.19,textures/earth.jpg,-,-,-,-,-,-,,9.156164384,,Radial Velocity
+487,HD 154088,b,0,,0.1316,textures/earth.jpg,-,-,-,-,-,-,,0.050947945,,Radial Velocity
+488,HD 153950,b,0,,1.28,textures/earth.jpg,-,-,-,-,-,-,,1.368219178,,Radial Velocity
+489,HD 155358,b,0,,0.64,textures/earth.jpg,-,-,-,-,-,-,,0.532328767,,Radial Velocity
+490,HD 155358,c,0,,1.02,textures/earth.jpg,-,-,-,-,-,-,,1.07369863,,Radial Velocity
+491,HD 154672,b,0,,0.6,textures/earth.jpg,-,-,-,-,-,-,,0.449041096,,Radial Velocity
+492,HD 154857,b,0,,1.2,textures/earth.jpg,-,-,-,-,-,-,,1.120547945,,Radial Velocity
+493,HD 156279,b,0,,0.495,textures/earth.jpg,-,-,-,-,-,-,,0.359041096,,Radial Velocity
+494,HD 156668,b,0,,0.05,textures/earth.jpg,-,-,-,-,-,-,,0.012727397,,Radial Velocity
+495,HD 156411,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,2.306849315,,Radial Velocity
+496,HD 156846,b,0,,1.096,textures/earth.jpg,-,-,-,-,-,-,,0.985081096,,Radial Velocity
+497,HD 157172,b,0,,0.416,textures/earth.jpg,-,-,-,-,-,-,,0.287232877,,Radial Velocity
+498,HD 158038,b,0,,1.52,textures/earth.jpg,-,-,-,-,-,-,,1.42739726,,Radial Velocity
+499,HD 159868,b,0,,2.25,textures/earth.jpg,-,-,-,-,-,-,,3.228493151,,Radial Velocity
+500,HD 159868,c,0,,1,textures/earth.jpg,-,-,-,-,-,-,,0.965205479,,Radial Velocity
+501,HD 160691,b,0,,1.497,textures/earth.jpg,-,-,-,-,-,-,,1.762328767,,Radial Velocity
+502,HD 160691,c,0,,5.235,textures/earth.jpg,-,-,-,-,-,-,,11.52273973,,Radial Velocity
+503,HD 160691,d,0,,0.09094,textures/earth.jpg,-,-,-,-,-,-,,0.026407123,,Radial Velocity
+504,HD 160691,e,0,,0.921,textures/earth.jpg,-,-,-,-,-,-,,0.850821918,,Radial Velocity
+505,HD 162020,b,0,,0.074,textures/earth.jpg,-,-,-,-,-,-,,0.023090953,,Radial Velocity
+506,HD 163607,b,0,,0.36,textures/earth.jpg,-,-,-,-,-,-,,0.206273973,,Radial Velocity
+507,HD 163607,c,0,,2.42,textures/earth.jpg,-,-,-,-,-,-,,3.6,,Radial Velocity
+508,HD 164509,b,0,,0.875,textures/earth.jpg,-,-,-,-,-,-,,0.77369863,,Radial Velocity
+509,HD 164922,b,0,,2.11,textures/earth.jpg,-,-,-,-,-,-,,3.164383562,,Radial Velocity
+510,HD 164604,b,0,,1.3,textures/earth.jpg,-,-,-,-,-,-,,1.661369863,,Radial Velocity
+511,HD 167042,b,0,,1.32,textures/earth.jpg,-,-,-,-,-,-,,1.152794521,,Radial Velocity
+512,HD 166724,b,0,,5.42,textures/earth.jpg,-,-,-,-,-,-,,14.09315068,,Radial Velocity
+513,HD 168443,b,0,,0.3,textures/earth.jpg,-,-,-,-,-,-,,0.159213397,,Radial Velocity
+514,HD 168443,c,0,,2.91,textures/earth.jpg,-,-,-,-,-,-,,4.793150685,,Radial Velocity
+515,HD 168746,b,0,,0.065,textures/earth.jpg,-,-,-,-,-,-,,0.017542466,,Radial Velocity
+516,HD 169830,b,0,,0.81,textures/earth.jpg,-,-,-,-,-,-,,0.618136986,,Radial Velocity
+517,HD 169830,c,0,,3.6,textures/earth.jpg,-,-,-,-,-,-,,5.75890411,,Radial Velocity
+518,HD 170469,b,0,,2.1,textures/earth.jpg,-,-,-,-,-,-,,3.136986301,,Radial Velocity
+519,HD 171028,b,0,,1.29,textures/earth.jpg,-,-,-,-,-,-,,1.473972603,,Radial Velocity
+520,HD 171238,b,0,,2.54,textures/earth.jpg,-,-,-,-,-,-,,4.17260274,,Radial Velocity
+521,HD 173416,b,0,,1.16,textures/earth.jpg,-,-,-,-,-,-,,0.886575342,,Radial Velocity
+522,HD 175541,b,0,,1.03,textures/earth.jpg,-,-,-,-,-,-,,0.814520548,,Radial Velocity
+523,HD 176051,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,2.783561644,,Astrometry
+524,HD 175167,b,0,,2.4,textures/earth.jpg,-,-,-,-,-,-,,3.534246575,,Radial Velocity
+525,HD 177830,b,0,,1.2218,textures/earth.jpg,-,-,-,-,-,-,,1.113972603,,Radial Velocity
+526,HD 177830,c,0,,0.5137,textures/earth.jpg,-,-,-,-,-,-,,0.303835616,,Radial Velocity
+527,HD 178911B,b,0,,0.32,textures/earth.jpg,-,-,-,-,-,-,,0.195854795,,Radial Velocity
+528,HD 179079,b,0,,0.11,textures/earth.jpg,-,-,-,-,-,-,,0.039660274,,Radial Velocity
+529,HD 180314,b,0,,1.4,textures/earth.jpg,-,-,-,-,-,-,,1.085013699,,Radial Velocity
+530,HD 179949,b,0,,0.045,textures/earth.jpg,-,-,-,-,-,-,,0.008472603,,Radial Velocity
+531,HD 180902,b,0,,1.39,textures/earth.jpg,-,-,-,-,-,-,,1.312328767,,Radial Velocity
+532,HD 181342,b,0,,1.78,textures/earth.jpg,-,-,-,-,-,-,,1.816438356,,Radial Velocity
+533,HD 181720,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,2.619178082,,Radial Velocity
+534,HD 181433,b,0,,0.08,textures/earth.jpg,-,-,-,-,-,-,,0.025683014,,Radial Velocity
+535,HD 181433,c,0,,1.76,textures/earth.jpg,-,-,-,-,-,-,,2.635616438,,Radial Velocity
+536,HD 181433,d,0,,3,textures/earth.jpg,-,-,-,-,-,-,,5.950684932,,Radial Velocity
+537,HD 183263,b,0,,1.52,textures/earth.jpg,-,-,-,-,-,-,,1.737616438,,Radial Velocity
+538,HD 183263,c,0,,4.25,textures/earth.jpg,-,-,-,-,-,-,,8.082191781,,Radial Velocity
+539,HD 185269,b,0,,0.077,textures/earth.jpg,-,-,-,-,-,-,,0.018734247,,Radial Velocity
+540,HD 187123,b,0,,0.042,textures/earth.jpg,-,-,-,-,-,-,,0.008484932,,Radial Velocity
+541,HD 187123,c,0,,4.89,textures/earth.jpg,-,-,-,-,-,-,,10.43835616,,Radial Velocity
+542,HD 187085,b,0,,2.05,textures/earth.jpg,-,-,-,-,-,-,,2.701369863,,Radial Velocity
+543,HD 188015,b,0,,1.19,textures/earth.jpg,-,-,-,-,-,-,,1.250575342,,Radial Velocity
+544,HD 189733,b,0,1.151,0.03142,textures/earth.jpg,-,-,-,-,-,-,,0.00607829,85.78,Radial Velocity
+545,HD 190228,b,0,,2.31,textures/earth.jpg,-,-,-,-,-,-,,3.087671233,,Radial Velocity
+546,HD 190360,b,0,,3.92,textures/earth.jpg,-,-,-,-,-,-,,7.920547945,,Radial Velocity
+547,HD 190360,c,0,,0.128,textures/earth.jpg,-,-,-,-,-,-,,0.046849315,,Radial Velocity
+548,HD 189567,b,0,,0.1099,textures/earth.jpg,-,-,-,-,-,-,,0.039109589,,Radial Velocity
+549,HD 190647,b,0,,2.07,textures/earth.jpg,-,-,-,-,-,-,,2.844109589,,Radial Velocity
+550,HD 190984,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,13.38356164,,Radial Velocity
+551,HD 192263,b,0,,0.15,textures/earth.jpg,-,-,-,-,-,-,,0.066706849,,Radial Velocity
+552,HD 192310,b,0,,0.32,textures/earth.jpg,-,-,-,-,-,-,,0.204712329,,Radial Velocity
+553,HD 192310,c,0,,1.18,textures/earth.jpg,-,-,-,-,-,-,,1.440547945,,Radial Velocity
+554,HD 192699,b,0,,1.16,textures/earth.jpg,-,-,-,-,-,-,,0.963013699,,Radial Velocity
+555,HD 195019,b,0,,0.1388,textures/earth.jpg,-,-,-,-,-,-,,0.049867479,,Radial Velocity
+556,HD 196050,b,0,,2.5,textures/earth.jpg,-,-,-,-,-,-,,3.531506849,,Radial Velocity
+557,HD 197037,b,0,,2.07,textures/earth.jpg,-,-,-,-,-,-,,2.837534247,,Radial Velocity
+558,HD 196885,b,0,,2.37,textures/earth.jpg,-,-,-,-,-,-,,3.652054795,,Radial Velocity
+559,HD 196067,b,0,,5.02,textures/earth.jpg,-,-,-,-,-,-,,9.967123288,,Radial Velocity
+560,HD 200964,b,0,,1.601,textures/earth.jpg,-,-,-,-,-,-,,1.681643836,,Radial Velocity
+561,HD 200964,c,0,,1.95,textures/earth.jpg,-,-,-,-,-,-,,2.260273973,,Radial Velocity
+562,HD 202206,b,0,,0.83,textures/earth.jpg,-,-,-,-,-,-,,0.701013699,,Radial Velocity
+563,HD 202206,c,0,,2.55,textures/earth.jpg,-,-,-,-,-,-,,3.790136986,,Radial Velocity
+564,HD 203030,b,0,,487.1,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+565,HD 204313,b,0,,3.082,textures/earth.jpg,-,-,-,-,-,-,,5.290410959,,Radial Velocity
+566,HD 204313,c,0,,0.2103,textures/earth.jpg,-,-,-,-,-,-,,0.095542466,,Radial Velocity
+567,HD 204313,d,0,,3.93,textures/earth.jpg,-,-,-,-,-,-,,7.757808219,,Radial Velocity
+568,HD 204941,b,0,,2.56,textures/earth.jpg,-,-,-,-,-,-,,4.747945205,,Radial Velocity
+569,HD 205739,b,0,,0.896,textures/earth.jpg,-,-,-,-,-,-,,0.766575342,,Radial Velocity
+570,HD 206610,b,0,,1.68,textures/earth.jpg,-,-,-,-,-,-,,1.671232877,,Radial Velocity
+571,HD 207832,b,0,,0.57,textures/earth.jpg,-,-,-,-,-,-,,0.443753425,,Radial Velocity
+572,HD 207832,c,0,,2.112,textures/earth.jpg,-,-,-,-,-,-,,3.16630137,,Radial Velocity
+573,HD 208527,b,0,,2.1,textures/earth.jpg,-,-,-,-,-,-,,2.398630137,,Radial Velocity
+574,HD 208487,b,0,,0.49,textures/earth.jpg,-,-,-,-,-,-,,0.336986301,,Radial Velocity
+575,HD 209458,b,0,1.38,0.04747,textures/earth.jpg,-,-,-,-,-,-,,0.009656845,86.59,Radial Velocity
+576,HD 210277,b,0,,1.1,textures/earth.jpg,-,-,-,-,-,-,,1.211232877,,Radial Velocity
+577,HD 210702,b,0,,1.2,textures/earth.jpg,-,-,-,-,-,-,,0.972054795,,Radial Velocity
+578,HD 212771,b,0,,1.22,textures/earth.jpg,-,-,-,-,-,-,,1.022739726,,Radial Velocity
+579,HD 212301,b,0,,0.036,textures/earth.jpg,-,-,-,-,-,-,,0.006152644,,Radial Velocity
+580,HD 213240,b,0,,2.03,textures/earth.jpg,-,-,-,-,-,-,,2.605479452,,Radial Velocity
+581,HD 215152,b,0,,0.0652,textures/earth.jpg,-,-,-,-,-,-,,0.019952055,,Radial Velocity
+582,HD 215152,c,0,,0.0852,textures/earth.jpg,-,-,-,-,-,-,,0.029769863,,Radial Velocity
+583,HD 215456,b,0,,0.652,textures/earth.jpg,-,-,-,-,-,-,,0.526,,Radial Velocity
+584,HD 215456,c,0,,3.394,textures/earth.jpg,-,-,-,-,-,-,,6.238356164,,Radial Velocity
+585,HD 215497,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.010767123,,Radial Velocity
+586,HD 215497,c,0,,,textures/earth.jpg,-,-,-,-,-,-,,1.553424658,,Radial Velocity
+587,HD 216435,b,0,,2.56,textures/earth.jpg,-,-,-,-,-,-,,3.591780822,,Radial Velocity
+588,HD 216437,b,0,,2.7,textures/earth.jpg,-,-,-,-,-,-,,3.545205479,,Radial Velocity
+589,HD 216770,b,0,,0.46,textures/earth.jpg,-,-,-,-,-,-,,0.324520548,,Radial Velocity
+590,HD 217107,b,0,,0.0748,textures/earth.jpg,-,-,-,-,-,-,,0.019525523,,Radial Velocity
+591,HD 217107,c,0,,5.32,textures/earth.jpg,-,-,-,-,-,-,,11.69863014,,Radial Velocity
+592,HD 217786,b,0,,2.38,textures/earth.jpg,-,-,-,-,-,-,,3.61369863,,Radial Velocity
+593,HD 218566,b,0,,0.6873,textures/earth.jpg,-,-,-,-,-,-,,0.618356164,,Radial Velocity
+594,HD 219077,b,0,,6.22,textures/earth.jpg,-,-,-,-,-,-,,15.07123288,,Radial Velocity
+595,HD 219415,b,0,,3.2,textures/earth.jpg,-,-,-,-,-,-,,5.735068493,,Radial Velocity
+596,HD 219828,b,0,,0.052,textures/earth.jpg,-,-,-,-,-,-,,0.01050274,,Radial Velocity
+597,HD 220074,b,0,,1.6,textures/earth.jpg,-,-,-,-,-,-,,1.841369863,,Radial Velocity
+598,HD 220689,b,0,,3.36,textures/earth.jpg,-,-,-,-,-,-,,6.052054795,,Radial Velocity
+599,HD 220773,b,0,,4.94,textures/earth.jpg,-,-,-,-,-,-,,10.20465753,,Radial Velocity
+600,HD 221287,b,0,,1.25,textures/earth.jpg,-,-,-,-,-,-,,1.249589041,,Radial Velocity
+601,HD 222155,b,0,,5.1,textures/earth.jpg,-,-,-,-,-,-,,10.95616438,,Radial Velocity
+602,HD 222582,b,0,,1.35,textures/earth.jpg,-,-,-,-,-,-,,1.568164384,,Radial Velocity
+603,HD 224693,b,0,,0.233,textures/earth.jpg,-,-,-,-,-,-,,0.073232877,,Radial Velocity
+604,HD 231701,b,0,,0.53,textures/earth.jpg,-,-,-,-,-,-,,0.387945205,,Radial Velocity
+605,HD 233604,b,0,,0.747,textures/earth.jpg,-,-,-,-,-,-,,0.526027397,,Radial Velocity
+606,HD 240210,b,0,,1.33,textures/earth.jpg,-,-,-,-,-,-,,1.374657534,,Radial Velocity
+607,HD 240237,b,0,,1.9,textures/earth.jpg,-,-,-,-,-,-,,2.043013699,,Radial Velocity
+608,HD 290327,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,6.693150685,,Radial Velocity
+609,HD 285968,b,0,,0.066,textures/earth.jpg,-,-,-,-,-,-,,0.024064658,,Radial Velocity
+610,HIP 5158,b,0,,0.89,textures/earth.jpg,-,-,-,-,-,-,,0.947178082,,Radial Velocity
+611,HIP 5158,c,0,,7.7,textures/earth.jpg,-,-,-,-,-,-,,24.70630137,,Radial Velocity
+612,HIP 12961,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.156164384,,Radial Velocity
+613,HIP 13044,b,0,,0.116,textures/earth.jpg,-,-,-,-,-,-,,0.044383562,,Radial Velocity
+614,HIP 14810,b,0,,0.0692,textures/earth.jpg,-,-,-,-,-,-,,0.018284534,,Radial Velocity
+615,HIP 14810,c,0,,0.545,textures/earth.jpg,-,-,-,-,-,-,,0.404739726,,Radial Velocity
+616,HIP 14810,d,0,,1.89,textures/earth.jpg,-,-,-,-,-,-,,2.608219178,,Radial Velocity
+617,HIP 57050,b,0,,0.163506,textures/earth.jpg,-,-,-,-,-,-,,0.113416438,,Radial Velocity
+618,HIP 57274,b,0,,0.07,textures/earth.jpg,-,-,-,-,-,-,,0.022288219,,Radial Velocity
+619,HIP 57274,c,0,,0.178,textures/earth.jpg,-,-,-,-,-,-,,0.087753425,,Radial Velocity
+620,HIP 57274,d,0,,1.01,textures/earth.jpg,-,-,-,-,-,-,,1.182739726,,Radial Velocity
+621,HIP 63510,c,0,1.22,1168,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+622,HIP 63242,b,0,,0.565,textures/earth.jpg,-,-,-,-,-,-,,0.341369863,,Radial Velocity
+623,HIP 70849,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,8.219178082,,Radial Velocity
+624,HIP 75458,b,0,,1.275,textures/earth.jpg,-,-,-,-,-,-,,1.400268493,,Radial Velocity
+625,HIP 78530,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+626,HIP 79431,b,0,,0.36,textures/earth.jpg,-,-,-,-,-,-,,0.306027397,,Radial Velocity
+627,HR 810,b,0,,0.91,textures/earth.jpg,-,-,-,-,-,-,,0.852843836,,Radial Velocity
+628,HR 8799,b,0,1.2,68,textures/earth.jpg,-,-,-,-,-,-,,465.7534247,,Imaging
+629,HR 8799,c,0,1.2,38,textures/earth.jpg,-,-,-,-,-,-,,189.0410959,,Imaging
+630,HR 8799,d,0,1.2,24,textures/earth.jpg,-,-,-,-,-,-,,101.369863,,Imaging
+631,HR 8799,e,0,,14.5,textures/earth.jpg,-,-,-,-,-,-,,49.31506849,,Imaging
+632,KELT-1,b,0,1.11,0.02466,textures/earth.jpg,-,-,-,-,-,-,,0.003335655,87.8,Transit
+633,KELT-2A,b,0,1.286,0.05496,textures/earth.jpg,-,-,-,-,-,-,,0.011270661,88.6,Transit
+634,KELT-3,b,0,1.345,0.04122,textures/earth.jpg,-,-,-,-,-,-,,0.007406549,84.23,Transit
+635,TrES-2,b,0,1.272,0.03556,textures/earth.jpg,-,-,-,-,-,-,,0.006768849,83.62,Transit
+636,HAT-P-7,b,0,1.342,0.0377,textures/earth.jpg,-,-,-,-,-,-,,0.006040375,83.111,Transit
+637,HAT-P-11,b,0,0.422,0.053,textures/earth.jpg,-,-,-,-,-,-,,0.013391277,88.5,Transit
+638,Kepler-4,b,0,0.357,0.0456,textures/earth.jpg,-,-,-,-,-,-,,0.008804,89.76,Transit
+639,Kepler-5,b,0,1.431,0.05064,textures/earth.jpg,-,-,-,-,-,-,,0.009721808,86.3,Transit
+640,Kepler-6,b,0,1.323,0.04567,textures/earth.jpg,-,-,-,-,-,-,,0.008862255,86.8,Transit
+641,Kepler-7,b,0,1.478,0.06224,textures/earth.jpg,-,-,-,-,-,-,,0.013385,86.5,Transit
+642,Kepler-8,b,0,1.419,0.0483,textures/earth.jpg,-,-,-,-,-,-,,0.009650795,84.07,Transit
+643,Kepler-9,b,0,0.842,0.14,textures/earth.jpg,-,-,-,-,-,-,,0.052712329,,Transit
+644,Kepler-9,c,0,0.823,0.225,textures/earth.jpg,-,-,-,-,-,-,,0.10660274,,Transit
+645,Kepler-9,d,0,0.146,0.0273,textures/earth.jpg,-,-,-,-,-,-,,0.004363975,,Transit
+646,Kepler-10,b,0,0.126,0.01684,textures/earth.jpg,-,-,-,-,-,-,,0.002294507,84.4,Transit
+647,Kepler-10,c,0,0.199,0.2407,textures/earth.jpg,-,-,-,-,-,-,,0.124095479,89.65,Transit
+648,Kepler-11,b,0,0.161,0.091,textures/earth.jpg,-,-,-,-,-,-,,0.028229863,89.64,Transit
+649,Kepler-11,c,0,0.256,0.107,textures/earth.jpg,-,-,-,-,-,-,,0.035682466,89.59,Transit
+650,Kepler-11,d,0,0.278,0.155,textures/earth.jpg,-,-,-,-,-,-,,0.062149315,89.67,Transit
+651,Kepler-11,e,0,0.374,0.195,textures/earth.jpg,-,-,-,-,-,-,,0.087670137,88.89,Transit
+652,Kepler-11,f,0,0.222,0.25,textures/earth.jpg,-,-,-,-,-,-,,0.127914521,89.47,Transit
+653,Kepler-11,g,0,0.297,0.466,textures/earth.jpg,-,-,-,-,-,-,,0.324330685,89.87,Transit
+654,Kepler-12,b,0,1.695,0.0556,textures/earth.jpg,-,-,-,-,-,-,,0.012158805,88.76,Transit
+655,KOI-13,b,0,1.83,,textures/earth.jpg,-,-,-,-,-,-,,0.004831751,,Transit
+656,Kepler-14,b,0,1.136,,textures/earth.jpg,-,-,-,-,-,-,,0.018603077,90,Transit
+657,Kepler-15,b,0,0.96,0.05714,textures/earth.jpg,-,-,-,-,-,-,,0.013541868,87.44,Transit
+658,Kepler-16,b,0,0.754,0.7048,textures/earth.jpg,-,-,-,-,-,-,,0.626783562,90.032,Transit
+659,Kepler-17,b,0,1.31,0.02591,textures/earth.jpg,-,-,-,-,-,-,,0.004070441,87.2,Transit
+660,Kepler-18,b,0,0.178,0.0447,textures/earth.jpg,-,-,-,-,-,-,,0.009601986,,Transit
+661,Kepler-18,c,0,0.49,0.0752,textures/earth.jpg,-,-,-,-,-,-,,0.020935863,87.68,Transit
+662,Kepler-18,d,0,0.623,0.1172,textures/earth.jpg,-,-,-,-,-,-,,0.04070926,88.07,Transit
+663,Kepler-19,b,0,0.197,,textures/earth.jpg,-,-,-,-,-,-,,0.02544382,89.94,Transit
+664,Kepler-19,c,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.438356164,,Transit Timing Variations
+665,Kepler-20,b,0,0.17,0.04537,textures/earth.jpg,-,-,-,-,-,-,,0.010126361,86.5,Transit
+666,Kepler-20,c,0,0.274,0.093,textures/earth.jpg,-,-,-,-,-,-,,0.029737238,88.39,Transit
+667,Kepler-20,d,0,0.245,0.3453,textures/earth.jpg,-,-,-,-,-,-,,0.212635178,89.57,Transit
+668,Kepler-20,e,0,0.077,,textures/earth.jpg,-,-,-,-,-,-,,0.0167082,87.5,Transit
+669,Kepler-20,f,0,0.092,,textures/earth.jpg,-,-,-,-,-,-,,0.053635781,88.68,Transit
+670,Kepler-21,b,0,0.146,0.042507,textures/earth.jpg,-,-,-,-,-,-,,0.007632205,82.58,Transit
+671,Kepler-22,b,0,0.212,0.849,textures/earth.jpg,-,-,-,-,-,-,,0.794143288,89.764,Transit
+672,Kepler-23,b,0,0.17,0.075,textures/earth.jpg,-,-,-,-,-,-,,0.019472055,,Transit
+673,Kepler-23,c,0,0.285,0.099,textures/earth.jpg,-,-,-,-,-,-,,0.029430411,,Transit
+674,Kepler-24,b,0,0.214,0.08,textures/earth.jpg,-,-,-,-,-,-,,0.02231589,,Transit
+675,Kepler-24,c,0,0.25,0.106,textures/earth.jpg,-,-,-,-,-,-,,0.033790411,,Transit
+676,Kepler-25,b,0,0.232,0.068,textures/earth.jpg,-,-,-,-,-,-,,0.017091781,,Transit
+677,Kepler-25,c,0,0.401,0.11,textures/earth.jpg,-,-,-,-,-,-,,0.034850411,,Transit
+678,Kepler-26,b,0,0.321,0.085,textures/earth.jpg,-,-,-,-,-,-,,0.033651781,,Transit
+679,Kepler-26,c,0,0.321,0.107,textures/earth.jpg,-,-,-,-,-,-,,0.047263836,,Transit
+680,Kepler-27,b,0,0.357,0.118,textures/earth.jpg,-,-,-,-,-,-,,0.042013151,,Transit
+681,Kepler-27,c,0,0.437,0.191,textures/earth.jpg,-,-,-,-,-,-,,0.085838082,,Transit
+682,Kepler-28,b,0,0.321,0.062,textures/earth.jpg,-,-,-,-,-,-,,0.016198082,,Transit
+683,Kepler-28,c,0,0.303,0.081,textures/earth.jpg,-,-,-,-,-,-,,0.02461863,,Transit
+684,Kepler-29,b,0,0.321,0.09,textures/earth.jpg,-,-,-,-,-,-,,0.028322192,,Transit
+685,Kepler-29,c,0,0.259,0.11,textures/earth.jpg,-,-,-,-,-,-,,0.036412877,,Transit
+686,Kepler-30,b,0,0.348,0.18,textures/earth.jpg,-,-,-,-,-,-,,0.080368055,90.179,Transit
+687,Kepler-30,c,0,1.097,0.3,textures/earth.jpg,-,-,-,-,-,-,,0.165268781,90.323,Transit
+688,Kepler-30,d,0,0.785,0.5,textures/earth.jpg,-,-,-,-,-,-,,0.392723123,89.841,Transit
+689,Kepler-31,b,0,0.491,0.16,textures/earth.jpg,-,-,-,-,-,-,,0.057154247,,Transit
+690,Kepler-31,c,0,0.473,0.26,textures/earth.jpg,-,-,-,-,-,-,,0.116799452,,Transit
+691,Kepler-32,b,0,0.196,0.05,textures/earth.jpg,-,-,-,-,-,-,,0.016167781,,Transit
+692,Kepler-32,c,0,0.178,0.09,textures/earth.jpg,-,-,-,-,-,-,,0.02397863,,Transit
+693,Kepler-32,d,0,0.241,0.128,textures/earth.jpg,-,-,-,-,-,-,,0.062411507,,Transit
+694,Kepler-32,e,0,0.134,0.0323,textures/earth.jpg,-,-,-,-,-,-,,0.007934247,,Transit
+695,Kepler-32,f,0,0.072,0.013,textures/earth.jpg,-,-,-,-,-,-,,0.002035507,,Transit
+696,Kepler-33,b,0,0.155,0.0677,textures/earth.jpg,-,-,-,-,-,-,,0.015528575,86.39,Transit
+697,Kepler-33,c,0,0.285,0.1189,textures/earth.jpg,-,-,-,-,-,-,,0.036097589,88.19,Transit
+698,Kepler-33,d,0,0.477,0.1662,textures/earth.jpg,-,-,-,-,-,-,,0.059660164,88.71,Transit
+699,Kepler-33,e,0,0.359,0.2138,textures/earth.jpg,-,-,-,-,-,-,,0.087080548,88.94,Transit
+700,Kepler-33,f,0,0.398,0.2535,textures/earth.jpg,-,-,-,-,-,-,,0.112408274,89.17,Transit
+701,Kepler-34,b,0,0.764,1.0896,textures/earth.jpg,-,-,-,-,-,-,,0.791293151,90.355,Transit
+702,Kepler-35,b,0,0.728,0.60347,textures/earth.jpg,-,-,-,-,-,-,,0.360158904,90.76,Transit
+703,Kepler-36,b,0,0.133,0.1153,textures/earth.jpg,-,-,-,-,-,-,,0.037917507,90.01,Transit
+704,Kepler-36,c,0,0.328,0.1283,textures/earth.jpg,-,-,-,-,-,-,,0.044489178,89.98,Transit
+705,Kepler-37,b,0,0.027,0.1003,textures/earth.jpg,-,-,-,-,-,-,,0.036622762,88.63,Transit
+706,Kepler-37,c,0,0.066,0.1368,textures/earth.jpg,-,-,-,-,-,-,,0.058361332,89.07,Transit
+707,Kepler-37,d,0,0.178,0.2076,textures/earth.jpg,-,-,-,-,-,-,,0.10901969,89.335,Transit
+708,Kepler-38,b,0,0.384,0.4632,textures/earth.jpg,-,-,-,-,-,-,,0.289312329,89.442,Transit
+709,Kepler-39,b,0,1.22,0.155,textures/earth.jpg,-,-,-,-,-,-,,0.057773699,88.83,Transit
+710,Kepler-40,b,0,1.17,0.08,textures/earth.jpg,-,-,-,-,-,-,,0.018831479,89.7,Transit
+711,Kepler-41,b,0,0.89,0.03,textures/earth.jpg,-,-,-,-,-,-,,0.005083721,88.3,Transit
+712,Kepler-42,b,0,0.07,0.0116,textures/earth.jpg,-,-,-,-,-,-,,0.00332539,,Transit
+713,Kepler-42,c,0,0.065,0.006,textures/earth.jpg,-,-,-,-,-,-,,0.001241877,,Transit
+714,Kepler-42,d,0,0.051,0.0154,textures/earth.jpg,-,-,-,-,-,-,,0.005110052,,Transit
+715,Kepler-43,b,0,1.2,0.0449,textures/earth.jpg,-,-,-,-,-,-,,0.008285192,84.35,Transit
+716,Kepler-44,b,0,1.24,0.0455,textures/earth.jpg,-,-,-,-,-,-,,0.008895178,83.78,Transit
+717,Kepler-45,b,0,0.96,0.03,textures/earth.jpg,-,-,-,-,-,-,,0.006726682,87,Transit
+718,Kepler-46,b,0,0.808,0.1968,textures/earth.jpg,-,-,-,-,-,-,,0.092058466,89.038,Transit
+719,Kepler-46,c,0,,0.2799,textures/earth.jpg,-,-,-,-,-,-,,0.156194521,87.4,Transit Timing Variations
+720,Kepler-47,b,0,0.27,0.2962,textures/earth.jpg,-,-,-,-,-,-,,0.13570411,89.7,Transit
+721,Kepler-47,c,0,0.411,0.991,textures/earth.jpg,-,-,-,-,-,-,,0.830512329,89.825,Transit
+722,Kepler-48,b,0,0.191,,textures/earth.jpg,-,-,-,-,-,-,,0.013090357,,Transit
+723,Kepler-48,c,0,0.28,,textures/earth.jpg,-,-,-,-,-,-,,0.026503913,,Transit
+724,Kepler-49,b,0,0.243,,textures/earth.jpg,-,-,-,-,-,-,,0.019736423,,Transit
+725,Kepler-49,c,0,0.227,,textures/earth.jpg,-,-,-,-,-,-,,0.02989845,,Transit
+726,Kepler-50,b,0,0.196,,textures/earth.jpg,-,-,-,-,-,-,,0.021404144,,Transit
+727,Kepler-50,c,0,0.249,,textures/earth.jpg,-,-,-,-,-,-,,0.025688046,,Transit
+728,Kepler-51,b,0,0.629,,textures/earth.jpg,-,-,-,-,-,-,,0.123713705,,Transit
+729,Kepler-51,c,0,0.509,,textures/earth.jpg,-,-,-,-,-,-,,0.23373388,,Transit
+730,Kepler-52,b,0,0.187,,textures/earth.jpg,-,-,-,-,-,-,,0.021581799,,Transit
+731,Kepler-52,c,0,0.164,,textures/earth.jpg,-,-,-,-,-,-,,0.044890417,,Transit
+732,Kepler-53,b,0,0.258,,textures/earth.jpg,-,-,-,-,-,-,,0.051093021,,Transit
+733,Kepler-53,c,0,0.283,,textures/earth.jpg,-,-,-,-,-,-,,0.105639188,,Transit
+734,Kepler-54,b,0,0.187,,textures/earth.jpg,-,-,-,-,-,-,,0.02194779,,Transit
+735,Kepler-54,c,0,0.11,,textures/earth.jpg,-,-,-,-,-,-,,0.033073219,,Transit
+736,Kepler-55,b,0,0.217,,textures/earth.jpg,-,-,-,-,-,-,,0.07657026,,Transit
+737,Kepler-55,c,0,0.197,,textures/earth.jpg,-,-,-,-,-,-,,0.11548395,,Transit
+738,Kepler-56,b,0,0.343,,textures/earth.jpg,-,-,-,-,-,-,,0.028776519,,Transit
+739,Kepler-56,c,0,0.7,,textures/earth.jpg,-,-,-,-,-,-,,0.058643968,,Transit
+740,Kepler-57,b,0,0.195,,textures/earth.jpg,-,-,-,-,-,-,,0.015696766,,Transit
+741,Kepler-57,c,0,0.138,,textures/earth.jpg,-,-,-,-,-,-,,0.031806183,,Transit
+742,Kepler-58,b,0,0.248,,textures/earth.jpg,-,-,-,-,-,-,,0.027995878,,Transit
+743,Kepler-58,c,0,0.255,,textures/earth.jpg,-,-,-,-,-,-,,0.042668923,,Transit
+744,Kepler-59,b,0,0.098,,textures/earth.jpg,-,-,-,-,-,-,,0.032515536,,Transit
+745,Kepler-59,c,0,0.177,,textures/earth.jpg,-,-,-,-,-,-,,0.049260612,,Transit
+746,Kepler-60,b,0,0.203,,textures/earth.jpg,-,-,-,-,-,-,,0.019538681,,Transit
+747,Kepler-60,c,0,0.22,,textures/earth.jpg,-,-,-,-,-,-,,0.024436564,,Transit
+748,Kepler-60,d,0,0.227,,textures/earth.jpg,-,-,-,-,-,-,,0.03260717,,Transit
+749,Kepler-61,b,0,0.192,,textures/earth.jpg,-,-,-,-,-,-,,0.16404811,89.8,Transit
+750,Kepler-62,b,0,0.117,0.0553,textures/earth.jpg,-,-,-,-,-,-,,0.015657348,89.2,Transit
+751,Kepler-62,c,0,0.048,0.0929,textures/earth.jpg,-,-,-,-,-,-,,0.034086849,89.7,Transit
+752,Kepler-62,d,0,0.174,0.12,textures/earth.jpg,-,-,-,-,-,-,,0.049764548,89.7,Transit
+753,Kepler-62,e,0,0.144,0.427,textures/earth.jpg,-,-,-,-,-,-,,0.335307945,89.98,Transit
+754,Kepler-62,f,0,0.126,0.718,textures/earth.jpg,-,-,-,-,-,-,,0.73230411,89.9,Transit
+755,Kepler-63,b,0,0.545,0.08,textures/earth.jpg,-,-,-,-,-,-,,0.025846988,87.806,Transit
+756,PH1,b,0,0.551,0.652,textures/earth.jpg,-,-,-,-,-,-,,0.378950685,90.05,Transit
+757,Kepler-65,b,0,0.127,0.035,textures/earth.jpg,-,-,-,-,-,-,,0.005903863,,Transit
+758,Kepler-65,c,0,0.23,0.068,textures/earth.jpg,-,-,-,-,-,-,,0.016054641,,Transit
+759,Kepler-65,d,0,0.136,0.084,textures/earth.jpg,-,-,-,-,-,-,,0.022277342,,Transit
+760,Kepler-66,b,0,0.25,0.1352,textures/earth.jpg,-,-,-,-,-,-,,0.048810452,,Transit
+761,Kepler-67,b,0,0.262,0.1171,textures/earth.jpg,-,-,-,-,-,-,,0.043084658,,Transit
+762,Kepler-68,b,0,0.206,0.0617,textures/earth.jpg,-,-,-,-,-,-,,0.014791132,87.6,Transit
+763,Kepler-68,c,0,0.085,0.09059,textures/earth.jpg,-,-,-,-,-,-,,0.026315301,86.93,Transit
+764,Kepler-68,d,0,,1.4,textures/earth.jpg,-,-,-,-,-,-,,1.589041096,,Radial Velocity
+765,Kepler-69,b,0,0.2,0.094,textures/earth.jpg,-,-,-,-,-,-,,0.037595455,89.62,Transit
+766,Kepler-69,c,0,,0.64,textures/earth.jpg,-,-,-,-,-,-,,0.664277534,89.85,Transit
+767,KOI-55,b,0,0.068,0.006,textures/earth.jpg,-,-,-,-,-,-,,0.000657819,65,Transit
+768,KOI-55,c,0,0.077,0.0076,textures/earth.jpg,-,-,-,-,-,-,,0.000939416,65,Transit
+769,KOI-217,b,0,1.11,0.0477,textures/earth.jpg,-,-,-,-,-,-,,0.010698959,89.8,Transit
+770,Kepler-74,b,0,1.32,0.084,textures/earth.jpg,-,-,-,-,-,-,,0.020111556,85.55,Transit
+771,Kepler-75,b,0,1.03,0.08,textures/earth.jpg,-,-,-,-,-,-,,0.024342258,89.1,Transit
+772,KOI-1658,b,0,1.25,,textures/earth.jpg,-,-,-,-,-,-,,0.004232682,78,Transit
+773,Kepler-77,b,0,0.96,0.04501,textures/earth.jpg,-,-,-,-,-,-,,0.009804879,88,Transit
+774,Kepler-78,b,0,0.103,,textures/earth.jpg,-,-,-,-,-,-,,0.000972623,79,Transit
+775,Kepler-79,b,0,0.231,,textures/earth.jpg,-,-,-,-,-,-,,0.036945205,,Transit
+776,Kepler-79,c,0,0.247,,textures/earth.jpg,-,-,-,-,-,-,,0.075073973,,Transit
+777,Kepler-80,b,0,0.236,,textures/earth.jpg,-,-,-,-,-,-,,0.019323288,,Transit
+778,Kepler-80,c,0,0.249,,textures/earth.jpg,-,-,-,-,-,-,,0.026087671,,Transit
+779,Kepler-81,b,0,0.216,,textures/earth.jpg,-,-,-,-,-,-,,0.016315068,,Transit
+780,Kepler-81,c,0,0.211,,textures/earth.jpg,-,-,-,-,-,-,,0.032986301,,Transit
+781,Kepler-82,b,0,0.357,,textures/earth.jpg,-,-,-,-,-,-,,0.072449315,,Transit
+782,Kepler-82,c,0,0.477,,textures/earth.jpg,-,-,-,-,-,-,,0.1412,,Transit
+783,Kepler-83,b,0,0.252,,textures/earth.jpg,-,-,-,-,-,-,,0.026767123,,Transit
+784,Kepler-83,c,0,0.211,,textures/earth.jpg,-,-,-,-,-,-,,0.055041096,,Transit
+785,Kepler-84,b,0,0.199,,textures/earth.jpg,-,-,-,-,-,-,,0.023906849,,Transit
+786,Kepler-84,c,0,0.211,,textures/earth.jpg,-,-,-,-,-,-,,0.03529589,,Transit
+787,Kepler-85,b,0,0.176,,textures/earth.jpg,-,-,-,-,-,-,,0.022756164,,Transit
+788,Kepler-85,c,0,0.194,,textures/earth.jpg,-,-,-,-,-,-,,0.034282192,,Transit
+789,PH2,b,0,0.903,0.828,textures/earth.jpg,-,-,-,-,-,-,,0.774042466,89.83,Transit
+790,LKCA 15,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,109.5890411,,Imaging
+791,Lupus-TR-3,b,0,0.89,0.0464,textures/earth.jpg,-,-,-,-,-,-,,0.010723425,88.3,Transit
+792,MOA 2007-BLG-192L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+793,MOA 2007-BLG-400L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+794,MOA 2008-BLG-310L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+795,MOA 2009-BLG-266L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,7.616438356,,Microlensing
+796,MOA 2009-BLG-319L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+797,MOA 2009-BLG-387L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,5.397260274,,Microlensing
+798,MOA 2010-BLG-477L,b,0,,2,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+799,MOA 2010-BLG-073L,b,0,,1.21,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+800,NGC 4349 127,b,0,,2.38,textures/earth.jpg,-,-,-,-,-,-,,1.856986301,,Radial Velocity
+801,OGLE 2003-BLG-235L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+802,OGLE 2005-BLG-71L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,9.863013699,,Microlensing
+803,OGLE 2005-BLG-169L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,9.04109589,,Microlensing
+804,OGLE 2005-BLG-390L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,9.589041096,,Microlensing
+805,OGLE 2006-BLG-109L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,5,,Microlensing
+806,OGLE 2006-BLG-109L,c,0,,,textures/earth.jpg,-,-,-,-,-,-,,13.97260274,59,Microlensing
+807,OGLE 2007-BLG-368L,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+808,OGLE 2011-BLG-251L,b,0,,2.72,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+809,OGLE 2012-BLG-026L,b,0,,3.82,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+810,OGLE 2012-BLG-026L,c,0,,4.63,textures/earth.jpg,-,-,-,-,-,-,,,,Microlensing
+811,OGLE2-TR-L9,b,0,1.61,0.0308,textures/earth.jpg,-,-,-,-,-,-,,0.006809681,79.8,Transit
+812,OGLE-TR-10,b,0,1.25,0.0434,textures/earth.jpg,-,-,-,-,-,-,,0.008496652,90,Transit
+813,OGLE-TR-056,b,0,1.378,0.01942,textures/earth.jpg,-,-,-,-,-,-,,0.003320304,73.72,Transit
+814,OGLE-TR-111,b,0,1.051,0.04689,textures/earth.jpg,-,-,-,-,-,-,,0.011003014,88.25,Transit
+815,OGLE-TR-113,b,0,1.093,0.02289,textures/earth.jpg,-,-,-,-,-,-,,0.00392459,87.8,Transit
+816,OGLE-TR-132,b,0,1.2,0.03035,textures/earth.jpg,-,-,-,-,-,-,,0.004629775,83.4,Transit
+817,OGLE-TR-182,b,0,1.13,0.051,textures/earth.jpg,-,-,-,-,-,-,,0.010901644,85.7,Transit
+818,OGLE-TR-211,b,0,1.36,0.051,textures/earth.jpg,-,-,-,-,-,-,,0.01007463,87.2,Transit
+819,Oph 11,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,2000,,Imaging
+820,POTS-1,b,0,0.941,0.03734,textures/earth.jpg,-,-,-,-,-,-,,0.008659259,88.06,Transit
+821,Pr0201,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.012127123,,Radial Velocity
+822,Pr0211,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,0.005876986,,Radial Velocity
+823,PSR B1257+12,b,0,,0.19,textures/earth.jpg,-,-,-,-,-,-,,0.069210959,,Pulsar Timing
+824,PSR B1257+12,c,0,,0.36,textures/earth.jpg,-,-,-,-,-,-,,0.182306575,53,Pulsar Timing
+825,PSR B1257+12,d,0,,0.46,textures/earth.jpg,-,-,-,-,-,-,,0.269072329,47,Pulsar Timing
+826,PSR B1620-26,b,0,,23,textures/earth.jpg,-,-,-,-,-,-,,100.0684932,55,Pulsar Timing
+827,Qatar-1,b,0,1.164,0.02343,textures/earth.jpg,-,-,-,-,-,-,,0.003890501,83.47,Transit
+828,Qatar-2,b,0,1.144,0.02149,textures/earth.jpg,-,-,-,-,-,-,,0.003663338,88.3,Transit
+829,SR 12 AB,c,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+830,SWEEPS-4,b,0,0.81,0.055,textures/earth.jpg,-,-,-,-,-,-,,0.011506849,,Transit
+831,SWEEPS-11,b,0,1.13,0.03,textures/earth.jpg,-,-,-,-,-,-,,0.004920548,,Transit
+832,TrES-1,b,0,1.067,0.03925,textures/earth.jpg,-,-,-,-,-,-,,0.008301548,90,Transit
+833,TrES-3,b,0,1.336,0.02282,textures/earth.jpg,-,-,-,-,-,-,,0.003578591,81.85,Transit
+834,TrES-4,b,0,1.799,0.05091,textures/earth.jpg,-,-,-,-,-,-,,0.009736836,82.86,Transit
+835,TrES-5,b,0,1.209,0.02446,textures/earth.jpg,-,-,-,-,-,-,,0.004060944,84.529,Transit
+836,UScoCTIO 108,b,0,,,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+837,V391 Peg,b,0,,1.7,textures/earth.jpg,-,-,-,-,-,-,,3.205479452,,Pulsation Timing Variations
+838,WASP-1,b,0,1.514,,textures/earth.jpg,-,-,-,-,-,-,,0.006903959,88.65,Transit
+839,WASP-2,b,0,1.117,,textures/earth.jpg,-,-,-,-,-,-,,0.00589651,84.8,Transit
+840,WASP-3,b,0,1.29,0.03151,textures/earth.jpg,-,-,-,-,-,-,,0.005059822,84.93,Transit
+841,WASP-4,b,0,1.413,0.02312,textures/earth.jpg,-,-,-,-,-,-,,0.003666389,88.8,Transit
+842,WASP-5,b,0,1.167,0.02702,textures/earth.jpg,-,-,-,-,-,-,,0.004461456,85.58,Transit
+843,WASP-6,b,0,1.224,0.0421,textures/earth.jpg,-,-,-,-,-,-,,0.009208236,88.47,Transit
+844,WASP-7,b,0,1.33,0.0618,textures/earth.jpg,-,-,-,-,-,-,,0.013574405,89.6,Transit
+845,WASP-8,b,0,1.038,0.0801,textures/earth.jpg,-,-,-,-,-,-,,0.022352644,88.55,Transit
+846,WASP-10,b,0,1.08,0.03781,textures/earth.jpg,-,-,-,-,-,-,,0.008473319,88.49,Transit
+847,WASP-11,b,0,1.005,0.0435,textures/earth.jpg,-,-,-,-,-,-,,0.010198561,88.6,Transit
+848,WASP-12,b,0,1.79,0.0229,textures/earth.jpg,-,-,-,-,-,-,,0.0029902,83.1,Transit
+849,WASP-13,b,0,1.389,0.05362,textures/earth.jpg,-,-,-,-,-,-,,0.011926058,85.19,Transit
+850,WASP-14,b,0,1.281,0.036,textures/earth.jpg,-,-,-,-,-,-,,0.006147266,84.32,Transit
+851,WASP-15,b,0,1.428,0.0499,textures/earth.jpg,-,-,-,-,-,-,,0.010279632,85.5,Transit
+852,WASP-16,b,0,1.008,0.0421,textures/earth.jpg,-,-,-,-,-,-,,0.008544112,85.22,Transit
+853,WASP-17,b,0,1.74,0.051,textures/earth.jpg,-,-,-,-,-,-,,0.010234087,87.8,Transit
+854,WASP-18,b,0,1.165,0.02026,textures/earth.jpg,-,-,-,-,-,-,,0.002579323,86,Transit
+855,WASP-19,b,0,1.386,0.01655,textures/earth.jpg,-,-,-,-,-,-,,0.002161205,79.4,Transit
+856,WASP-21,b,0,1.07,0.052,textures/earth.jpg,-,-,-,-,-,-,,0.011842416,88.75,Transit
+857,WASP-22,b,0,1.158,0.04698,textures/earth.jpg,-,-,-,-,-,-,,0.009678716,88.26,Transit
+858,WASP-23,b,0,0.962,0.0376,textures/earth.jpg,-,-,-,-,-,-,,0.008066919,88.39,Transit
+859,WASP-24,b,0,1.3,0.03651,textures/earth.jpg,-,-,-,-,-,-,,0.006414281,83.64,Transit
+860,WASP-25,b,0,1.22,0.0473,textures/earth.jpg,-,-,-,-,-,-,,0.010314589,88,Transit
+861,WASP-26,b,0,1.281,0.03985,textures/earth.jpg,-,-,-,-,-,-,,0.00755233,82.91,Transit
+862,WASP-28,b,0,1.12,0.0455,textures/earth.jpg,-,-,-,-,-,-,,0.009339236,89.1,Transit
+863,WASP-29,b,0,0.792,0.0457,textures/earth.jpg,-,-,-,-,-,-,,0.010747197,88.8,Transit
+864,WASP-31,b,0,1.549,0.04659,textures/earth.jpg,-,-,-,-,-,-,,0.009331259,84.41,Transit
+865,WASP-32,b,0,1.18,0.0394,textures/earth.jpg,-,-,-,-,-,-,,0.007448381,85.3,Transit
+866,WASP-33,b,0,1.497,0.02555,textures/earth.jpg,-,-,-,-,-,-,,0.003342101,87.67,Transit
+867,WASP-34,b,0,1.22,0.0524,textures/earth.jpg,-,-,-,-,-,-,,0.011829255,85.2,Transit
+868,WASP-35,b,0,1.32,0.04317,textures/earth.jpg,-,-,-,-,-,-,,0.008661849,87.96,Transit
+869,WASP-36,b,0,1.281,0.02643,textures/earth.jpg,-,-,-,-,-,-,,0.00421196,83.61,Transit
+870,WASP-37,b,0,1.16,0.0446,textures/earth.jpg,-,-,-,-,-,-,,0.009801285,88.82,Transit
+871,WASP-38,b,0,1.094,0.07522,textures/earth.jpg,-,-,-,-,-,-,,0.01882689,88.69,Transit
+872,WASP-39,b,0,1.27,0.0486,textures/earth.jpg,-,-,-,-,-,-,,0.011110299,87.83,Transit
+873,WASP-41,b,0,1.2,0.0402,textures/earth.jpg,-,-,-,-,-,-,,0.008362742,87.7,Transit
+874,WASP-42,b,0,1.08,0.0548,textures/earth.jpg,-,-,-,-,-,-,,0.013648458,88.25,Transit
+875,WASP-43,b,0,0.93,0.0142,textures/earth.jpg,-,-,-,-,-,-,,0.002228699,82.6,Transit
+876,WASP-44,b,0,1.14,0.03473,textures/earth.jpg,-,-,-,-,-,-,,0.006640559,86.02,Transit
+877,WASP-45,b,0,1.16,0.04054,textures/earth.jpg,-,-,-,-,-,-,,0.008564624,84.47,Transit
+878,WASP-46,b,0,1.31,0.02448,textures/earth.jpg,-,-,-,-,-,-,,0.003918822,82.63,Transit
+879,WASP-47,b,0,1.15,0.052,textures/earth.jpg,-,-,-,-,-,-,,0.011394904,89.2,Transit
+880,WASP-48,b,0,1.67,0.03444,textures/earth.jpg,-,-,-,-,-,-,,0.00587297,80.09,Transit
+881,WASP-49,b,0,1.115,0.0379,textures/earth.jpg,-,-,-,-,-,-,,0.007621202,84.89,Transit
+882,WASP-50,b,0,1.153,0.02945,textures/earth.jpg,-,-,-,-,-,-,,0.005356427,84.74,Transit
+883,WASP-52,b,0,1.27,0.0272,textures/earth.jpg,-,-,-,-,-,-,,0.004793917,85.35,Transit
+884,WASP-54,b,0,1.653,0.04987,textures/earth.jpg,-,-,-,-,-,-,,0.010119565,84.97,Transit
+885,WASP-55,b,0,1.3,0.0533,textures/earth.jpg,-,-,-,-,-,-,,0.012234611,89.2,Transit
+886,WASP-56,b,0,1.092,0.05458,textures/earth.jpg,-,-,-,-,-,-,,0.012649592,88.5,Transit
+887,WASP-57,b,0,0.916,0.0386,textures/earth.jpg,-,-,-,-,-,-,,0.007778003,88,Transit
+888,WASP-58,b,0,1.37,0.0561,textures/earth.jpg,-,-,-,-,-,-,,0.013745699,87.4,Transit
+889,WASP-59,b,0,0.775,0.0697,textures/earth.jpg,-,-,-,-,-,-,,0.021697493,89.27,Transit
+890,WASP-60,b,0,0.86,0.0531,textures/earth.jpg,-,-,-,-,-,-,,0.011794524,87.9,Transit
+891,WASP-61,b,0,1.24,0.0514,textures/earth.jpg,-,-,-,-,-,-,,0.01056411,89.35,Transit
+892,WASP-62,b,0,1.39,0.0567,textures/earth.jpg,-,-,-,-,-,-,,0.012087542,88.3,Transit
+893,WASP-63,b,0,1.43,0.0574,textures/earth.jpg,-,-,-,-,-,-,,0.011994767,87.8,Transit
+894,WASP-64,b,0,1.271,0.02648,textures/earth.jpg,-,-,-,-,-,-,,0.004310388,86.57,Transit
+895,WASP-65,b,0,1.112,0.0334,textures/earth.jpg,-,-,-,-,-,-,,0.006332669,88.8,Transit
+896,WASP-66,b,0,1.39,0.0546,textures/earth.jpg,-,-,-,-,-,-,,0.011194663,85.9,Transit
+897,WASP-67,b,0,1.4,0.0517,textures/earth.jpg,-,-,-,-,-,-,,0.012642247,85.8,Transit
+898,WASP-71,b,0,1.46,0.04619,textures/earth.jpg,-,-,-,-,-,-,,0.007955273,84.9,Transit
+899,WASP-72,b,0,1.27,0.03708,textures/earth.jpg,-,-,-,-,-,-,,0.006073266,81.6,Transit
+900,WASP-75,b,0,1.27,0.0375,textures/earth.jpg,-,-,-,-,-,-,,0.006806008,82,Transit
+901,WASP-77A,b,0,1.21,0.024,textures/earth.jpg,-,-,-,-,-,-,,0.003726112,89.4,Transit
+902,WASP-78,b,0,1.7,0.0362,textures/earth.jpg,-,-,-,-,-,-,,0.005959387,83.2,Transit
+903,WASP-79,b,0,2.09,0.0535,textures/earth.jpg,-,-,-,-,-,-,,0.010033936,83.3,Transit
+904,WASP-80,b,0,0.952,0.0346,textures/earth.jpg,-,-,-,-,-,-,,0.00840507,89.92,Transit
+905,WD 0806-661,b,0,,2500,textures/earth.jpg,-,-,-,-,-,-,,,,Imaging
+906,WTS-1,b,0,1.49,0.047,textures/earth.jpg,-,-,-,-,-,-,,0.009183718,85.5,Transit
+907,XO-1,b,0,1.21,0.049,textures/earth.jpg,-,-,-,-,-,-,,0.010798649,88.8,Transit
+908,XO-2,b,0,0.996,0.0368,textures/earth.jpg,-,-,-,-,-,-,,0.007166751,,Transit
+909,XO-3,b,0,1.217,0.0454,textures/earth.jpg,-,-,-,-,-,-,,0.008743901,84.2,Transit
+910,XO-4,b,0,1.33,,textures/earth.jpg,-,-,-,-,-,-,,0.011301597,88.8,Transit
+911,XO-5,b,0,1.109,0.0488,textures/earth.jpg,-,-,-,-,-,-,,0.011473307,86.7,Transit
