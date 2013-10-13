@@ -19,6 +19,12 @@ g_changeDistCenterHab = []
 g_orbit = []
 g_rot = []
 
+### status of reorder 0: not; 1: select; 2: moving
+g_reorder = 0
+
+li_allSys = []; # classes
+li_sysOnWall = [] # scenenodes
+
 wallLimit = 247000000 # by default, everything closer than this numer can be shown
 
 ## constants
@@ -226,7 +232,13 @@ speedDownBtn.setUIEventCommand('changeScale("time", False)')
 
 ## menu to change other things
 #
-#
+
+## button to reorder the small multiples
+btn_reorder = mm.getMainMenu().addButton('reorder small multiples','setReorder(1)')
+
+## button to reset the scene
+btn_reset = mm.getMainMenu().addButton('reset the scene','resetEverything()')
+
 
 ## change the scale factor, if failed return False
 def changeScale(name, add):
@@ -493,8 +505,6 @@ scene.loadModel(mi)
 
 ##############################################################################################################
 # LOAD DATA FROM FILE
-
-li_allSys = [];
 
 atLine = 0
 f = open('data_test.csv','rU')
@@ -867,37 +877,60 @@ def onEvent():
 	global g_scale_dist
 	global g_scale_time
 
+	global g_reorder
+
 	e = getEvent()
 
-	if e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
-		#print 'start dist -'
-		if not changeScale('dist',False):
-			playSound(sd_warn, e.getPosition(), 1.0)
-	elif e.isButtonDown(EventFlags.ButtonRight) or e.isKeyDown(ord('l')):
-		#print 'start dist +'
-		if not changeScale('dist',True):
-			playSound(sd_warn, e.getPosition(), 1.0)
-	elif e.isButtonDown(EventFlags.ButtonUp) or e.isKeyDown(ord('i')):
-		#print 'start size +'
-		if not changeScale('size',True):
-			playSound(sd_warn, e.getPosition(), 1.0)
-	elif e.isButtonDown(EventFlags.ButtonDown) or e.isKeyDown(ord('k')):
-		#print 'start size -'
-		if not changeScale('size',False):
-			playSound(sd_warn, e.getPosition(), 1.0)
-	elif e.isKeyDown(ord('u')):
-		print 'start time -'
-		if not changeScale('time',False):
-			playSound(sd_warn, e.getPosition(), 1.0)
-	elif e.isKeyDown(ord('o')):
-		print 'start time +'
-		if not changeScale('time',True):
-			playSound(sd_warn, e.getPosition(), 1.0)
+	## normal operations
+	if g_reorder==0:
 
-	## reset the scene
-	elif e.isButtonDown(EventFlags.Button5) or e.isKeyDown(ord('r')):
-		resetEverything()
+		if e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
+			#print 'start dist -'
+			if not changeScale('dist',False):
+				playSound(sd_warn, e.getPosition(), 1.0)
+		elif e.isButtonDown(EventFlags.ButtonRight) or e.isKeyDown(ord('l')):
+			#print 'start dist +'
+			if not changeScale('dist',True):
+				playSound(sd_warn, e.getPosition(), 1.0)
+		elif e.isButtonDown(EventFlags.ButtonUp) or e.isKeyDown(ord('i')):
+			#print 'start size +'
+			if not changeScale('size',True):
+				playSound(sd_warn, e.getPosition(), 1.0)
+		elif e.isButtonDown(EventFlags.ButtonDown) or e.isKeyDown(ord('k')):
+			#print 'start size -'
+			if not changeScale('size',False):
+				playSound(sd_warn, e.getPosition(), 1.0)
+		elif e.isKeyDown(ord('u')):
+			print 'start time -'
+			if not changeScale('time',False):
+				playSound(sd_warn, e.getPosition(), 1.0)
+		elif e.isKeyDown(ord('o')):
+			print 'start time +'
+			if not changeScale('time',True):
+				playSound(sd_warn, e.getPosition(), 1.0)
 
+	## reorder
+	elif g_reorder==1:
+		if e.isButtonDown(EventFlags.Button5):
+			ray = getRayFromEvent(e)
+			if r[0]:
+				querySceneRay(r[1], r[2], rayCallback)
+		## quit reorder mode
+		if e.isButtonDown(EventFlags.Button2):
+			g_reorder = False
+			e.setProcessed()
+		## select a small multiple
+		elif e.isButtonDown(EventFlags.Button5):
+			todo = 0
+		## move selected small multiple around
+		elif e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
+			todo = 0
+		elif e.isButtonDown(EventFlags.ButtonRight) or e.isKeyDown(ord('l')):
+			todo = 0
+		elif e.isButtonDown(EventFlags.ButtonUp) or e.isKeyDown(ord('i')):
+			todo = 0
+		elif e.isButtonDown(EventFlags.ButtonDown) or e.isKeyDown(ord('k')):
+			todo = 0
 	# elif e. isButtonDown(EventFlags.Button5):
 	# 	if not changeScale('time',False):
 	# 		playSound(sd_warn, e.getPosition(), 1.0)
@@ -957,6 +990,12 @@ def resetEverything():
 
 	resetCenter()
 	resetWall()
+
+def setReorder(x):
+	global g_reorder
+	g_reorder = x
+
+def rayCallback(node, distance):
 
 
 
