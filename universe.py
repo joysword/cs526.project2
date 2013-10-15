@@ -56,6 +56,7 @@ c_smallLabel_y_cave = 0.08
 
 R_jupiter = 69911 # in KM
 R_sun = 695500 # in KM
+M_earth = 5.97219e24 # in KG
 
 ## global scale factors
 g_scale_size = 1.0
@@ -102,7 +103,7 @@ def KM_from_AU(n): # exact
 	return n * 149597870.7
 
 ## column names in data file
-g_c = {'name':0, 'star':1, 'size':2, 'distance':3, 'orbit':3, 'texture':4, 'rs':5, 'dec':6, 'app_mag':7, 'class':8, 'type':9, 'num':10, 'day':11, 'year':12, 'inc':13, 'detection':14}
+g_c = {'name':0, 'star':1, 'size':2, 'distance':3, 'orbit':3, 'texture':4, 'rs':5, 'dec':6, 'app_mag':7, 'class':8, 'type':9, 'num':10, 'day':11, 'year':12, 'inc':13, 'detection':14, 'mass':15}
 
 ## bolometric correction constant for calculating habitable zone
 g_BC = {'B':-2.0,'A':-0.3,'F':-0.15,'G':-0.4,'K':-0.8,'M':-2.0}
@@ -113,11 +114,18 @@ def CAVE():
 ##############################################################################################################
 # CLASSES
 class planet:
-	def __init__(self,size,texture,orbit,name,day,year,inc,detection):
+	def __init__(self,size,texture,orbit,name,day,year,inc,detection,mass):
 		if cmp(size,'')==0:
-			self._size = 0
+			if cmp(mass,'')==0:
+				self._mass = 0
+				self._size = 0
+			else:
+				self._mass = float(mass) * M_earth
+				self._size = self.__getSizeFromMass(self._mass)
+				print 'size:',self._size
 		else:
 			self._size = float(size) * R_jupiter # to KM
+			self._mass = 0
 		self._texture = texture
 		if cmp(orbit,'')==0:
 			self._orbit = 0
@@ -141,6 +149,15 @@ class planet:
 		else:
 			self._detection = detection
 		#self._model = None
+
+		def __getSizeFromMass(mass):
+			print 'mass:',mass
+			if mass<5e25:
+				return 0.5501*(mass**0.2858)*0.001 # to KM
+			elif mass<1e27:
+				return 7e-8*(mass**0.5609)*0.001 # to KM
+			else:
+				return 4e8*(mass**-0.0241)*0.001 # to KM
 
 class star:
 	def __init__(self,t,mv,size,n,dis,c,ty,num):
@@ -370,10 +387,13 @@ for p in lines:
 
 	else: # planet
 		# def __init__(self,size,texture,orbit,name,day,year,inc,detection):
-		curPla = planet(p[g_c['size']], p[g_c['texture']], p[g_c['orbit']], p[g_c['name']], p[g_c['day']], p[g_c['year']], p[g_c['inc']], p[g_c['detection']])
+		curPla = planet(p[g_c['size']], p[g_c['texture']], p[g_c['orbit']], p[g_c['name']], p[g_c['day']], p[g_c['year']], p[g_c['inc']], p[g_c['detection']], p[g_c['mass']])
+		#print 'mass:',curPla._mass
+		#print 'size:',curPla._size
 		curStar.addPlanet(curPla)
 
 print 'number of systems generated:', len(li_allSys)
+
 
 ##############################################################################################################
 # INITIALIZE SMALL MULTIPLES
