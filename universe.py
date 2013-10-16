@@ -1,6 +1,8 @@
 import omegaToolkit
 import euclid
 import math
+import pickle
+from datetime import datetime
 from caveutil import *
 from csv import reader
 
@@ -32,9 +34,16 @@ g_moveToCenter = 0 # status of bring to center 0: not; 1: in
 
 g_invisOnes = []
 
-li_allSys = []; # classes, aaalllllll the systems
-dic_allBox = {}; # dictionary of systems
+li_allSys = [] # classes, aaalllllll the systems
+dic_allBox = {} # dictionary of small multiple boxes
+dic_sys = {} # dictionary of systems
 li_boxOnWall = [] # scenenodes (outlineBox)
+
+set_nearest = []
+set_most_planets = []
+set_farthest = []
+set_g_type = []
+set_save = [None]*48
 
 wallLimit = 247000000 # by default, everything closer than this numer can be shown
 
@@ -53,6 +62,8 @@ c_scaleCenter_dist = 0.000005
 c_scaleCenter_overall = 0.00025
 
 c_smallLabel_y_cave = 0.08
+
+c_delta_scale = 0.25 # interval between each scale
 
 R_jupiter = 69911 # in KM
 R_sun = 695500 # in KM
@@ -116,7 +127,7 @@ def CAVE():
 # CLASSES
 class planet:
 	def __getSizeFromMass(self, mass):
-			print 'mass:',mass
+			#print 'mass:',mass
 			if mass<5e25:
 				return 0.5501*(mass**0.2858)*0.001 # to KM
 			elif mass<1e27:
@@ -132,7 +143,7 @@ class planet:
 			else:
 				self._mass = float(mass) * M_earth
 				self._size = self.__getSizeFromMass(self._mass)
-				print 'size:',self._size
+				#print 'size:',self._size
 		else:
 			self._size = float(size) * R_jupiter # to KM
 			self._mass = 0
@@ -164,9 +175,6 @@ class planet:
 			self._isEarthSized = True
 		else:
 			self._isEarthSized = False
-
-		# if it has earth-sized moons
-		if self._name =
 
 class star:
 	def __init__(self,t,mv,size,n,dis,c,ty,num):
@@ -255,74 +263,84 @@ mm = MenuManager.createAndInitialize()
 
 ## menu to change scale factor
 menu_scale = mm.getMainMenu().addSubMenu('change scale factor')
-scaleWidget = menu_scale.addContainer()
-scaleContainer = scaleWidget.getContainer()
-scaleContainer.setLayout(ContainerLayout.LayoutHorizontal)
-scaleContainer.setMargin(0)
+wgt_scale = menu_scale.addContainer()
+container_scale = wgt_scale.getContainer()
+container_scale.setLayout(ContainerLayout.LayoutHorizontal)
+container_scale.setMargin(0)
 
-scaleSizeLabel = Label.create(scaleContainer)
-scaleSizeLabel.setText('size: ')
+lbl_scaleSize = Label.create(container_scale)
+lbl_scaleSize.setText('size: ')
 
-scaleSizeBtnContainer = Container.create(ContainerLayout.LayoutVertical, scaleContainer)
-scaleSizeBtnContainer.setPadding(-4)
+container_scaleSizeBtn = Container.create(ContainerLayout.LayoutVertical, container_scale)
+container_scaleSizeBtn.setPadding(-4)
 
-scaleSizeUpBtn = Button.create(scaleSizeBtnContainer)
-scaleSizeUpBtn.setText('+')
-scaleSizeUpBtn.setUIEventCommand('changeScale("size", True)')
+btn_scaleSizeUp = Button.create(container_scaleSizeBtn)
+btn_scaleSizeUp.setText('+')
+btn_scaleSizeUp.setUIEventCommand('changeScale("size", True)')
 
-scaleSizeDownBtn = Button.create(scaleSizeBtnContainer)
-scaleSizeDownBtn.setText('-')
-scaleSizeDownBtn.setUIEventCommand('changeScale("size", False)')
+btn_scaleSizeDown = Button.create(container_scaleSizeBtn)
+btn_scaleSizeDown.setText('-')
+btn_scaleSizeDown.setUIEventCommand('changeScale("size", False)')
 
-scaleDistLabel = Label.create(scaleContainer)
-scaleDistLabel.setText('distance: ')
+lbl_scaleDist = Label.create(container_scale)
+lbl_scaleDist.setText('distance: ')
 
-scaleDistBtnContainer = Container.create(ContainerLayout.LayoutVertical, scaleContainer)
-scaleDistBtnContainer.setPadding(-4)
+container_scaleDistBtn = Container.create(ContainerLayout.LayoutVertical, container_scale)
+container_scaleDistBtn.setPadding(-4)
 
-scaleDistUpBtn = Button.create(scaleDistBtnContainer)
-scaleDistUpBtn.setText('+')
-scaleDistUpBtn.setUIEventCommand('changeScale("dist", True)')
+btn_scaleDistUp = Button.create(container_scaleDistBtn)
+btn_scaleDistUp.setText('+')
+btn_scaleDistUp.setUIEventCommand('changeScale("dist", True)')
 
-scaleDistDownBtn = Button.create(scaleDistBtnContainer)
-scaleDistDownBtn.setText('-')
-scaleDistDownBtn.setUIEventCommand('changeScale("dist", False)')
+btn_scaleDistDown = Button.create(container_scaleDistBtn)
+btn_scaleDistDown.setText('-')
+btn_scaleDistDown.setUIEventCommand('changeScale("dist", False)')
 
-scaleSizeUpBtn.setHorizontalNextWidget(scaleDistUpBtn)
-scaleDistUpBtn.setHorizontalPrevWidget(scaleSizeUpBtn)
-scaleSizeDownBtn.setHorizontalNextWidget(scaleDistDownBtn)
-scaleDistDownBtn.setHorizontalPrevWidget(scaleSizeDownBtn)
-
-# TO DO: ADD value
+btn_scaleSizeUp.setHorizontalNextWidget(btn_scaleDistUp)
+btn_scaleDistUp.setHorizontalPrevWidget(btn_scaleSizeUp)
+btn_scaleSizeDown.setHorizontalNextWidget(btn_scaleDistDown)
+btn_scaleDistDown.setHorizontalPrevWidget(btn_scaleSizeDown)
 
 ## menu to change time speed
 menu_speed = mm.getMainMenu().addSubMenu('change time speed')
-speedWidget = menu_speed.addContainer()
-speedContainer = speedWidget.getContainer()
-speedContainer.setLayout(ContainerLayout.LayoutHorizontal)
-speedContainer.setMargin(0)
+widget_speed = menu_speed.addContainer()
+container_speed = widget_speed.getContainer()
+container_speed.setLayout(ContainerLayout.LayoutHorizontal)
+container_speed.setMargin(0)
 
-speedLabel = Label.create(speedContainer)
-speedLabel.setText('time speed: ')
+lbl_speed = Label.create(container_speed)
+lbl_speed.setText('time speed: ')
 
-speedBtnContainer = Container.create(ContainerLayout.LayoutVertical, speedContainer)
-speedBtnContainer.setPadding(-4)
+container_speedBtn = Container.create(ContainerLayout.LayoutVertical, container_speed)
+container_speedBtn.setPadding(-4)
 
-speedUpBtn = Button.create(speedBtnContainer)
-speedUpBtn.setText('+')
-speedUpBtn.setUIEventCommand('changeScale("time", True)')
+btn_speedUp = Button.create(container_speedBtn)
+btn_speedUp.setText('+')
+btn_speedUp.setUIEventCommand('changeScale("time", True)')
 
-speedDownBtn = Button.create(speedBtnContainer)
-speedDownBtn.setText('-')
-speedDownBtn.setUIEventCommand('changeScale("time", False)')
+btn_speedDown = Button.create(container_speedBtn)
+btn_speedDown.setText('-')
+btn_speedDown.setUIEventCommand('changeScale("time", False)')
 
-# TO DO: ADD value
+## menu to change to four predefined sets of system
+menu_preset = mm.getMainMenu().addSubMenu('predefined set')
 
-## button to hide/show small multiples
-btn_hideWall = mm.getMainMenu().addButton('hide small multiples','toggleWallVisible()')
+btn_nearest = menu_preset.addButton('system in smallest distance to us','loadPreset("near")')
+btn_farthest = menu_preset.addButton('system in largest distance to us','loadPreset("far")')
+btn_g_type = menu_preset.addButton('system with G type stars','loadPreset("g")')
+btn_most_planets = menu_preset.addButton('system with most planets','loadPreset("most")')
+
+## menu to save and load configuration
+menu_sl = mm.getMainMenu().addSubMenu('save/load configuration')
+
+btn_save = menu_sl.addButton('save current configuration','saveConfig()')
+menu_load = menu_sl.addSubMenu('load a configuration')
 
 ## button to move one of the small multiples to center
 btn_moveToCenter = mm.getMainMenu().addButton('move to center','startMoveToCenter()')
+
+## button to hide/show small multiples
+btn_hideWall = mm.getMainMenu().addButton('hide small multiples','toggleWallVisible()')
 
 ## button to reorder the small multiples
 btn_reorder = mm.getMainMenu().addButton('reorder small multiples','startReorder()')
@@ -379,7 +397,7 @@ pointer.setVisible(False)
 # LOAD DATA FROM FILE
 
 atLine = 0
-f = open('data1.csv','rU')
+f = open('data2.csv','rU')
 lines = reader(f)
 for p in lines:
 	atLine+=1
@@ -392,7 +410,6 @@ for p in lines:
 		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']])
 		curSys = plaSys(curStar,curStar._dis,curStar._name)
 		li_allSys.append(curSys)
-		#dic_allSys[curSys._name] = curSys
 
 	else: # planet
 		# def __init__(self,size,texture,orbit,name,day,year,inc,detection):
@@ -403,12 +420,20 @@ for p in lines:
 
 print 'number of systems generated:', len(li_allSys)
 
+##############################################################################################################
+# INITIALIZE PREDEFINED SETS
+
+set_nearest = [i for i in xrange(len(li_allSys))]
+set_farthest = [(92-i) for i in xrange(len(li_allSys))]
+set_farthest[0] = 0
+set_g_type = [0,1,5,6,10,12,14,18,19,20,21,23,24,28,29,32,33,34,35,36,37,39,41,43,44,45,47,48,50,53,54,56,57,58,59,60,61,62,63,64,65,67,68,69,70,72,73,75,79,80,82,87,88]
+set_most_planets = [0,44,8,87,1,4,6,82,84,85,2,3,9,12,15,46,5,7,10,11,25,26,27,28,35,42,43,57,62,63,70,77,83,88,13,14,16,17,18,19,20,21,22,23,24,29,30,31,32,33,34,36,37,38,39,40,41,45,47,48,49,50,51,52,53,54,55,56,58,59,60,61,64,65,66,67,68,69,71,72,73,74,75,76,78,79,80,81,86,89,90,91]
 
 ##############################################################################################################
 # INITIALIZE SMALL MULTIPLES
 
 def highlight(sys,star,p,t,size):
-	if p._isEarthSized and p._orbit>habInner and p._orbit<habOuter:
+	if p._isEarthSized and p._orbit>star._habNear and p._orbit<star._habFar:
 		t.setColor(Color('red'))
 	elif cmp(sys._name, 'Gliese 876')==0 and cmp(p._name,'b')==0:
 		t.setColor(Color('red'))
@@ -431,9 +456,15 @@ def highlight(sys,star,p,t,size):
 		if CAVE():
 			t.setFontSize(size)
 
-def initSmallMulti():
+def initSmallMulti(preset):
 
 	global li_boxOnWall
+	global dic_allBox
+	global dic_sys
+
+	li_boxOnWall = []
+	dic_allBox = {}
+	dic_sys = {}
 
 	smallCount = 0
 
@@ -446,21 +477,24 @@ def initSmallMulti():
 		for row in xrange(0, 8):
 
 			#print 'smallCount:',smallCount
-			curSys = li_allSys[smallCount]
+			curSys = li_allSys[preset[smallCount]]
 
 			sn_smallTrans = SceneNode.create('smallTrans'+str(smallCount))
+
+			sn_boxParent = SceneNode.create('boxParent'+str(smallCount))
 
 			bs_outlineBox = BoxShape.create(2.0, 0.25, 0.001)
 			bs_outlineBox.setPosition(Vector3(-0.5, 0, 0.01))
 			bs_outlineBox.setEffect('colored -e #01b2f144')
 			bs_outlineBox.getMaterial().setTransparent(True)
 
-			#sn_smallSys = SceneNode.create('smallSys'+str(smallCount))
-			sn_smallSys = SceneNode.create('smallSys')
+			sn_smallSys = SceneNode.create('smallSys'+str(smallCount))
+			#sn_smallSys = SceneNode.create('smallSys')
 
-			#li_sysOnWall.append(sn_smallTrans)
 			li_boxOnWall.append(bs_outlineBox)
 			dic_allBox[bs_outlineBox] = curSys
+			dic_sys[smallCount] = curSys
+			set_save[smallCount] = preset[smallCount]
 
 			## get star
 			bs_model = BoxShape.create(100, 25000, 2000)
@@ -493,7 +527,9 @@ def initSmallMulti():
 				#sn_smallSys.addChild(bs_habi) # child 1
 
 			sn_smallTrans.addChild(sn_smallSys)
-			sn_smallTrans.addChild(bs_outlineBox)
+			#sn_smallTrans.addChild(bs_outlineBox)
+			sn_smallTrans.addChild(sn_boxParent)
+			sn_boxParent.addChild(bs_outlineBox)
 
 			## get planets
 			sn_planetParent = SceneNode.create('planetParent'+str(smallCount))
@@ -526,7 +562,7 @@ def initSmallMulti():
 				t.setFixedSize(True)
 				t.setColor(Color('white'))
 
-				highlight(curSys,curSys._star,p,t,76):
+				highlight(curSys,curSys._star,p,t,76)
 
 				sn_planetParent.addChild(t)
 				if p._orbit > wallLimit:
@@ -598,7 +634,7 @@ def initSmallMulti():
 
 			smallCount += 1
 
-initSmallMulti()
+initSmallMulti(set_nearest)
 
 ##############################################################################################################
 # INIT 3D SOLAR SYSTEM
@@ -819,18 +855,22 @@ def doReorder(where):
 		toNum = (g_reorder_mNum+c_col_on_wall)
 
 	if toNum<0:
-		toNum+=48 # TO DO: total number of small multiples
+		toNum+=48
 	elif toNum>47:
-		toNum-=48 # TO DO: total number of small multiples
+		toNum-=48
 
-	toNode = li_sysOnWall[toNum]
+	toNode = li_boxOnWall[toNum]
 	toPos = toNode.getPosition()
 	toOri = toNode.getOrientation()
-	toNode.setPosition(li_sysOnWall[g_reorder_mNum].getPosition())
-	toNode.setOrientation(li_sysOnWall[g_reorder_mNum].getOrientation())
+	toNode.setPosition(li_boxOnWall[g_reorder_mNum].getPosition())
+	toNode.setOrientation(li_boxOnWall[g_reorder_mNum].getOrientation())
 	fromNode.setPosition(toPos)
 	fromNode.setOrientation(toOri)
-	li_sysOnWall[g_reorder_mNum], li_sysOnWall[toNum] = li_sysOnWall[toNum], li_sysOnWall[g_reorder_mNum] # swap
+	li_boxOnWall[g_reorder_mNum], li_boxOnWall[toNum] = li_boxOnWall[toNum], li_boxOnWall[g_reorder_mNum] # swap
+
+	dic_sys[g_reorder_mNum], dic_sys[toNum] = dic_sys[toNum], dic_sys[g_reorder_mNum] # TO DO: test
+	set_save[g_reorder_mNum], set_save[toNum] = set_save[toNum], set_save[g_reorder_mNum] # TO DO: test
+
 	g_reorder_mNum = toNum
 
 ## change the scale factor, if failed return False
@@ -847,11 +887,11 @@ def changeScale(name, add):
 		#print 'enter dist'
 		if add: # +
 			#print 'enter +'
-			g_scale_dist+=0.25
+			g_scale_dist+=c_delta_scale
 			#print 'new dist:', g_scale_dist
-			if g_scale_dist>5:
+			if g_scale_dist>50:
 				#print '> 5, restore value and return'
-				g_scale_dist-=-.25
+				g_scale_dist-=c_delta_scale
 				return False
 			else: # rescale
 				#print 'not > 5, applying change'
@@ -861,31 +901,31 @@ def changeScale(name, add):
 				for sn in g_changeDistCircles:
 					s = sn.getScale()
 					#print 'former:',s
-					sn.setScale(s.x*(g_scale_dist)/(g_scale_dist-0.25), s.y, s.z*(g_scale_dist)/(g_scale_dist-0.25))
+					sn.setScale(s.x*(g_scale_dist)/(g_scale_dist-c_delta_scale), s.y, s.z*(g_scale_dist)/(g_scale_dist-c_delta_scale))
 					#print 'now:   ',sn.getScale()
 				for hab in g_changeDistCenterHab:
 					s = hab.getScale()
 					#print 'former:',s
-					hab.setScale(s.x*(g_scale_dist)/(g_scale_dist-0.25), s.y*(g_scale_dist)/(g_scale_dist-0.25), s.z)
+					hab.setScale(s.x*(g_scale_dist)/(g_scale_dist-c_delta_scale), s.y*(g_scale_dist)/(g_scale_dist-c_delta_scale), s.z)
 					#print 'now:   ',hab.getScale()
 				for m in g_changeDistCenterPlanets:
-					m.setPosition(m.getPosition()*(g_scale_dist)/(g_scale_dist-0.25))
+					m.setPosition(m.getPosition()*(g_scale_dist)/(g_scale_dist-c_delta_scale))
 
 				for sn in g_cen_changeDistCircles:
 					s = sn.getScale()
 					#print 'former:',s
-					sn.setScale(s.x*(g_scale_dist)/(g_scale_dist-0.25), s.y, s.z*(g_scale_dist)/(g_scale_dist-0.25))
+					sn.setScale(s.x*(g_scale_dist)/(g_scale_dist-c_delta_scale), s.y, s.z*(g_scale_dist)/(g_scale_dist-c_delta_scale))
 					#print 'now:   ',sn.getScale()
 				for hab in g_cen_changeDistCenterHab:
 					s = hab.getScale()
 					#print 'former:',s
-					hab.setScale(s.x*(g_scale_dist)/(g_scale_dist-0.25), s.y*(g_scale_dist)/(g_scale_dist-0.25), s.z)
+					hab.setScale(s.x*(g_scale_dist)/(g_scale_dist-c_delta_scale), s.y*(g_scale_dist)/(g_scale_dist-c_delta_scale), s.z)
 					#print 'now:   ',hab.getScale()
 				for m in g_cen_changeDistCenterPlanets:
-					m.setPosition(m.getPosition()*()/(g_scale_dist-0.25))
+					m.setPosition(m.getPosition()*()/(g_scale_dist-c_delta_scale))
 
 				################# WALL ########
-				wallLimit*=(g_scale_dist-0.25)/(g_scale_dist) # wallLimit will be smaller
+				wallLimit*=(g_scale_dist-c_delta_scale)/(g_scale_dist) # wallLimit will be smaller
 
 				# not work, too slow
 				#removeAllChildren(sn_smallMulti)
@@ -902,7 +942,12 @@ def changeScale(name, add):
 					t = sn_smallTrans.getChildByName('indicatorParent'+str(i)).getChildByIndex(0)
 					sn_planetParent = sn_smallSys.getChildByName('planetParent'+str(i))
 
-					curSys = li_allSys[i%2] # TO DO: need to be changed, currently only have 2 systems...
+					#bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
+
+					#print 'bs_outlineBox:',bs_outlineBox
+					curSys = dic_sys[i]
+					#print 'curSys:',curSys
+					#print 'pos:',bs_outlineBox.getPosition()
 					habInner = curSys._star._habNear
 					habOuter = curSys._star._habFar
 
@@ -910,7 +955,7 @@ def changeScale(name, add):
 						if habOuter > wallLimit:
 							habOuter = wallLimit
 						habCenter = (habOuter+habInner)/2.0
-						#bs_habi.setScale(s.x,s.y,s.z*g_scale_dist/(g_scale_dist-0.25))
+						#bs_habi.setScale(s.x,s.y,s.z*g_scale_dist/(g_scale_dist-c_delta_scale))
 						bs_habi.setScale(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
 						bs_habi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
 						bs_habi.setVisible(True)
@@ -922,8 +967,8 @@ def changeScale(name, add):
 						m = sn_planetParent.getChildByIndex(j)
 
 						p = m.getPosition()
-						orbit = (48000 - p.z)/c_scaleWall_dist/(g_scale_dist-0.25)
-						m.setPosition(p.x, p.y, 48000-(48000-p.z)*(g_scale_dist)/(g_scale_dist-0.25))
+						orbit = (48000 - p.z)/c_scaleWall_dist/(g_scale_dist-c_delta_scale)
+						m.setPosition(p.x, p.y, 48000-(48000-p.z)*(g_scale_dist)/(g_scale_dist-c_delta_scale))
 						if orbit > wallLimit:
 							outCounter+=1
 							m.setVisible(False)
@@ -940,36 +985,36 @@ def changeScale(name, add):
 				#print 'done'
 				return True
 		else: # -
-			g_scale_dist-=0.25
-			if g_scale_dist<0.25:
-				g_scale_dist+=0.25
+			g_scale_dist-=c_delta_scale
+			if g_scale_dist<c_delta_scale:
+				g_scale_dist+=c_delta_scale
 				return False
 			else: # rescale
 				################ CENTER ######
 				for sn in g_changeDistCircles:
 					s = sn.getScale()
-					sn.setScale(s.x*(g_scale_dist)/(g_scale_dist+0.25), s.y, s.z*(g_scale_dist)/(g_scale_dist+0.25))
+					sn.setScale(s.x*(g_scale_dist)/(g_scale_dist+c_delta_scale), s.y, s.z*(g_scale_dist)/(g_scale_dist+c_delta_scale))
 				for hab in g_changeDistCenterHab:
 					s = hab.getScale()
-					hab.setScale(s.x*(g_scale_dist)/(g_scale_dist+0.25), s.y*(g_scale_dist)/(g_scale_dist+0.25), s.z)
+					hab.setScale(s.x*(g_scale_dist)/(g_scale_dist+c_delta_scale), s.y*(g_scale_dist)/(g_scale_dist+c_delta_scale), s.z)
 				for m in g_changeDistCenterPlanets:
-					m.setPosition(m.getPosition()*(g_scale_dist)/(g_scale_dist+0.25))
+					m.setPosition(m.getPosition()*(g_scale_dist)/(g_scale_dist+c_delta_scale))
 
 				for sn in g_cen_changeDistCircles:
 					s = sn.getScale()
 					#print 'former:',s
-					sn.setScale(s.x*(g_scale_dist)/(g_scale_dist+0.25), s.y, s.z*(g_scale_dist)/(g_scale_dist+0.25))
+					sn.setScale(s.x*(g_scale_dist)/(g_scale_dist+c_delta_scale), s.y, s.z*(g_scale_dist)/(g_scale_dist+c_delta_scale))
 					#print 'now:   ',sn.getScale()
 				for hab in g_cen_changeDistCenterHab:
 					s = hab.getScale()
 					#print 'former:',s
-					hab.setScale(s.x*(g_scale_dist)/(g_scale_dist+0.25), s.y*(g_scale_dist)/(g_scale_dist+0.25), s.z)
+					hab.setScale(s.x*(g_scale_dist)/(g_scale_dist+c_delta_scale), s.y*(g_scale_dist)/(g_scale_dist+c_delta_scale), s.z)
 					#print 'now:   ',hab.getScale()
 				for m in g_cen_changeDistCenterPlanets:
-					m.setPosition(m.getPosition()*(g_scale_dist)/(g_scale_dist+0.25))
+					m.setPosition(m.getPosition()*(g_scale_dist)/(g_scale_dist+c_delta_scale))
 
 				################# WALL ########
-				wallLimit*=(g_scale_dist+0.25)/(g_scale_dist) # wallLimit will be smaller
+				wallLimit*=(g_scale_dist+c_delta_scale)/(g_scale_dist) # wallLimit will be smaller
 
 				for i in xrange(sn_smallMulti.numChildren()):
 						#print 'child:',i
@@ -986,7 +1031,9 @@ def changeScale(name, add):
 					t = sn_smallTrans.getChildByName('indicatorParent'+str(i)).getChildByIndex(0)
 					sn_planetParent = sn_smallSys.getChildByName('planetParent'+str(i))
 
-					curSys = li_allSys[i%2] # TO DO: need to be changed, currently only have 2 systems...
+					#bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
+
+					curSys = dic_sys[i]
 					habInner = curSys._star._habNear
 					habOuter = curSys._star._habFar
 
@@ -994,7 +1041,7 @@ def changeScale(name, add):
 						if habOuter > wallLimit:
 							habOuter = wallLimit
 						habCenter = (habOuter+habInner)/2.0
-						#bs_habi.setScale(s.x,s.y,s.z*g_scale_dist/(g_scale_dist-0.25))
+						#bs_habi.setScale(s.x,s.y,s.z*g_scale_dist/(g_scale_dist-c_delta_scale))
 						bs_habi.setScale(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
 						bs_habi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
 						bs_habi.setVisible(True)
@@ -1006,8 +1053,8 @@ def changeScale(name, add):
 						m = sn_planetParent.getChildByIndex(j)
 
 						p = m.getPosition()
-						orbit = (48000 - p.z)/c_scaleWall_dist/(g_scale_dist+0.25)
-						m.setPosition(p.x, p.y, 48000-(48000-p.z)*(g_scale_dist)/(g_scale_dist+0.25))
+						orbit = (48000 - p.z)/c_scaleWall_dist/(g_scale_dist+c_delta_scale)
+						m.setPosition(p.x, p.y, 48000-(48000-p.z)*(g_scale_dist)/(g_scale_dist+c_delta_scale))
 						if orbit > wallLimit:
 							outCounter+=1
 							m.setVisible(False)
@@ -1029,11 +1076,11 @@ def changeScale(name, add):
 		#print 'enter size'
 		if add: # +
 			#print 'enter +'
-			g_scale_size+=0.25
+			g_scale_size+=c_delta_scale
 			#print 'new size:', g_scale_size
-			if g_scale_size>5:
+			if g_scale_size>50:
 				#print '> 5, restore value and return'
-				g_scale_size-=0.25
+				g_scale_size-=c_delta_scale
 				return False
 			else: # rescale
 				#print 'not > 5, applying change'
@@ -1042,52 +1089,52 @@ def changeScale(name, add):
 				################ BOTH ########
 				for m in g_changeSize:
 					#print 'model'
-					m.setScale(m.getScale()*(g_scale_size)/(g_scale_size-0.25))
+					m.setScale(m.getScale()*(g_scale_size)/(g_scale_size-c_delta_scale))
 					#print 'size_changed +'
 				################ CENTER ######
 				for t in g_changeSizeCenterText:
 					p = t.getPosition()
 					#print 'old:',t.getPosition()
-					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size-0.25), p.z)
+					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size-c_delta_scale), p.z)
 					#print 'new:',t.getPosition()
 				for m in g_cen_changeSize:
-					m.setScale(m.getScale()*(g_scale_size)/(g_scale_size-0.25))
+					m.setScale(m.getScale()*(g_scale_size)/(g_scale_size-c_delta_scale))
 				for t in g_cen_changeSizeCenterText:
 					p = t.getPosition()
-					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size-0.25), p.z)
+					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size-c_delta_scale), p.z)
 				################ WALL ########
 				for t in g_changeSizeWallText:
 					#print '++'
 					p = t.getPosition()
 					print 'old:',t.getPosition()
-					t.setPosition(Vector3(p.x, p.y*(g_scale_size)/(g_scale_size-0.25), p.z))
+					t.setPosition(Vector3(p.x, p.y*(g_scale_size)/(g_scale_size-c_delta_scale), p.z))
 					print 'new:',t.getPosition()
 				return True
 		else: # -
 			#print 'enter -'
-			g_scale_size-=0.25
-			if g_scale_size<0.25:
-				g_scale_size+=0.25
+			g_scale_size-=c_delta_scale
+			if g_scale_size<c_delta_scale:
+				g_scale_size+=c_delta_scale
 				return False
 			else: # rescale
 				################ BOTH ########
 				for m in g_changeSize:
 					#print 'model'
-					m.setScale(m.getScale()*(g_scale_size)/(g_scale_size+0.25))
+					m.setScale(m.getScale()*(g_scale_size)/(g_scale_size+c_delta_scale))
 					#print 'size_changed +'
 				################ CENTER ######
 				for t in g_changeSizeCenterText:
 					p = t.getPosition()
-					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size+0.25), p.z)
+					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size+c_delta_scale), p.z)
 				for m in g_cen_changeSize:
-					m.setScale(m.getScale()*(g_scale_size)/(g_scale_size+0.25))
+					m.setScale(m.getScale()*(g_scale_size)/(g_scale_size+c_delta_scale))
 				for t in g_cen_changeSizeCenterText:
 					p = t.getPosition()
-					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size+0.25), p.z)
+					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size+c_delta_scale), p.z)
 				################ WALL ########
 				for t in g_changeSizeWallText:
 					p = t.getPosition()
-					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size+0.25), p.z)
+					t.setPosition(p.x, p.y*(g_scale_size)/(g_scale_size+c_delta_scale), p.z)
 				return True
 
 	## time
@@ -1293,6 +1340,7 @@ def onEvent():
 	## normal operations
 	if g_reorder==0 and g_moveToCenter==0:
 
+
 		if e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
 			#print 'start dist -'
 			if not changeScale('dist',False):
@@ -1309,14 +1357,17 @@ def onEvent():
 			#print 'start size -'
 			if not changeScale('size',False):
 				playSound(sd_warn, e.getPosition(), 1.0)
-		elif e.isKeyDown(ord('u')): # TO DO: in cave
-			print 'start time -'
+		elif e.isKeyDown(ord('u')):
+			#print 'start time -'
 			if not changeScale('time',False):
 				playSound(sd_warn, e.getPosition(), 1.0)
-		elif e.isKeyDown(ord('o')): # TO DO: in cave
-			print 'start time +'
+		elif e.isKeyDown(ord('o')):
+			#print 'start time +'
 			if not changeScale('time',True):
 				playSound(sd_warn, e.getPosition(), 1.0)
+
+		elif e.isKeyDown(ord('z')):
+			saveConfig()
 
 	## choose to reorder
 	elif g_reorder==1:
@@ -1331,7 +1382,6 @@ def onEvent():
 			e.setProcessed()
 			g_reorder==0
 			playSound(sd_reo_quit, cam.getPosition(), 1.0)
-
 
 	## move to reorder
 	elif g_reorder==2:
@@ -1443,12 +1493,12 @@ def removeAllChildren(sn):
 		for i in xrange(sn.numChildren()):
 			sn.removeChildByIndex(0)
 
-def resetWall():
+def resetWall(set_):
 	global sn_smallMulti
 
 	removeAllChildren(sn_smallMulti)
 
-	initSmallMulti()
+	initSmallMulti(set_)
 
 def resetCenter():
 	global sn_centerSys
@@ -1526,5 +1576,49 @@ def moveToCenterCallback(node, distance):
 	# if this node is smallTrans
 	# then move it to center
 	todo = 0
+
+def loadPreset(s):
+	global sn_smallMulti
+
+	if cmp(s,'near')==0:
+		resetWall(set_nearest)
+		resetWall(set_save)
+	elif cmp(s,'far')==0:
+		resetWall(set_farthest)
+	elif cmp(s,'g')==0:
+		resetWall(set_g_type)
+	elif cmp(s,'most')==0:
+		resetWall(set_most_planets)
+	else:
+		resetWall(set_nearest)
+
+def saveConfig():
+	global menu_load
+	global set_save
+
+	print 'start saving'
+	li = [None]*48
+	t = datetime.now().strftime("%m-%d-%y %H:%M:%S")
+	filename = t[0]+t[1]+t[3]+t[4]+t[6]+t[7]+t[9]+t[10]+t[12]+t[13]+t[15]+t[16]+'.txt'
+	#print "time:",t
+	print 'file:',filename
+	with open(filename, 'w') as f:
+		pickle.dump(set_save,f)
+		#print 'f:'
+		#print f
+	#print 'saved to '+t
+	menu_load.addButton(t,'loadConfig('+str(filename)+')')
+
+def loadConfig(filename):
+	global set_save
+	global sn_smallMulti
+
+	print 'filename:', filename
+
+	f = open(str(filename), 'r')
+
+	#with open(filename, 'r') as f:
+	set_save = pickle.load(f)
+	resetWall(set_save)
 
 # THE END ####################################################################################################
