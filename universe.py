@@ -57,6 +57,7 @@ c_smallLabel_y_cave = 0.08
 R_jupiter = 69911 # in KM
 R_sun = 695500 # in KM
 M_earth = 5.97219e24 # in KG
+R_earth = 6371 # in KM
 
 ## global scale factors
 g_scale_size = 1.0
@@ -114,6 +115,15 @@ def CAVE():
 ##############################################################################################################
 # CLASSES
 class planet:
+	def __getSizeFromMass(self, mass):
+			print 'mass:',mass
+			if mass<5e25:
+				return 0.5501*(mass**0.2858)*0.001 # to KM
+			elif mass<1e27:
+				return 7e-8*(mass**0.5609)*0.001 # to KM
+			else:
+				return 4e8*(mass**-0.0241)*0.001 # to KM
+
 	def __init__(self,size,texture,orbit,name,day,year,inc,detection,mass):
 		if cmp(size,'')==0:
 			if cmp(mass,'')==0:
@@ -148,16 +158,15 @@ class planet:
 			self._detection = 'unknown'
 		else:
 			self._detection = detection
-		#self._model = None
 
-		def __getSizeFromMass(mass):
-			print 'mass:',mass
-			if mass<5e25:
-				return 0.5501*(mass**0.2858)*0.001 # to KM
-			elif mass<1e27:
-				return 7e-8*(mass**0.5609)*0.001 # to KM
-			else:
-				return 4e8*(mass**-0.0241)*0.001 # to KM
+		# if it is earth-sized
+		if self._size<1.25*R_earth and self._size>0:
+			self._isEarthSized = True
+		else:
+			self._isEarthSized = False
+
+		# if it has earth-sized moons
+		if self._name =
 
 class star:
 	def __init__(self,t,mv,size,n,dis,c,ty,num):
@@ -376,7 +385,7 @@ for p in lines:
 	atLine+=1
 	if (atLine == 1):
 		continue
-	print 'line:',atLine
+	#print 'line:',atLine
 	#print p
 	if int(p[g_c['star']])==1: # star
 		# def __init__(self,t,mv,r,n,dis,c,ty,num):
@@ -491,7 +500,10 @@ def initSmallMulti():
 				t.getMaterial().setTransparent(False)
 				t.getMaterial().setDepthTestEnabled(False)
 				t.setFixedSize(True)
-				t.setColor(Color('white'))
+				if p._isEarthSized and p._orbit>habInner and p._orbit<habOuter:
+					t.setColor(Color('red'))
+				else:
+					t.setColor(Color('white'))
 				sn_planetParent.addChild(t)
 				if p._orbit > wallLimit:
 					outCounter+=1
