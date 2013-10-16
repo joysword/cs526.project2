@@ -407,6 +407,30 @@ print 'number of systems generated:', len(li_allSys)
 ##############################################################################################################
 # INITIALIZE SMALL MULTIPLES
 
+def highlight(sys,star,p,t,size):
+	if p._isEarthSized and p._orbit>habInner and p._orbit<habOuter:
+		t.setColor(Color('red'))
+	elif cmp(sys._name, 'Gliese 876')==0 and cmp(p._name,'b')==0:
+		t.setColor(Color('red'))
+		if CAVE():
+			t.setFontSize(size)
+	elif cmp(sys._name,'55 Cancri')==0 and cmp(p._name,'f')==0:
+		t.setColor(Color('red'))
+		if CAVE():
+			t.setFontSize(size)
+	elif cmp(sys._name,'Upsilon Andromedae')==0 and cmp(p._name,'d')==0:
+		t.setColor(Color('red'))
+		if CAVE():
+			t.setFontSize(size)
+	elif cmp(sys._name,'47 Ursae Majoris')==0 and cmp(p._name,'b')==0:
+		t.setColor(Color('red'))
+		if CAVE():
+			t.setFontSize(size)
+	elif cmp(sys._name,'HD 37124')==0 and cmp(p._name,'c')==0:
+		t.setColor(Color('red'))
+		if CAVE():
+			t.setFontSize(size)
+
 def initSmallMulti():
 
 	global li_boxOnWall
@@ -500,10 +524,10 @@ def initSmallMulti():
 				t.getMaterial().setTransparent(False)
 				t.getMaterial().setDepthTestEnabled(False)
 				t.setFixedSize(True)
-				if p._isEarthSized and p._orbit>habInner and p._orbit<habOuter:
-					t.setColor(Color('red'))
-				else:
-					t.setColor(Color('white'))
+				t.setColor(Color('white'))
+
+				highlight(curSys,curSys._star,p,t,76):
+
 				sn_planetParent.addChild(t)
 				if p._orbit > wallLimit:
 					outCounter+=1
@@ -1215,6 +1239,9 @@ def addCenter(verticalHeight, theSys):
 		v.setFixedSize(True)
 		v.setColor(Color('white'))
 		sn_planetCenter.addChild(v)
+
+		# highlight habitable candidates
+		highlight(theSys,theSys._star,p,v,g_ftszcave_center*1.2)
 
 	## deal with the habitable zone
 
