@@ -61,6 +61,8 @@ c_scaleCenter_size = 0.01
 c_scaleCenter_dist = 0.000005
 c_scaleCenter_overall = 0.00025
 
+c_scaleUniv_size = 0.000002
+
 c_smallLabel_y_cave = 0.08
 
 c_delta_scale = 0.25 # interval between each scale
@@ -69,6 +71,8 @@ R_jupiter = 69911 # in KM
 R_sun = 695500 # in KM
 M_earth = 5.97219e24 # in KG
 R_earth = 6371 # in KM
+
+dic_color = {'O':'#99ccf2', 'B':'#b2bfe6', 'A':'#e6e6fcs', 'F':'#e6cc8c', 'G':'#ccb359', 'K':'#cc8059', 'M':'#cc1a0d'}
 
 ## global scale factors
 g_scale_size = 1.0
@@ -115,7 +119,7 @@ def KM_from_AU(n): # exact
 	return n * 149597870.7
 
 ## column names in data file
-g_c = {'name':0, 'star':1, 'size':2, 'distance':3, 'orbit':3, 'texture':4, 'rs':5, 'dec':6, 'app_mag':7, 'class':8, 'type':9, 'num':10, 'day':11, 'year':12, 'inc':13, 'detection':14, 'mass':15}
+g_c = {'name':0, 'star':1, 'size':2, 'distance':3, 'orbit':3, 'texture':4, 'ra':5, 'dec':6, 'app_mag':7, 'class':8, 'type':9, 'num':10, 'day':11, 'year':12, 'inc':13, 'detection':14, 'mass':15}
 
 ## bolometric correction constant for calculating habitable zone
 g_BC = {'B':-2.0,'A':-0.3,'F':-0.15,'G':-0.4,'K':-0.8,'M':-2.0}
@@ -177,35 +181,47 @@ class planet:
 			self._isEarthSized = False
 
 class star:
-	def __init__(self,t,mv,size,n,dis,c,ty,num):
+	def __init__(self,t,mv,size,n,dis,c,ty,num,ra,dec):
 		self._texture = t
+
 		if cmp(mv,'')==0:
 			self._mv = 0
 		else:
 			self._mv = float(mv)
-		#print 'mv:',mv
-		#print 'slef._mv:',self._mv
+
 		if cmp(size,'')==0:
 			self._size = 0
 		else:
 			self._size = float(size) * R_sun
+
 		self._name = n
+
 		self._dis = int(dis)
+
 		if cmp(c,'')==0:
 			self._class = 'unknown'
 		else:
 			self._class = c
+
 		if cmp(ty,'')==0:
 			self._type = 'unknown'
 		else:
 			self._type = ty
+
 		self._numChildren = int(num)
+
 		if self._mv==0 or cmp(self._class,'unkown')==0:
 			self._habNear = 0
 			self._habFar = 0
 		else:
 			self._habNear, self._habFar = self.getHabZone(self._mv, self._dis, self._class) # in KM
+
 		self._children = []
+
+		self._ra = float(ra[0:2])*15 + float(ra[3:5])*0.25 + float(ra[6:])*0.004166
+		self._dec = float(dec[1:3]) + float(dec[4:6])/60.0 + float(dec[7:])/3600.0
+		if cmp(dec[0],'-')==0:
+			self._dec *= -1.0
 
 	def addPlanet(self,pla):
 		self._children.append(pla)
@@ -330,6 +346,106 @@ btn_farthest = menu_preset.addButton('system in largest distance to us','loadPre
 btn_g_type = menu_preset.addButton('system with G type stars','loadPreset("g")')
 btn_most_planets = menu_preset.addButton('system with most planets','loadPreset("most")')
 
+## menu to filter small multiples
+menu_filter = mm.getMainMenu().addSubMenu('filter small multiples')
+
+menu_type = menu_filter.addSubMenu('type of star')
+menu_dis = menu_filter.addSubMenu('distance to us')
+menu_pla = menu_filter.addSubMenu('number of planets')
+
+container_type = menu_type.getContainer() # TO DO : see if all these options have systems to show
+btn_type_1 = Button.create(container_type)
+btn_type_2 = Button.create(container_type)
+btn_type_3 = Button.create(container_type)
+btn_type_4 = Button.create(container_type)
+btn_type_5 = Button.create(container_type)
+btn_type_6 = Button.create(container_type)
+btn_type_7 = Button.create(container_type)
+btn_type_8 = Button.create(container_type)
+
+btn_type_1.setText('O')
+btn_type_2.setText('B')
+btn_type_3.setText('A')
+btn_type_4.setText('F')
+btn_type_5.setText('G')
+btn_type_6.setText('K')
+btn_type_7.setText('M')
+btn_type_8.setText('other')
+
+btn_type_1.setCheckable(True)
+btn_type_2.setCheckable(True)
+btn_type_3.setCheckable(True)
+btn_type_4.setCheckable(True)
+btn_type_5.setCheckable(True)
+btn_type_6.setCheckable(True)
+btn_type_7.setCheckable(True)
+btn_type_8.setCheckable(True)
+
+btn_type_1.setChecked(True)
+btn_type_2.setChecked(True)
+btn_type_3.setChecked(True)
+btn_type_4.setChecked(True)
+btn_type_5.setChecked(True)
+btn_type_6.setChecked(True)
+btn_type_7.setChecked(True)
+btn_type_8.setChecked(True)
+
+container_dis = menu_dis.getContainer()
+btn_dis_1 = Button.create(container_dis)
+btn_dis_2 = Button.create(container_dis)
+btn_dis_3 = Button.create(container_dis)
+btn_dis_4 = Button.create(container_dis)
+
+btn_dis_1.setText('0 - 100 ly')
+btn_dis_2.setText('101 - 200 ly')
+btn_dis_3.setText('200 - 1000 ly')
+btn_dis_4.setText('>1000 ly')
+
+btn_dis_1.setCheckable(True)
+btn_dis_2.setCheckable(True)
+btn_dis_3.setCheckable(True)
+btn_dis_4.setCheckable(True)
+
+btn_dis_1.setChecked(True)
+btn_dis_2.setChecked(True)
+btn_dis_3.setChecked(True)
+btn_dis_4.setChecked(True)
+
+container_pla = menu_pla.getContainer()
+btn_pla_1 = Button.create(container_pla)
+btn_pla_2 = Button.create(container_pla)
+btn_pla_3 = Button.create(container_pla)
+btn_pla_4 = Button.create(container_pla)
+btn_pla_5 = Button.create(container_pla)
+btn_pla_6 = Button.create(container_pla)
+btn_pla_7 = Button.create(container_pla)
+
+btn_pla_1.setText('2')
+btn_pla_2.setText('3')
+btn_pla_3.setText('4')
+btn_pla_4.setText('5')
+btn_pla_5.setText('6')
+btn_pla_6.setText('7')
+btn_pla_7.setText('8')
+
+btn_pla_1.setCheckable(True)
+btn_pla_2.setCheckable(True)
+btn_pla_3.setCheckable(True)
+btn_pla_4.setCheckable(True)
+btn_pla_5.setCheckable(True)
+btn_pla_6.setCheckable(True)
+btn_pla_7.setCheckable(True)
+
+btn_pla_1.setChecked(True)
+btn_pla_2.setChecked(True)
+btn_pla_3.setChecked(True)
+btn_pla_4.setChecked(True)
+btn_pla_5.setChecked(True)
+btn_pla_6.setChecked(True)
+btn_pla_7.setChecked(True)
+
+btn_update = menu_filter.addButton('update','updateFilter()')
+
 ## menu to save and load configuration
 menu_sl = mm.getMainMenu().addSubMenu('save/load configuration')
 
@@ -361,18 +477,21 @@ setNearFarZ(0.1, 1000000)
 
 sn_root = SceneNode.create('root')
 sn_centerSys = SceneNode.create('centerSystems')
-sn_cen_sys = SceneNode.create('cen_sys')# another system in center
+sn_cen_sys = SceneNode.create('cen_sys') # another system in center
 sn_smallMulti = SceneNode.create('smallMulti')
 #sn_allSystems = SceneNode.create('allSystems')
+sn_univTrans = SceneNode.create('univTrans')
 
 sn_root.addChild(sn_centerSys)
 sn_root.addChild(sn_smallMulti)
+sn_root.addChild(sn_univTrans)
 #sn_smallMulti.addChild(sn_allSystems)
 sn_centerSys.addChild(sn_cen_sys)
 
-# fix small multiples, no move
+# fix small multiples and 3d universe, no move
 if CAVE():
 	cam.addChild(sn_smallMulti)
+	cam.addChild(sn_univTrans)
 
 ## Create a directional light
 light1 = Light.create()
@@ -407,7 +526,7 @@ for p in lines:
 	#print p
 	if int(p[g_c['star']])==1: # star
 		# def __init__(self,t,mv,r,n,dis,c,ty,num):
-		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']])
+		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']], p[g_c['ra']], p[g_c['dec']])
 		curSys = plaSys(curStar,curStar._dis,curStar._name)
 		li_allSys.append(curSys)
 
@@ -424,8 +543,14 @@ print 'number of systems generated:', len(li_allSys)
 # INITIALIZE PREDEFINED SETS
 
 set_nearest = [i for i in xrange(len(li_allSys))]
+print 'nearest:'
+for i in xrange(50):
+	print set_nearest[i]
 set_farthest = [(92-i) for i in xrange(len(li_allSys))]
 set_farthest[0] = 0
+print 'farthest:'
+for i in xrange(50):
+	print set_farthest[i]
 set_g_type = [0,1,5,6,10,12,14,18,19,20,21,23,24,28,29,32,33,34,35,36,37,39,41,43,44,45,47,48,50,53,54,56,57,58,59,60,61,62,63,64,65,67,68,69,70,72,73,75,79,80,82,87,88]
 set_most_planets = [0,44,8,87,1,4,6,82,84,85,2,3,9,12,15,46,5,7,10,11,25,26,27,28,35,42,43,57,62,63,70,77,83,88,13,14,16,17,18,19,20,21,22,23,24,29,30,31,32,33,34,36,37,38,39,40,41,45,47,48,49,50,51,52,53,54,55,56,58,59,60,61,64,65,66,67,68,69,71,72,73,74,75,76,78,79,80,81,86,89,90,91]
 
@@ -477,7 +602,10 @@ def initSmallMulti(preset):
 		for row in xrange(0, 8):
 
 			#print 'smallCount:',smallCount
-			curSys = li_allSys[preset[smallCount]]
+			if preset[smallCount]!=-1:
+				curSys = li_allSys[preset[smallCount]]
+			else:
+				curSys = li_allSys[14]
 
 			sn_smallTrans = SceneNode.create('smallTrans'+str(smallCount))
 
@@ -631,6 +759,10 @@ def initSmallMulti(preset):
 			sn_smallTrans.yaw(hLoc*degreeConvert)
 
 			sn_smallMulti.addChild(sn_smallTrans)
+
+			if preset[smallCount]==-1:
+				sn_smallTrans.setChildrenVisible(False)
+				bs_outlineBox.setVisible(True)
 
 			smallCount += 1
 
@@ -837,6 +969,35 @@ def initCenter(verticalHeight):
 	## end here
 
 initCenter(0.8)
+
+##############################################################################################################
+# INIT 3D UNIVERSE
+
+def getPos(ra,dec,dis):
+	x = dis*math.cos(dec)*math.cos(ra)
+	y = dis*math.cos(dec)*math.sin(ra)
+	z = dis*math.sin(dec)
+	return Vector3(x,y,z)
+
+def initUniv(preset):
+	sn_univParent = SceneNode.create('univTrans')
+	sn_univTrans.addChild(sn_univParent)
+	sn_univParent.setScale(0.003,0.003,0.003)
+	sn_univTrans.setPosition(1,2,-3)
+	for i in xrange(48):
+		curSys = li_allSys[preset[i]]
+		star = SphereShape.create(curSys._star._size * c_scaleUniv_size, 4)
+		star.setPosition(getPos(curSys._star._ra, curSys._star._dec, curSys._star._dis))
+		#star.getMaterial().setProgram('textured')
+		if curSys._star._class in dic_color.keys():
+			star.setEffect('colored -e '+dic_color[curSys._star._class])
+		else:
+			star.setEffect('colored -e '+dic_color['G'])
+		sn_univParent.addChild(star)
+		print
+
+initUniv(set_nearest)
+print '3d universe initialized'
 
 ##############################################################################################################
 # MAJOR FUNCTIONS
@@ -1415,8 +1576,6 @@ def onEvent():
 					g_mveToCenter==0
 				break
 
-
-
 setEventFunction(onEvent)
 
 ##############################################################################################################
@@ -1496,9 +1655,13 @@ def removeAllChildren(sn):
 def resetWall(set_):
 	global sn_smallMulti
 
+	print ('start removing all children of sn_smallMulti')
 	removeAllChildren(sn_smallMulti)
+	print ('done removing')
 
+	print 'start initSmallMulti'
 	initSmallMulti(set_)
+	print 'done resetting'
 
 def resetCenter():
 	global sn_centerSys
@@ -1538,7 +1701,7 @@ def resetEverything():
 	wallLimit = WALLLIMIT
 
 	resetCenter()
-	resetWall()
+	resetWall(set_nearest)
 
 def startReorder():
 	global g_reorder
@@ -1582,7 +1745,6 @@ def loadPreset(s):
 
 	if cmp(s,'near')==0:
 		resetWall(set_nearest)
-		resetWall(set_save)
 	elif cmp(s,'far')==0:
 		resetWall(set_farthest)
 	elif cmp(s,'g')==0:
@@ -1613,7 +1775,7 @@ def loadConfig(filename):
 	global set_save
 	global sn_smallMulti
 
-	print 'filename:', filename
+	#print 'filename:', filename
 
 	f = open(str(filename), 'r')
 
@@ -1621,4 +1783,86 @@ def loadConfig(filename):
 	set_save = pickle.load(f)
 	resetWall(set_save)
 
-# THE END ####################################################################################################
+def updateFilter():
+	print 'start updating'
+	res = []
+
+	for i in xrange(len(li_allSys)):
+		print 'testing system', i
+		sys = li_allSys[i]
+
+		## check type
+		if cmp(sys._star._class,'O')==0:
+			if btn_type_1.isChecked()==False:
+				continue
+		elif cmp(sys._star._class,'B')==0:
+			if btn_type_2.isChecked()==False:
+				continue
+		elif cmp(sys._star._class,'A')==0:
+			if btn_type_3.isChecked()==False:
+				continue
+		elif cmp(sys._star._class,'F')==0:
+			if btn_type_4.isChecked()==False:
+				continue
+		elif cmp(sys._star._class,'G')==0:
+			if btn_type_5.isChecked()==False:
+				continue
+		elif cmp(sys._star._class,'K')==0:
+			if btn_type_6.isChecked()==False:
+				continue
+		elif cmp(sys._star._class,'M')==0:
+			if btn_type_7.isChecked()==False:
+				continue
+		else:
+			if btn_type_8.isChecked()==False:
+				continue
+
+		## check distance
+		if sys._dis<=100:
+			if btn_dis_1.isChecked()==False:
+				continue
+		elif sys._dis<=200:
+			if btn_dis_2.isChecked()==False:
+				continue
+		elif sys._dis<=1000:
+			if btn_dis_3.isChecked()==False:
+				continue
+		else:
+			if btn_dis_4.isChecked()==False:
+				continue
+
+		## check number of planets
+		if sys._star._numChildren==2:
+			if btn_pla_1.isChecked()==False:
+				continue
+		elif sys._star._numChildren==3:
+			if btn_pla_2.isChecked()==False:
+				continue
+		elif sys._star._numChildren==4:
+			if btn_pla_3.isChecked()==False:
+				continue
+		elif sys._star._numChildren==5:
+			if btn_pla_4.isChecked()==False:
+				continue
+		elif sys._star._numChildren==6:
+			if btn_pla_5.isChecked()==False:
+				continue
+		elif sys._star._numChildren==7:
+			if btn_pla_6.isChecked()==False:
+				continue
+		else:
+			if btn_pla_7.isChecked()==False:
+				continue
+
+		print 'need to add'
+		res.append(i)
+		print 'added'
+
+	print 'done testing'
+	if len(res)<48:
+		print 'added less then 48 systems, filling up using None'
+		for i in xrange(len(res),48):
+			res.append(-1)
+		print 'done filling up'
+	print 'start resetting the wall'
+	resetWall(res)
