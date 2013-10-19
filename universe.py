@@ -39,13 +39,21 @@ dic_allBox = {} # dictionary of small multiple boxes
 dic_sys = {} # dictionary of systems
 li_boxOnWall = [] # scenenodes (outlineBox)
 
+li_textUniv = []
+
+wallLimit = 247000000 # by default, everything closer than this numer can be shown
+
+## global scale factors
+g_scale_size = 1.0
+g_scale_dist = 1.0
+g_scale_time = 1.0
+
+## sets of systems
 set_nearest = []
 set_most_planets = []
 set_farthest = []
 set_g_type = []
 set_save = [None]*48
-
-wallLimit = 247000000 # by default, everything closer than this numer can be shown
 
 ## constants
 caveRadius = 3.25
@@ -61,28 +69,28 @@ c_scaleCenter_size = 0.01
 c_scaleCenter_dist = 0.000005
 c_scaleCenter_overall = 0.00025
 
-c_scaleUniv_size = 0.000002
+c_scaleUniv_size = 0.000003
 
 c_smallLabel_y_cave = 0.08
 
-c_delta_scale = 0.25 # interval between each scale
+c_delta_scale = 0.2 # interval between each scale
 
 R_jupiter = 69911 # in KM
 R_sun = 695500 # in KM
 M_earth = 5.97219e24 # in KG
 R_earth = 6371 # in KM
 
-dic_color = {'O':'#99ccf2', 'B':'#b2bfe6', 'A':'#e6e6fcs', 'F':'#e6cc8c', 'G':'#ccb359', 'K':'#cc8059', 'M':'#cc1a0d'}
-
-## global scale factors
-g_scale_size = 1.0
-g_scale_dist = 1.0
-g_scale_time = 1.0
+dic_color = {'O':'#99ccf2', 'B':'#b2bfe6', 'A':'#e6e6fc', 'F':'#e6cc8c', 'G':'#ccb359', 'K':'#cc8059', 'M':'#cc1a0d'}
 
 ## font size
 g_ftszdesk = 0.03
 g_ftszcave = 0.03
 g_ftszcave_center = 120
+
+## for navigation
+isButton7down = False
+wandOldPos = Vector3()
+wandOldOri = Quaternion()
 
 ## unit conversion functions
 def M_from_AU(n): # exact
@@ -482,6 +490,9 @@ sn_smallMulti = SceneNode.create('smallMulti')
 #sn_allSystems = SceneNode.create('allSystems')
 sn_univTrans = SceneNode.create('univTrans')
 
+sn_univParent = SceneNode.create('univParent')
+sn_univTrans.addChild(sn_univParent)
+
 sn_root.addChild(sn_centerSys)
 sn_root.addChild(sn_smallMulti)
 sn_root.addChild(sn_univTrans)
@@ -491,7 +502,7 @@ sn_centerSys.addChild(sn_cen_sys)
 # fix small multiples and 3d universe, no move
 if CAVE():
 	cam.addChild(sn_smallMulti)
-	cam.addChild(sn_univTrans)
+	#cam.addChild(sn_univTrans)
 
 ## Create a directional light
 light1 = Light.create()
@@ -512,6 +523,13 @@ pointer = SphereShape.create(0.01,3)
 pointer.setEffect('colored -e #ff6600')
 pointer.setVisible(False)
 
+toggleStereo()
+
+InitCamPos = cam.getPosition()
+InitCamOri = cam.getOrientation()
+cam.setControllerEnabled(False)
+cam.getController().setSpeed(0.1)
+
 ##############################################################################################################
 # LOAD DATA FROM FILE
 
@@ -527,6 +545,7 @@ for p in lines:
 	if int(p[g_c['star']])==1: # star
 		# def __init__(self,t,mv,r,n,dis,c,ty,num):
 		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']], p[g_c['ra']], p[g_c['dec']])
+
 		curSys = plaSys(curStar,curStar._dis,curStar._name)
 		li_allSys.append(curSys)
 
@@ -543,14 +562,14 @@ print 'number of systems generated:', len(li_allSys)
 # INITIALIZE PREDEFINED SETS
 
 set_nearest = [i for i in xrange(len(li_allSys))]
-print 'nearest:'
-for i in xrange(50):
-	print set_nearest[i]
+#print 'nearest:'
+#for i in xrange(50):
+#	print set_nearest[i]
 set_farthest = [(92-i) for i in xrange(len(li_allSys))]
 set_farthest[0] = 0
-print 'farthest:'
-for i in xrange(50):
-	print set_farthest[i]
+#print 'farthest:'
+#for i in xrange(50):
+#	print set_farthest[i]
 set_g_type = [0,1,5,6,10,12,14,18,19,20,21,23,24,28,29,32,33,34,35,36,37,39,41,43,44,45,47,48,50,53,54,56,57,58,59,60,61,62,63,64,65,67,68,69,70,72,73,75,79,80,82,87,88]
 set_most_planets = [0,44,8,87,1,4,6,82,84,85,2,3,9,12,15,46,5,7,10,11,25,26,27,28,35,42,43,57,62,63,70,77,83,88,13,14,16,17,18,19,20,21,22,23,24,29,30,31,32,33,34,36,37,38,39,40,41,45,47,48,49,50,51,52,53,54,55,56,58,59,60,61,64,65,66,67,68,69,71,72,73,74,75,76,78,79,80,81,86,89,90,91]
 
@@ -643,6 +662,7 @@ def initSmallMulti(preset):
 					habOuter = wallLimit
 				habCenter = (habOuter+habInner)/2.0
 			else:
+				habCenter = (habOuter+habInner)/2.0
 				bs_habi.setVisible(False)
 
 			bs_habi.setScale(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
@@ -664,9 +684,9 @@ def initSmallMulti(preset):
 
 			outCounter = 0
 			for p in curSys._star._children:
-				#model = StaticObject.create('defaultSphere')
-				model = SphereShape.create(p._size * c_scaleWall_size * g_scale_size, 4)
-				#model.setScale(Vector3(p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size))
+				model = StaticObject.create('defaultSphere')
+				#model = SphereShape.create(p._size * c_scaleWall_size * g_scale_size, 4)
+				model.setScale(Vector3(p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size))
 				model.setPosition(Vector3(0.0,0.0,48000 - p._orbit * c_scaleWall_dist * g_scale_dist))
 				g_changeSize.append(model)
 				model.setEffect('textured -v emissive -d '+p._texture)
@@ -821,9 +841,10 @@ def initCenter(verticalHeight):
 	sn_centerSys.addChild(sn_centerTrans)
 
 	## the star
-	#model = StaticObject.create('defaultSphere')
-	model = SphereShape.create(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, 4)
-	#model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size))
+	model = StaticObject.create('defaultSphere')
+	#model = SphereShape.create(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, 4)
+	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02))
+	model.setPosition(0,1000,0)
 	g_changeSize.append(model)
 	model.getMaterial().setProgram('textured')
 	model.setEffect('textured -v emissive -d '+theSys._star._texture)
@@ -939,8 +960,9 @@ def initCenter(verticalHeight):
 	## deal with the habitable zone
 
 	cs_inner = CylinderShape.create(1, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, 10, 128)
-	cs_inner.setEffect('colored -e #ff000055')
-	cs_inner.getMaterial().setTransparent(True)
+	cs_inner.setEffect('colored -e #000000')
+	#cs_inner.getMaterial().setTransparent(True)
+	cs_inner.getMaterial().setTransparent(False)
 	cs_inner.pitch(-math.pi*0.5)
 	cs_inner.setScale(Vector3(1, 1, 1.0))
 
@@ -948,7 +970,7 @@ def initCenter(verticalHeight):
 	cs_outer.setEffect('colored -e #00ff0055')
 	cs_outer.getMaterial().setTransparent(True)
 	cs_outer.pitch(-math.pi*0.5)
-	cs_outer.setScale(Vector3(1, 1, 0.1))
+	cs_outer.setScale(Vector3(1, 1, 0.08))
 
 	sn_habZone = SceneNode.create('habZone'+str(theSys._name))
 	sn_habZone.addChild(cs_outer)
@@ -980,24 +1002,43 @@ def getPos(ra,dec,dis):
 	return Vector3(x,y,z)
 
 def initUniv(preset):
-	sn_univParent = SceneNode.create('univTrans')
-	sn_univTrans.addChild(sn_univParent)
-	sn_univParent.setScale(0.003,0.003,0.003)
-	sn_univTrans.setPosition(1,2,-3)
+	global sn_univParent
+	global sn_univTrans
+	global li_textUniv
+
+	if sn_univParent.numChildren()>0:
+		for i in xrange(sn_univParent.numChildren()):
+			sn_univParent.removeChildByIndex(0)
+
+	sn_univParent.setScale(0.005,0.005,0.005)
+	sn_univTrans.setPosition(1.2,1.8,-3)
+	li_textUniv = []
 	for i in xrange(48):
 		curSys = li_allSys[preset[i]]
 		star = SphereShape.create(curSys._star._size * c_scaleUniv_size, 4)
-		star.setPosition(getPos(curSys._star._ra, curSys._star._dec, curSys._star._dis))
-		#star.getMaterial().setProgram('textured')
+		pos = getPos(curSys._star._ra, curSys._star._dec, curSys._star._dis)
+		star.setPosition(pos)
+
 		if curSys._star._class in dic_color.keys():
 			star.setEffect('colored -e '+dic_color[curSys._star._class])
+			pass
 		else:
 			star.setEffect('colored -e '+dic_color['G'])
+			pass
 		sn_univParent.addChild(star)
-		print
+
+		t = Text3D.create('fonts/helvetica.ttf', 1, curSys._star._name)
+		t.setFontSize(30)
+		t.setFixedSize(True)
+		t.setPosition(pos.x, pos.y+curSys._star._size * c_scaleUniv_size * 1.2, pos.z)
+		t.setFacingCamera(cam)
+		#caveutil.orientWithHead(cam,t)
+
+		sn_univParent.addChild(t)
+		li_textUniv.append(t)
 
 initUniv(set_nearest)
-print '3d universe initialized'
+#print '3d universe initialized'
 
 ##############################################################################################################
 # MAJOR FUNCTIONS
@@ -1267,9 +1308,9 @@ def changeScale(name, add):
 				for t in g_changeSizeWallText:
 					#print '++'
 					p = t.getPosition()
-					print 'old:',t.getPosition()
+					#print 'old:',t.getPosition()
 					t.setPosition(Vector3(p.x, p.y*(g_scale_size)/(g_scale_size-c_delta_scale), p.z))
-					print 'new:',t.getPosition()
+					#print 'new:',t.getPosition()
 				return True
 		else: # -
 			#print 'enter -'
@@ -1333,9 +1374,9 @@ def addCenter(verticalHeight, theSys):
 	g_cen_changeDistCenterPlanets = []
 
 	## the star
-	#model = StaticObject.create('defaultSphere')
-	model = SphereShape.create(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, 4)
-	#model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size, theSys._star._size*c_scaleCenter_size*g_scale_size))
+	model = StaticObject.create('defaultSphere')
+	#model = SphereShape.create(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, 4)
+	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02))
 	g_cen_changeSize.append(model)
 	model.getMaterial().setProgram('textured')
 	model.setEffect('textured -v emissive -d '+theSys._star._texture)
@@ -1393,10 +1434,10 @@ def addCenter(verticalHeight, theSys):
 
 	## the planets
 	for p in theSys._star._children:
-		#model = StaticObject.create('defaultSphere')
-		model = SphereShape.create(p._size * c_scaleCenter_size * g_scale_size, 4)
+		model = StaticObject.create('defaultSphere')
+		#model = SphereShape.create(p._size * c_scaleCenter_size * g_scale_size, 4)
+		model.setScale(Vector3(p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size))
 		model.setPosition(Vector3(0.0, 0.0, -p._orbit*g_scale_dist*c_scaleCenter_dist))
-		#model.setScale(Vector3(p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size, p._size * c_scaleCenter_size * g_scale_size))
 		g_cen_changeSize.append(model)
 		g_cen_changeDistCenterPlanets.append(model)
 		model.getMaterial().setProgram('textured')
@@ -1454,8 +1495,9 @@ def addCenter(verticalHeight, theSys):
 	## deal with the habitable zone
 
 	cs_inner = CylinderShape.create(1, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, 10, 128)
-	cs_inner.setEffect('colored -e #ff000055')
-	cs_inner.getMaterial().setTransparent(True)
+	cs_inner.setEffect('colored -e #000000ff')
+	#cs_inner.getMaterial().setTransparent(True)
+	cs_inner.getMaterial().setTransparent(False)
 	cs_inner.pitch(-math.pi*0.5)
 	cs_inner.setScale(Vector3(1, 1, 1.0))
 
@@ -1496,6 +1538,15 @@ def onEvent():
 
 	global pointer
 
+	global isButton7down
+	global wandOldPos
+	global wandOldOri
+
+	global num_reorder
+	global box_reorder
+
+	global sn_smallMulti
+
 	e = getEvent()
 
 	## normal operations
@@ -1527,39 +1578,135 @@ def onEvent():
 			if not changeScale('time',True):
 				playSound(sd_warn, e.getPosition(), 1.0)
 
-		elif e.isKeyDown(ord('z')):
-			saveConfig()
+		elif (e.isButtonDown(EventFlags.Button7)):
+			if isButton7down==False:
+				isButton7down = True
+				wandOldPos = e.getPosition()
+				wandOldOri = e.getOrientation()
+				#print "wandOldPos:",wandOldPos
+				#print "wandOldOri:",wandOldOri
+		elif (e.isButtonUp(EventFlags.Button7)):
+			isButton7down = False
+
+		elif e.getServiceType() == ServiceType.Wand:
+			if isButton7down:
+				print 'button7isdown'
+				trans = e.getPosition()-wandOldPos
+				#cam.setPosition( cam.convertLocalToWorldPosition( trans*cam.getController().getSpeed() ) )
+				cam.translate( trans*cam.getController().getSpeed(), Space.Local)
+				oriVecOld = quaternionToEuler(wandOldOri)
+				oriVec = quaternionToEuler(e.getOrientation())
+				cam.rotate( oriVec-oriVecOld, 2*math.pi/180, Space.Local )
 
 	## choose to reorder
 	elif g_reorder==1:
-		if e.isButtonDown(EventFlags.Button2) or e.isKeyDown(ord('m')):
-			e.setProcessed()
-			r = getRayFromEvent(e)
-			if r[0]:
-				querySceneRay(r[1],r[2],reorderCallback)
-				g_reorder = 2
-				playSound(sd_reo_selected, cam.getPosition(), 1.0)
-		elif e.isButtonDown(EventFlags.Button3):
-			e.setProcessed()
-			g_reorder==0
-			playSound(sd_reo_quit, cam.getPosition(), 1.0)
+		r = getRayFromEvent(e)
+		for i in xrange(sn_smallMulti.numChildren()):
+			sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(i))
+			bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
+			hitData = hitNode(bs_outlineBox, r[1], r[2])
+			if hitData[0]:
+				pointer.setPosition(hitData[1])
+				if e.isButtonDown(EventFlags.Button3):
+					e.setProcessed()
+					g_reorder=0
+					pointer.setVisible(False)
+					playSound(sd_reo_quit, cam.getPosition(), 1.0)
+					#print 'quit reorder mode'
+				elif e.isButtonDown(EventFlags.Button2):
+					#print 'button 2 clicked'
+					e.setProcessed()
+					g_reorder=2
+					#print 'g_reoder=2'
+					bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
+					#print 'box color changed'
+					num_reorder = i # record this node as reordering
+					box_reorder = sn_smallTrans # record this node as reordering
+					playSound(sd_reo_selected, cam.getPosition(), 1.0)
+				break
+
+		# for node in li_boxOnWall:
+		# 	hitData = hitNode(node, r[1], r[2])
+		# 	if hitData[0]:
+		# 		pointer.setPosition(hitData[1])
+		# 		if e.isButtonDown(EventFlags.Button3):
+		# 			e.setProcessed()
+		# 			g_reorder=0
+		# 			playSound(sd_reo_quit, cam.getPosition(), 1.0)
+		# 		elif e.isButtonDown(EventFlags.Button2):
+		# 			e.setProcessed()
+		# 			g_reorder=2
+		# 			node.setEffect('colored -e #3274cc44') # change color to mark it
+		# 			box_reorder = node # record this node as reordering
+		# 			playSound(sd_reo_selected, cam.getPosition(), 1.0)
+		# 		break
 
 	## move to reorder
 	elif g_reorder==2:
-		## quit reorder mode
-		if e.isButtonDown(EventFlags.Button2):
-			g_reorder = 1
-			playSound(sd_reo_done, cam.getPosition(), 1.0)
-			e.setProcessed()
-		## move selected small multiple around
-		elif e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
-			doReorder('left')
-		elif e.isButtonDown(EventFlags.ButtonRight) or e.isKeyDown(ord('l')):
-			doReorder('right')
-		elif e.isButtonDown(EventFlags.ButtonUp) or e.isKeyDown(ord('i')):
-			doReorder('up')
-		elif e.isButtonDown(EventFlags.ButtonDown) or e.isKeyDown(ord('k')):
-			doReorder('down')
+		r = getRayFromEvent(e)
+
+		for i in xrange(sn_smallMulti.numChildren()):
+			sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(i))
+			bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
+			hitData = hitNode(bs_outlineBox, r[1], r[2])
+			if hitData[0]:
+				pointer.setPosition(hitData[1])
+				if e.isButtonDown(EventFlags.Button3):
+					e.setProcessed()
+					g_reorder=1
+					box_reorder.setEffect('colored -e #01b2f144') # restore original color
+					playSound(sd_reo_canceled, cam.getPosition(), 1.0)
+		 			playSound(sd_reo_please, cam.getPosition(), 1.0)
+		 			print ('cenceled') # TO DO: still bug
+		 		elif e.isButtonDown(EventFlags.Button2):
+		 			for ii in xrange(sn_smallMulti.numChildren()):
+		 				print ii,sn_smallMulti.getChildByIndex(ii)
+		 			e.setProcessed()
+		 			if i != num_reorder:
+		 				bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
+		 				curPos = sn_smallTrans.getPosition()
+		 				curOri = sn_smallTrans.getOrientation()
+		 				if i<num_reorder:
+		 					for j in xrange(i,num_reorder):
+		 						n = sn_smallMulti.getChildByName('smallTrans'+str(j))
+		 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(j+1))
+		 						n.setPosition(n1.getPosition())
+		 						n.setOrientation(n1.getOrientation())
+		 					n = sn_smallTrans.getChildByName('smallTrans'+str(num_reorder))
+		 					n.setPosition(curPos)
+		 					n.setOrientation(curOri)
+		 				else:
+		 					j = i
+		 					while j>num_reorder:
+		 						print 'j=',j
+		 						n = sn_smallMulti.getChildByName('smallTrans'+str(j))
+		 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(j-1))
+		 						n.setPosition(n1.getPosition())
+		 						n.setOrientation(n1.getOrientation())
+		 						j-=1
+		 					print 'out of while' # TO DO: bug bug bug
+		 					n = sn_smallTrans.getChildByName('smallTrans'+str(num_reorder))
+		 					n.setPosition(curPos)
+		 					n.setOrientation(curOri)
+		 				playSound(sd_reo_done, cam.getPosition(), 1.0)
+		 				g_reorder=1
+		 		break
+
+
+		# for node in li_boxOnWall:
+		# 	hitData = hitNode(node, r[1], r[2])
+		# 	if hitData[0]:
+		# 		pointer.setPosition(hitData[1])
+		# 		if e.isButtonDown(EventFlags.Button3):
+		# 			e.setProcessed()
+		# 			g_reorder=1
+		# 			box_reorder.setEffect('colored -e #01b2f144') # restore original color
+		# 			playSound(sd_reo_canceled, cam.getPosition(), 1.0)
+		# 			playSound(sd_reo_please, cam.getPosition(), 1.0)
+		# 		elif e.isButtonDown(EventFlags.Button2):
+		# 			if node != box_reorder:
+
+		# 	break
 
 	## move to center
 	elif g_moveToCenter==1:
@@ -1573,7 +1720,7 @@ def onEvent():
 					playSound(sd_mtc_moving, cam.getPosition(), 1.0)
 					addCenter(1.2,dic_allBox[node])
 					pointer.setVisible(False)
-					g_mveToCenter==0
+					g_moveToCenter=0
 				break
 
 setEventFunction(onEvent)
@@ -1586,7 +1733,6 @@ def onUpdate(frame, t, dt):
 	global g_rot
 	global g_scale_time
 
-	#pass
 	# ALL THINGS IN 3D ROTATE AS TIME PASSES BY
 	for o,y in g_orbit:
 		#i[0].yaw(dt/40*g_scale_time*(1.0/i[1])
@@ -1605,6 +1751,9 @@ def onUpdate(frame, t, dt):
 		if d==0:
 			continue
 		o.yaw(dt/40*365*g_scale_time*(1.0/d))
+
+	# 3d universe
+	sn_univParent.yaw(dt/20)
 
 setUpdateFunction(onUpdate)
 
@@ -1655,13 +1804,13 @@ def removeAllChildren(sn):
 def resetWall(set_):
 	global sn_smallMulti
 
-	print ('start removing all children of sn_smallMulti')
+	#print ('start removing all children of sn_smallMulti')
 	removeAllChildren(sn_smallMulti)
-	print ('done removing')
+	#print ('done removing')
 
-	print 'start initSmallMulti'
+	#print 'start initSmallMulti'
 	initSmallMulti(set_)
-	print 'done resetting'
+	#print 'done resetting'
 
 def resetCenter():
 	global sn_centerSys
@@ -1674,7 +1823,30 @@ def resetEverything():
 	global g_scale_time
 	global g_scale_size
 	global g_scale_dist
+
+	global g_orbit
+	global g_rot
+	global g_changeSize
+	global g_changeSizeCenterText
+	global g_changeDistCircles
+	global g_changeDistCenterHab
+	global g_changeDistCenterPlanets
+
+	global g_changeSizeWallText
+
+	global g_cen_orbit
+	global g_cen_rot
+	global g_cen_changeSize
+	global g_cen_changeSizeCenterText
+	global g_cen_changeDistCircles
+	global g_cen_changeDistCenterHab
+	global g_cen_changeDistCenterPlanets
+
 	global wallLimit
+
+	global g_reorder
+	global g_moveToCenter
+	global g_invisOnes
 
 	g_scale_size = 1
 	g_scale_dist = 1
@@ -1700,24 +1872,29 @@ def resetEverything():
 
 	wallLimit = WALLLIMIT
 
+	g_reorder = 0
+	g_moveToCenter = 0
+	g_invisOnes = []
+
+	cam.setPosition(InitCamPos)
+	cam.setOrientation(InitCamOri)
+	print 'initCamPos:',InitCamPos
+	print 'initCamOri:',InitCamOri
+	#cam.setPosition(Vector3(0,0,0))
+	#cam.setOrientation(Quaternion(0,0,0,0))
+
 	resetCenter()
 	resetWall(set_nearest)
 
 def startReorder():
 	global g_reorder
+	global pointer
+
 	g_reorder = 1
+	pointer.setVisible(True)
 	mm.getMainMenu().hide()
 	print 'now in reorder mode'
 	playSound(sd_reo_please,cam.getPosition(),1.0)
-
-def reorderCallback(node, distance):
-	global g_reorder_mNum
-	# if this node is smallTrans
-	# then record location of it
-	# and change the box's color
-	pos = node.getPosition()
-	print 'pos:',pos
-	g_reorder_mNum = posToNum()
 
 def startMoveToCenter():
 	global g_moveToCenter
@@ -1734,11 +1911,6 @@ def startMoveToCenter():
 def pointingCallback(node, distance):
 	print 'yawing!'
 	node.yaw(math.pi*0.2)
-
-def moveToCenterCallback(node, distance):
-	# if this node is smallTrans
-	# then move it to center
-	todo = 0
 
 def loadPreset(s):
 	global sn_smallMulti
@@ -1761,7 +1933,7 @@ def saveConfig():
 	print 'start saving'
 	li = [None]*48
 	t = datetime.now().strftime("%m-%d-%y %H:%M:%S")
-	filename = t[0]+t[1]+t[3]+t[4]+t[6]+t[7]+t[9]+t[10]+t[12]+t[13]+t[15]+t[16]+'.txt'
+	filename = t[0]+t[1]+t[3]+t[4]+t[6]+t[7]+t[9]+t[10]+t[12]+t[13]+t[15]+t[16]
 	#print "time:",t
 	print 'file:',filename
 	with open(filename, 'w') as f:
@@ -1787,7 +1959,9 @@ def updateFilter():
 	print 'start updating'
 	res = []
 
-	for i in xrange(len(li_allSys)):
+	res.append[0]
+
+	for i in xrange(1,len(li_allSys)):
 		print 'testing system', i
 		sys = li_allSys[i]
 
@@ -1854,15 +2028,15 @@ def updateFilter():
 			if btn_pla_7.isChecked()==False:
 				continue
 
-		print 'need to add'
+		#print 'need to add'
 		res.append(i)
-		print 'added'
+		#print 'added'
 
-	print 'done testing'
+	#print 'done testing'
 	if len(res)<48:
-		print 'added less then 48 systems, filling up using None'
+		#print 'added less then 48 systems, filling up using None'
 		for i in xrange(len(res),48):
 			res.append(-1)
-		print 'done filling up'
-	print 'start resetting the wall'
+		#print 'done filling up'
+	#print 'start resetting the wall'
 	resetWall(res)
