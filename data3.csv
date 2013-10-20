@@ -155,7 +155,7 @@ c,0,,2.9,textures/earth.jpg,-,-,-,-,-,-,,4.679452055,,Radial Velocity,619.329230
 HD 51608,1,,114,textures/k.png,006.54.51,-55.15.34,8.17,K,K0IV,2,-,-,-,-,
 b,0,,0.1059,textures/earth.jpg,-,-,-,-,-,-,,0.038547945,,Radial Velocity,13.12927
 c,0,,0.3791,textures/earth.jpg,-,-,-,-,-,-,,0.261410959,,Radial Velocity,17.96135
-HD 20781,1,,115,textures/g.png,03.20.03,-28.47.02,8.44,G,G9.5V,2,-,-,-,-,
+HD 20781,1,,115,textures/g.png,03.20.03,-28.47.02,8.44,G,G9.5V,2,-,-,-,-, 
 b,0,,0.169,textures/earth.jpg,-,-,-,-,-,-,,0.079863014,,Radial Velocity,12.04841
 c,0,,0.3456,textures/earth.jpg,-,-,-,-,-,-,,0.233235616,,Radial Velocity,15.76784
 HD 169830,1,1.80318,119,textures/f.png,18.27.49.48,-29.49.00.7,5.91,F,F9V,2,-,-,-,-,
@@ -320,7 +320,7 @@ c,0,0.178,0.09,textures/earth.jpg,-,-,-,-,-,-,,0.02397863,,Transit,
 d,0,0.241,0.128,textures/earth.jpg,-,-,-,-,-,-,,0.062411507,,Transit,
 e,0,0.134,0.0323,textures/earth.jpg,-,-,-,-,-,-,,0.007934247,,Transit,
 f,0,0.072,0.013,textures/earth.jpg,-,-,-,-,-,-,,0.002035507,,Transit,
-NN Serpentis,1,,1593,textures/sol.png,15.52.56.13,+12.54.44.7,16.67,,WD+M,2,-,-,-,-,2
+NN Serpentis,1,,1593,textures/sol.png,15.52.56.13,+12.54.44.7,16.67,,WD+M,2,-,-,-,-,circumbinary
 c,0,,5.38,textures/earth.jpg,-,-,-,-,-,-,,15.50684932,,Eclipse Timing Variations,2196.689
 d,0,,3.39,textures/earth.jpg,-,-,-,-,-,-,,7.753424658,,Eclipse Timing Variations,724.812
 Kepler-11,1,1.065,1999,textures/g.png,19.48.27.62,41.54.32.9,13.69,G,G4V,6,-,-,-,-,
@@ -340,6 +340,6 @@ c,0,0.078,0.0076,textures/earth.jpg,-,-,-,-,-,-,,0.34289,,Radial Velocity,0.6675
 OGLE-2006-BLG-109L,1,,4850,textures/m.png,17.52.35.22,-30.05.15.7,19.87,M,M1V,2,-,-,-,-,
 b,0,,2.30586,textures/earth.jpg,-,-,-,-,-,-,,5,,Microlensing,231.1133
 c,0,,4.8168,textures/earth.jpg,-,-,-,-,-,-,,13.97260274,59,Microlensing,86.1509
-Kepler-47,1,0.964,4900,textures/sol.png,19.41.11.5,+46.55.13.69,15.178,,,2,-,-,-,-,
+Kepler-47,1,0.964,4900,textures/sol.png,19.41.11.5,+46.55.13.69,15.178,,,2,-,-,-,-,circumbinary
 b,0,0.27,0.2962,textures/earth.jpg,-,-,-,-,-,-,,0.13570411,89.7,Transit,
 c,0,0.411,0.991,textures/earth.jpg,-,-,-,-,-,-,,0.830512329,89.825,Transit,
