@@ -35,6 +35,7 @@ g_moveToCenter = 0 # status of bring to center 0: not; 1: in
 g_invisOnes = []
 
 g_curOrder = [i for i in xrange(48)]
+g_curOrder_save = g_curOrder
 
 li_allSys = [] # classes, aaalllllll the systems
 dic_allBox = {} # dictionary of small multiple boxes
@@ -271,7 +272,9 @@ sdEnv.setAssetDirectory('syin_p2')
 
 sd_warn = SoundInstance(sdEnv.loadSoundFromFile('warn','sound/warn.wav'))
 sd_bgm = SoundInstance(sdEnv.loadSoundFromFile('backgroundmusic','sound/bgm.wav'))
-sd_load = SoundInstance(sdEnv.loadSoundFromFile('load','sound/load.wav'))
+sd_loading = SoundInstance(sdEnv.loadSoundFromFile('load','sound/loading.wav'))
+
+sd_reset = SoundInstance(sdEnv.loadSoundFromFile('reset','sound/reset.wav'))
 
 sd_reo_please = SoundInstance(sdEnv.loadSoundFromFile('reo_please','sound/reorder/please.wav'))
 sd_reo_selected = SoundInstance(sdEnv.loadSoundFromFile('reo_selected','sound/reorder/selected.wav'))
@@ -282,6 +285,9 @@ sd_reo_canceled = SoundInstance(sdEnv.loadSoundFromFile('reo_canceled','sound/re
 sd_mtc_please = SoundInstance(sdEnv.loadSoundFromFile('mtc_please','sound/movetocenter/please.wav'))
 sd_mtc_moving = SoundInstance(sdEnv.loadSoundFromFile('mtc_moving','sound/movetocenter/moving.wav'))
 sd_mtc_quit = SoundInstance(sdEnv.loadSoundFromFile('mtc_quit','sound/movetocenter/quit.wav'))
+
+sd_sav_saved = SoundInstance(sdEnv.loadSoundFromFile('sav_saved','sound/saveconfig/saved.wav'))
+#sd_sav_loading = SoundInstance(sdEnv.loadSoundFromFile('sav_loading','sound/saveconfig/loading.wav'))
 
 def playSound(sd, pos, vol):
 	sd.setPosition(pos)
@@ -688,6 +694,8 @@ def initSmallMulti(preset):
 	li_boxOnWall = []
 	dic_allBox = {}
 	dic_sys = {}
+
+	playSound(sd_loading, cam.getPosition(), 1.0)
 
 	# restore the order
 	g_curOrder = [i for i in xrange(48)]
@@ -1921,6 +1929,8 @@ def resetEverything():
 	#cam.setPosition(Vector3(0,0,0))
 	#cam.setOrientation(Quaternion(0,0,0,0))
 
+	playSound(sd_reset, cam.getPosition(), 1.0)
+
 	resetCenter()
 	resetWall(set_nearest)
 
@@ -1980,6 +1990,7 @@ def saveConfig():
 		#print f
 	#print 'saved to '+t
 	menu_load.addButton(t,'loadConfig('+str(filename)+')')
+	playSound(sd_sav_saved, cam.getPosition(), 1.0)
 
 def loadConfig(filename):
 	global set_save
