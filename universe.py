@@ -45,6 +45,9 @@ li_textUniv = []
 
 text_univ_highlight = None
 
+# whether we are showing the info of a system
+g_showInfo = False
+
 wallLimit = 247000000 # by default, everything closer than this numer can be shown
 
 ## global scale factors
@@ -465,6 +468,9 @@ menu_sl = mm.getMainMenu().addSubMenu('save/load configuration')
 
 btn_save = menu_sl.addButton('save current configuration','saveConfig()')
 menu_load = menu_sl.addSubMenu('load a configuration')
+
+## button to show info image
+btn_info = mm.getMainMenu().addButton('show info (beta)','showInfo()')
 
 ## button to move one of the small multiples to center
 btn_moveToCenter = mm.getMainMenu().addButton('move to center','startMoveToCenter()')
@@ -2072,3 +2078,22 @@ def updateFilter():
 		#print 'done filling up'
 	#print 'start resetting the wall'
 	resetWall(res)
+
+def showInfo():
+	global g_showInfo
+
+	g_showInfo = True
+	ui = UiModule.createAndInitialize()
+	wf = ui.getWidgetFactory()
+	uiroot = ui.getUi()
+
+	legend = wf.createImage('legend', uiroot)
+	legend.setData(loadImage('images/Tau_Ceti.png'))
+	legend.setLayer(WidgetLayer.Front)
+	#legend.setSize(Vector2(UIScale * 180, UIScale * 240))
+	#yWidgPos = (UIScale * 480) - legend.getSize()[1]
+	if CAVE():
+		legend.setPosition(Vector2(15025 ,0))
+	else:
+		legend.setPosition(Vector2(0 ,0))
+	print 'done loading image'
