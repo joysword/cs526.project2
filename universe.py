@@ -34,6 +34,8 @@ g_moveToCenter = 0 # status of bring to center 0: not; 1: in
 
 g_invisOnes = []
 
+g_curOrder = [i for i in xrange(48)]
+
 li_allSys = [] # classes, aaalllllll the systems
 dic_allBox = {} # dictionary of small multiple boxes
 dic_sys = {} # dictionary of systems
@@ -71,7 +73,7 @@ c_scaleCenter_size = 0.01
 c_scaleCenter_dist = 0.000005
 c_scaleCenter_overall = 0.00025
 
-c_scaleUniv_size = 0.000003
+c_scaleUniv_size = 0.000002
 
 c_smallLabel_y_cave = 0.08
 
@@ -272,9 +274,11 @@ sd_reo_please = SoundInstance(sdEnv.loadSoundFromFile('reo_please','sound/reorde
 sd_reo_selected = SoundInstance(sdEnv.loadSoundFromFile('reo_selected','sound/reorder/selected.wav'))
 sd_reo_done = SoundInstance(sdEnv.loadSoundFromFile('reo_done','sound/reorder/done.wav'))
 sd_reo_quit = SoundInstance(sdEnv.loadSoundFromFile('reo_quit','sound/reorder/quit.wav'))
+sd_reo_canceled = SoundInstance(sdEnv.loadSoundFromFile('reo_canceled','sound/reorder/canceled.wav'))
 
 sd_mtc_please = SoundInstance(sdEnv.loadSoundFromFile('mtc_please','sound/movetocenter/please.wav'))
 sd_mtc_moving = SoundInstance(sdEnv.loadSoundFromFile('mtc_moving','sound/movetocenter/moving.wav'))
+sd_mtc_quit = SoundInstance(sdEnv.loadSoundFromFile('mtc_quit','sound/movetocenter/quit.wav'))
 
 def playSound(sd, pos, vol):
 	sd.setPosition(pos)
@@ -589,8 +593,6 @@ def initUniv(preset):
 	global sn_univTrans
 	global li_textUniv
 
-	global g_scale_univ
-
 	if sn_univParent.numChildren()>0:
 		for i in xrange(sn_univParent.numChildren()):
 			sn_univParent.removeChildByIndex(0)
@@ -605,14 +607,18 @@ def initUniv(preset):
 			if curSys._dis>maxDis:
 				maxDis = curSys._dis
 
-	print 'max dis:',maxDis
-
 	for i in xrange(48):
 		if preset[i]!=-1:
 			curSys = li_allSys[preset[i]]
-			star = SphereShape.create(curSys._star._size * c_scaleUniv_size, 4)
+			star = SphereShape.create(math.sqrt(curSys._star._size * c_scaleUniv_size), 4)
 			pos = getPos(curSys._star._ra, curSys._star._dec, curSys._star._dis)
-			star.setPosition(pos*140/maxDis)
+			if maxDis>2000:
+				pos = pos*1000/maxDis
+			elif maxDis>1000:
+				pos = pos*600/maxDis
+			else:
+				pos = pos*140/maxDis
+			star.setPosition(pos)
 
 			if curSys._star._class in dic_color.keys():
 				star.setEffect('colored -e '+dic_color[curSys._star._class])
@@ -636,7 +642,7 @@ def initUniv(preset):
 			sn_univParent.addChild(t)
 			li_textUniv.append(t)
 
-	sn_univParent.setScale(0.05,0.05,0.05)
+	sn_univParent.setScale(0.005,0.005,0.005)
 
 ##############################################################################################################
 # INITIALIZE SMALL MULTIPLES
@@ -671,9 +677,14 @@ def initSmallMulti(preset):
 	global dic_allBox
 	global dic_sys
 
+	global g_curOrder
+
 	li_boxOnWall = []
 	dic_allBox = {}
 	dic_sys = {}
+
+	# restore the order
+	g_curOrder = [i for i in xrange(48)]
 
 	smallCount = 0
 
@@ -1059,38 +1070,6 @@ initCenter(0.8)
 
 ##############################################################################################################
 # MAJOR FUNCTIONS
-
-## move to reorder small multiples
-def doReorder(where):
-	global g_reorder_mNum
-
-	if cmp(where,'left')==0:
-	 	toNum = (g_reorder_mNum-c_row_on_wall)
-	elif cmp(where,'right')==0:
-		toNum = (g_reorder_mNum+c_row_on_wall)
-	elif cmp(where,'up')==0:
-		toNum = (g_reorder_mNum-c_col_on_wall)
-	elif cmp(where,'down')==0:
-		toNum = (g_reorder_mNum+c_col_on_wall)
-
-	if toNum<0:
-		toNum+=48
-	elif toNum>47:
-		toNum-=48
-
-	toNode = li_boxOnWall[toNum]
-	toPos = toNode.getPosition()
-	toOri = toNode.getOrientation()
-	toNode.setPosition(li_boxOnWall[g_reorder_mNum].getPosition())
-	toNode.setOrientation(li_boxOnWall[g_reorder_mNum].getOrientation())
-	fromNode.setPosition(toPos)
-	fromNode.setOrientation(toOri)
-	li_boxOnWall[g_reorder_mNum], li_boxOnWall[toNum] = li_boxOnWall[toNum], li_boxOnWall[g_reorder_mNum] # swap
-
-	dic_sys[g_reorder_mNum], dic_sys[toNum] = dic_sys[toNum], dic_sys[g_reorder_mNum] # TO DO: test
-	set_save[g_reorder_mNum], set_save[toNum] = set_save[toNum], set_save[g_reorder_mNum] # TO DO: test
-
-	g_reorder_mNum = toNum
 
 ## change the scale factor, if failed return False
 def changeScale(name, add):
@@ -1573,6 +1552,8 @@ def onEvent():
 
 	global text_univ_highlight
 
+	global g_curOrder
+
 	e = getEvent()
 
 	## normal operations
@@ -1624,53 +1605,62 @@ def onEvent():
 
 	## move to center
 	elif g_moveToCenter==1:
-		r = getRayFromEvent(e)
-		for i in xrange(48):
-		#for node in li_boxOnWall:
-			node = li_boxOnWall[i]
-			hitData = hitNode(node, r[1], r[2])
-			if hitData[0]:
-				pointer.setPosition(hitData[1])
-				if e.isButtonDown(EventFlags.Button2):
-					e.setProcessed()
-					if text_univ_highlight!=None:
-						text_univ_highlight.setColor(Color('white'))
-					li_textUniv[i].setColor(Color('red'))
-					text_univ_highlight = li_textUniv[i]
-					addCenter(1.2,dic_allBox[node])
-					pointer.setVisible(False)
-					g_moveToCenter=0
-					playSound(sd_mtc_moving, cam.getPosition(), 1.0)
-				break
+		if e.isButtonDown(EventFlags.Button3):
+			e.setProcessed()
+			g_moveToCenter=0
+			pointer.setVisible(False)
+			playSound(sd_mtc_quit, cam.getPosition(), 1.0)
+			print ('quit move to center mode')
+		else:
+			r = getRayFromEvent(e)
+			for i in xrange(48):
+				node = li_boxOnWall[i]
+				hitData = hitNode(node, r[1], r[2])
+				if hitData[0]:
+					pointer.setPosition(hitData[1])
+					if e.isButtonDown(EventFlags.Button2):
+						e.setProcessed()
+						if text_univ_highlight!=None:
+							text_univ_highlight.setColor(Color('white'))
+						li_textUniv[i].setColor(Color('red'))
+						text_univ_highlight = li_textUniv[i]
+						addCenter(1.2,dic_allBox[node])
+						pointer.setVisible(False)
+						g_moveToCenter=0
+						playSound(sd_mtc_moving, cam.getPosition(), 1.0)
+					break
 
 	## choose to reorder
 	elif g_reorder==1:
-		r = getRayFromEvent(e)
-		for i in xrange(sn_smallMulti.numChildren()):
-			sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(i))
-			bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
-			hitData = hitNode(bs_outlineBox, r[1], r[2])
-			if hitData[0]:
-				pointer.setPosition(hitData[1])
-				# quit reorder mode
-				if e.isButtonDown(EventFlags.Button3):
-					e.setProcessed()
-					g_reorder=0
-					pointer.setVisible(False)
-					playSound(sd_reo_quit, cam.getPosition(), 1.0)
-					#print 'quit reorder mode'
-				# select a box
-				elif e.isButtonDown(EventFlags.Button2):
-					#print 'button 2 clicked'
-					e.setProcessed()
-					g_reorder=2
-					#print 'g_reoder=2'
-					bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
-					#print 'box color changed'
-					num_reorder = i # record this node as reordering
-					box_reorder = sn_smallTrans # record this node as reordering
-					playSound(sd_reo_selected, cam.getPosition(), 1.0)
-				break
+		# quit reorder mode
+		if e.isButtonDown(EventFlags.Button3):
+			e.setProcessed()
+			g_reorder=0
+			pointer.setVisible(False)
+			playSound(sd_reo_quit, cam.getPosition(), 1.0)
+			print 'quit reorder mode'
+		else:
+			r = getRayFromEvent(e)
+			for i in xrange(sn_smallMulti.numChildren()):
+				sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[i]))
+				bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(g_curOrder[i])).getChildByIndex(0)
+				hitData = hitNode(bs_outlineBox, r[1], r[2])
+				if hitData[0]:
+					pointer.setPosition(hitData[1])
+					# select a box
+					if e.isButtonDown(EventFlags.Button2):
+						#print 'button 2 clicked'
+						e.setProcessed()
+						g_reorder=2
+						#print 'g_reoder=2'
+						#bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
+						#print 'box color changed'
+						num_reorder = i # record this node as reordering
+						#box_reorder = sn_smallTrans # record this node as reordering
+						box_reorder = bs_outlineBox
+						#bs_outlineBox.setEffect('colored -e #01b2f144')
+						playSound(sd_reo_selected, cam.getPosition(), 1.0)
+					break
 
 		# for node in li_boxOnWall:
 		# 	hitData = hitNode(node, r[1], r[2])
@@ -1690,56 +1680,55 @@ def onEvent():
 
 	## move to reorder
 	elif g_reorder==2:
-		r = getRayFromEvent(e)
+		# cancel selection
+		if e.isButtonDown(EventFlags.Button3):
+			e.setProcessed()
+			g_reorder=1
+			#box_reorder.setEffect('colored -e #01b2f144') # restore original color
+			playSound(sd_reo_canceled, cam.getPosition(), 1.0)
+ 			playSound(sd_reo_please, cam.getPosition(), 1.0)
+ 			print ('cenceled')
+ 		else:
+			r = getRayFromEvent(e)
+			for i in xrange(sn_smallMulti.numChildren()):
+				sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[i]))
+				bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(g_curOrder[i])).getChildByIndex(0)
+				hitData = hitNode(bs_outlineBox, r[1], r[2])
+				if hitData[0]:
+					pointer.setPosition(hitData[1])
+			 		# select another box
+			 		if e.isButtonDown(EventFlags.Button2):
+			 			#for ii in xrange(sn_smallMulti.numChildren()):
+			 			#	print ii,sn_smallMulti.getChildByIndex(ii)
+			 			e.setProcessed()
+			 			if i != num_reorder:
+			 				#bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
+			 				curPos = sn_smallTrans.getPosition()
+			 				curOri = sn_smallTrans.getOrientation()
+			 				if i<num_reorder:
+			 					for j in xrange(i,num_reorder):
+			 						n = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[j]))
+			 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[j+1]))
+			 						n.setPosition(n1.getPosition())
+			 						n.setOrientation(n1.getOrientation())
+			 					n = sn_smallMulti.getChildByName('smallTrans'+str(num_reorder))
+			 					n.setPosition(curPos)
+			 					n.setOrientation(curOri)
+			 				else:
+			 					j = i
+			 					while j>num_reorder:
+			 						n = sn_smallMulti.getChildByName('smallTrans'+str(j))
+			 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(j-1))
+			 						n.setPosition(n1.getPosition())
+			 						n.setOrientation(n1.getOrientation())
+			 						j-=1
+			 					n = sn_smallMulti.getChildByName('smallTrans'+str(num_reorder))
+			 					n.setPosition(curPos)
+			 					n.setOrientation(curOri)
 
-		for i in xrange(sn_smallMulti.numChildren()):
-			sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(i))
-			bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
-			hitData = hitNode(bs_outlineBox, r[1], r[2])
-			if hitData[0]:
-				pointer.setPosition(hitData[1])
-				# cancel selection
-				if e.isButtonDown(EventFlags.Button3):
-					e.setProcessed()
-					g_reorder=1
-					box_reorder.setEffect('colored -e #01b2f144') # restore original color
-					playSound(sd_reo_canceled, cam.getPosition(), 1.0)
-		 			playSound(sd_reo_please, cam.getPosition(), 1.0)
-		 			print ('cenceled') # TO DO: still bug
-		 		# select another box
-		 		elif e.isButtonDown(EventFlags.Button2):
-		 			for ii in xrange(sn_smallMulti.numChildren()):
-		 				print ii,sn_smallMulti.getChildByIndex(ii)
-		 			e.setProcessed()
-		 			if i != num_reorder:
-		 				bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
-		 				curPos = sn_smallTrans.getPosition()
-		 				curOri = sn_smallTrans.getOrientation()
-		 				if i<num_reorder:
-		 					for j in xrange(i,num_reorder):
-		 						n = sn_smallMulti.getChildByName('smallTrans'+str(j)) # TO DO: still bug
-		 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(j+1))
-		 						n.setPosition(n1.getPosition())
-		 						n.setOrientation(n1.getOrientation())
-		 					n = sn_smallTrans.getChildByName('smallTrans'+str(num_reorder))
-		 					n.setPosition(curPos)
-		 					n.setOrientation(curOri)
-		 				else:
-		 					j = i
-		 					while j>num_reorder:
-		 						print 'j=',j
-		 						n = sn_smallMulti.getChildByName('smallTrans'+str(j))
-		 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(j-1))
-		 						n.setPosition(n1.getPosition())
-		 						n.setOrientation(n1.getOrientation())
-		 						j-=1
-		 					print 'out of while' # TO DO: bug bug bug
-		 					n = sn_smallTrans.getChildByName('smallTrans'+str(num_reorder))
-		 					n.setPosition(curPos)
-		 					n.setOrientation(curOri)
-		 				playSound(sd_reo_done, cam.getPosition(), 1.0)
-		 				g_reorder=1
-		 		break
+			 				playSound(sd_reo_done, cam.getPosition(), 1.0)
+			 				g_reorder=1
+			 		break
 
 		# for node in li_boxOnWall:
 		# 	hitData = hitNode(node, r[1], r[2])
