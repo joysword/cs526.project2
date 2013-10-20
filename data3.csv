@@ -78,7 +78,7 @@ b,0,,3.97285,textures/earth.jpg,-,-,-,-,-,-,,7.98110653,,,487.8866365
 c,0,,0.129216,textures/earth.jpg,-,-,-,-,-,-,,0.046848439,,,18.74285328
 Gliese 676 A,1,,53,textures/m.png,17.30.11.2042,-51.38.13.116,9.59,M,M0V,4,-,-,-,-,2
 b,0,,1.8,textures/earth.jpg,-,-,-,-,-,-,,2.877534247,,Radial Velocity,1573.605
-c,0,,,,,,,,,,,,,Radial Velocity,953.7
+c,0,,,textures/earth.jpg,,,,,,,,,,Radial Velocity,953.7
 d,0,,0.0413,textures/earth.jpg,-,-,-,-,-,-,,0.009863014,,Radial Velocity,4.4506
 e,0,,0.187,textures/earth.jpg,-,-,-,-,-,-,,0.09690411,,Radial Velocity,11.4444
 HD 128311,1,0.58322,54,textures/k.png,14.36.00.56,+09.44.47.5,7.51,K,K0V,2,-,-,-,-,
@@ -86,7 +86,7 @@ b,0,,1.086,textures/earth.jpg,-,-,-,-,-,-,,1.244383562,,Radial Velocity,463.1223
 c,0,,1.745,textures/earth.jpg,-,-,-,-,-,-,,2.530958904,,Radial Velocity,1032.420906
 14 Herculis,1,0.912364,57,textures/k.png,16.10.24.31,+43.49.03.5,6.67,K,K0V,2,-,-,-,-,
 b,0,,2.77,textures/earth.jpg,-,-,-,-,-,-,,4.858630137,,Radial Velocity,1657.369134
-c,0,,,,,,,,,,,,,,
+c,0,,,textures/earth.jpg,,,,,,,,,,,
 HD 217107,1,1.5,65,textures/g.png,22.58.15.54,-02.23.43.4,6.18,G,G8IV,2,-,-,-,-,
 b,0,,0.0748,textures/earth.jpg,-,-,-,-,-,-,,0.019525523,,Radial Velocity,445.2992106
 c,0,,5.32,textures/earth.jpg,-,-,-,-,-,-,,11.69863014,,Radial Velocity,831.2366345
