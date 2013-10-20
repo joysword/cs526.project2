@@ -48,7 +48,7 @@ text_univ_highlight = None
 # whether we are showing the info of a system
 g_showInfo = False
 
-wallLimit = 247000000 # by default, everything closer than this numer can be shown
+wallLimit = 247000000 # by default, everything closer than this number can be shown
 
 ## global scale factors
 g_scale_size = 1.0
@@ -2088,9 +2088,9 @@ def showInfo():
 	uiroot = ui.getUi()
 
 	legend = wf.createImage('legend', uiroot)
-	legend.setData(loadImage('images/Tau_Ceti.png'))
+	legend.setData(loadImage('images/Tau_Ceti_250.png'))
 	legend.setLayer(WidgetLayer.Front)
-	#legend.setSize(Vector2(UIScale * 180, UIScale * 240))
+	#legend.setSize(Vector2(180, UIScale * 240))
 	#yWidgPos = (UIScale * 480) - legend.getSize()[1]
 	if CAVE():
 		legend.setPosition(Vector2(15025 ,0))
