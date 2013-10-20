@@ -35,6 +35,7 @@ g_moveToCenter = 0 # status of bring to center 0: not; 1: in
 g_invisOnes = []
 
 g_curOrder = [i for i in xrange(48)]
+g_curOrder_save = g_curOrder
 
 li_allSys = [] # classes, aaalllllll the systems
 dic_allBox = {} # dictionary of small multiple boxes
@@ -134,7 +135,7 @@ def KM_from_AU(n): # exact
 	return n * 149597870.7
 
 ## column names in data file
-g_c = {'name':0, 'star':1, 'size':2, 'distance':3, 'orbit':3, 'texture':4, 'ra':5, 'dec':6, 'app_mag':7, 'class':8, 'type':9, 'num':10, 'day':11, 'year':12, 'inc':13, 'detection':14, 'mass':15}
+g_c = {'sys':0 'name':1, 'star':2, 'size':3, 'distance':4, 'orbit':4, 'texture':5, 'ra':6, 'dec':7, 'app_mag':8, 'class':9, 'type':10, 'num':11, 'day':12, 'year':13, 'inc':14, 'detection':15, 'mass':16}
 
 ## bolometric correction constant for calculating habitable zone
 g_BC = {'B':-2.0,'A':-0.3,'F':-0.15,'G':-0.4,'K':-0.8,'M':-2.0}
@@ -271,7 +272,9 @@ sdEnv.setAssetDirectory('syin_p2')
 
 sd_warn = SoundInstance(sdEnv.loadSoundFromFile('warn','sound/warn.wav'))
 sd_bgm = SoundInstance(sdEnv.loadSoundFromFile('backgroundmusic','sound/bgm.wav'))
-sd_load = SoundInstance(sdEnv.loadSoundFromFile('load','sound/load.wav'))
+sd_loading = SoundInstance(sdEnv.loadSoundFromFile('load','sound/loading.wav'))
+
+sd_reset = SoundInstance(sdEnv.loadSoundFromFile('reset','sound/reset.wav'))
 
 sd_reo_please = SoundInstance(sdEnv.loadSoundFromFile('reo_please','sound/reorder/please.wav'))
 sd_reo_selected = SoundInstance(sdEnv.loadSoundFromFile('reo_selected','sound/reorder/selected.wav'))
@@ -282,6 +285,9 @@ sd_reo_canceled = SoundInstance(sdEnv.loadSoundFromFile('reo_canceled','sound/re
 sd_mtc_please = SoundInstance(sdEnv.loadSoundFromFile('mtc_please','sound/movetocenter/please.wav'))
 sd_mtc_moving = SoundInstance(sdEnv.loadSoundFromFile('mtc_moving','sound/movetocenter/moving.wav'))
 sd_mtc_quit = SoundInstance(sdEnv.loadSoundFromFile('mtc_quit','sound/movetocenter/quit.wav'))
+
+sd_sav_saved = SoundInstance(sdEnv.loadSoundFromFile('sav_saved','sound/saveconfig/saved.wav'))
+#sd_sav_loading = SoundInstance(sdEnv.loadSoundFromFile('sav_loading','sound/saveconfig/loading.wav'))
 
 def playSound(sd, pos, vol):
 	sd.setPosition(pos)
@@ -688,6 +694,8 @@ def initSmallMulti(preset):
 	li_boxOnWall = []
 	dic_allBox = {}
 	dic_sys = {}
+
+	playSound(sd_loading, cam.getPosition(), 1.0)
 
 	# restore the order
 	g_curOrder = [i for i in xrange(48)]
@@ -1921,6 +1929,8 @@ def resetEverything():
 	#cam.setPosition(Vector3(0,0,0))
 	#cam.setOrientation(Quaternion(0,0,0,0))
 
+	playSound(sd_reset, cam.getPosition(), 1.0)
+
 	resetCenter()
 	resetWall(set_nearest)
 
@@ -1980,6 +1990,7 @@ def saveConfig():
 		#print f
 	#print 'saved to '+t
 	menu_load.addButton(t,'loadConfig('+str(filename)+')')
+	playSound(sd_sav_saved, cam.getPosition(), 1.0)
 
 def loadConfig(filename):
 	global set_save
