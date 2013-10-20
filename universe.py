@@ -502,9 +502,9 @@ sn_root.addChild(sn_univTrans)
 sn_centerSys.addChild(sn_cen_sys)
 
 # fix small multiples and 3d universe, no move
-if CAVE():
-	cam.addChild(sn_smallMulti)
-	cam.addChild(sn_univTrans)
+#if CAVE():
+cam.addChild(sn_smallMulti)
+cam.addChild(sn_univTrans)
 
 ## Create a directional light
 light1 = Light.create()
@@ -589,40 +589,54 @@ def initUniv(preset):
 	global sn_univTrans
 	global li_textUniv
 
+	global g_scale_univ
+
 	if sn_univParent.numChildren()>0:
 		for i in xrange(sn_univParent.numChildren()):
 			sn_univParent.removeChildByIndex(0)
 
-	sn_univParent.setScale(0.005,0.005,0.005)
 	sn_univTrans.setPosition(1.2,1.8,-3)
 	li_textUniv = []
+
+	maxDis = 0
 	for i in xrange(48):
-		curSys = li_allSys[preset[i]]
-		star = SphereShape.create(curSys._star._size * c_scaleUniv_size, 4)
-		pos = getPos(curSys._star._ra, curSys._star._dec, curSys._star._dis)
-		star.setPosition(pos)
+		if preset[i]!=-1:
+			curSys = li_allSys[preset[i]]
+			if curSys._dis>maxDis:
+				maxDis = curSys._dis
 
-		if curSys._star._class in dic_color.keys():
-			star.setEffect('colored -e '+dic_color[curSys._star._class])
-			pass
-		else:
-			star.setEffect('colored -e '+dic_color['G'])
-			pass
-		sn_univParent.addChild(star)
+	print 'max dis:',maxDis
 
-		t = Text3D.create('fonts/helvetica.ttf', 1, curSys._star._name)
-		t.setFontSize(30)
-		t.setFixedSize(True)
-		t.setPosition(pos.x, pos.y+curSys._star._size * c_scaleUniv_size * 1.2, pos.z)
-		t.setFacingCamera(cam)
+	for i in xrange(48):
+		if preset[i]!=-1:
+			curSys = li_allSys[preset[i]]
+			star = SphereShape.create(curSys._star._size * c_scaleUniv_size, 4)
+			pos = getPos(curSys._star._ra, curSys._star._dec, curSys._star._dis)
+			star.setPosition(pos*140/maxDis)
 
-		# sun text is in red
-		if preset[i]==0:
-			t.setColor(Color('red'))
-		#caveutil.orientWithHead(cam,t)
+			if curSys._star._class in dic_color.keys():
+				star.setEffect('colored -e '+dic_color[curSys._star._class])
+				pass
+			else:
+				star.setEffect('colored -e '+dic_color['G'])
+				pass
+			sn_univParent.addChild(star)
 
-		sn_univParent.addChild(t)
-		li_textUniv.append(t)
+			t = Text3D.create('fonts/helvetica.ttf', 1, curSys._star._name)
+			t.setFontSize(30)
+			t.setFixedSize(True)
+			t.setPosition(pos.x, pos.y+curSys._star._size * c_scaleUniv_size * 1.2, pos.z)
+			t.setFacingCamera(cam)
+
+			# sun text is in red
+			if preset[i]==0:
+				t.setColor(Color('red'))
+			#caveutil.orientWithHead(cam,t)
+
+			sn_univParent.addChild(t)
+			li_textUniv.append(t)
+
+	sn_univParent.setScale(0.05,0.05,0.05)
 
 ##############################################################################################################
 # INITIALIZE SMALL MULTIPLES
@@ -705,6 +719,10 @@ def initSmallMulti(preset):
 				## get star
 				bs_model = BoxShape.create(100, 25000, 2000)
 				bs_model.setPosition(Vector3(0.0, 0.0, 48000))# - thisSystem[name][1] * XorbitScaleFactor * user2ScaleFactor))
+				if cmp(curSys._star._texture,'')==0:
+					print '''!!!
+					!!
+					!!!'''
 				bs_model.setEffect('textured -v emissive -d '+curSys._star._texture)
 				sn_smallSys.addChild(bs_model)
 
@@ -1137,57 +1155,55 @@ def changeScale(name, add):
 			#initSmallMulti()
 
 			for i in xrange(sn_smallMulti.numChildren()):
-					#print 'child:',i
 				sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(i))
-				sn_smallSys = sn_smallTrans.getChildByName('smallSys'+str(i))
-					#print 'sn_smallSys:',sn_smallSys
-					#print sn_smallSys.numChildren()
-				bs_habi = sn_smallSys.getChildByName('habiParent'+str(i)).getChildByIndex(0)
-					#print 'bs_habi:',bs_habi
-				t = sn_smallTrans.getChildByName('indicatorParent'+str(i)).getChildByIndex(0)
-				sn_planetParent = sn_smallSys.getChildByName('planetParent'+str(i))
 
-				#bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
+				# if not an empty box
+				if sn_smallTrans.numChildren()>1:
+					sn_smallSys = sn_smallTrans.getChildByName('smallSys'+str(i))
+					bs_habi = sn_smallSys.getChildByName('habiParent'+str(i)).getChildByIndex(0)
+					t = sn_smallTrans.getChildByName('indicatorParent'+str(i)).getChildByIndex(0)
+					sn_planetParent = sn_smallSys.getChildByName('planetParent'+str(i))
 
-				#print 'bs_outlineBox:',bs_outlineBox
-				curSys = dic_sys[i]
-				#print 'curSys:',curSys
-				#print 'pos:',bs_outlineBox.getPosition()
-				habInner = curSys._star._habNear
-				habOuter = curSys._star._habFar
+					#bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
 
-				if habInner < wallLimit:
-					if habOuter > wallLimit:
-						habOuter = wallLimit
-					habCenter = (habOuter+habInner)/2.0
-					#bs_habi.setScale(s.x,s.y,s.z*g_scale_dist/(old))
-					bs_habi.setScale(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
-					bs_habi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
-					bs_habi.setVisible(True)
-				else:
-					bs_habi.setVisible(False)
+					#print 'bs_outlineBox:',bs_outlineBox
+					curSys = dic_sys[i]
+					#print 'curSys:',curSys
+					#print 'pos:',bs_outlineBox.getPosition()
+					habInner = curSys._star._habNear
+					habOuter = curSys._star._habFar
 
-				outCounter = 0
-				for j in xrange(sn_planetParent.numChildren()):
-					m = sn_planetParent.getChildByIndex(j)
-
-					p = m.getPosition()
-					orbit = (48000 - p.z)/c_scaleWall_dist/(old)
-					m.setPosition(p.x, p.y, 48000-(48000-p.z)*(g_scale_dist)/(old))
-					if orbit > wallLimit:
-						outCounter+=1
-						m.setVisible(False)
+					if habInner < wallLimit:
+						if habOuter > wallLimit:
+							habOuter = wallLimit
+						habCenter = (habOuter+habInner)/2.0
+						#bs_habi.setScale(s.x,s.y,s.z*g_scale_dist/(old))
+						bs_habi.setScale(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
+						bs_habi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
+						bs_habi.setVisible(True)
 					else:
-						m.setVisible(True)
+						bs_habi.setVisible(False)
 
-				if outCounter>0:
-					outCounter /= 2 # a model and a text should be considered as one
-					t.setText(str(outCounter)+' more planets -->>')
-					t.setVisible(True)
-				else:
-					t.setVisible(False)
+					outCounter = 0
+					for j in xrange(sn_planetParent.numChildren()):
+						m = sn_planetParent.getChildByIndex(j)
 
-			#print 'done'
+						p = m.getPosition()
+						orbit = (48000 - p.z)/c_scaleWall_dist/(old)
+						m.setPosition(p.x, p.y, 48000-(48000-p.z)*(g_scale_dist)/(old))
+						if orbit > wallLimit:
+							outCounter+=1
+							m.setVisible(False)
+						else:
+							m.setVisible(True)
+
+					if outCounter>0:
+						outCounter /= 2 # a model and a text should be considered as one
+						t.setText(str(outCounter)+' more planets -->>')
+						t.setVisible(True)
+					else:
+						t.setVisible(False)
+
 			return True
 		else: # -
 			old = g_scale_dist
@@ -1233,56 +1249,48 @@ def changeScale(name, add):
 			wallLimit*=(old)/(g_scale_dist) # wallLimit will be smaller
 
 			for i in xrange(sn_smallMulti.numChildren()):
-					#print 'child:',i
-				#sn_smallTrans = sn_smallMulti.getChildByIndex(i)
 				sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(i))
-				#sn_smallSys = sn_smallTrans.getChildByIndex(sn_smallTrans.numChildren()-1)
-				sn_smallSys = sn_smallTrans.getChildByName('smallSys'+str(i))
-					#print 'sn_smallSys:',sn_smallSys
-					#print sn_smallSys.numChildren()
-				#bs_habi = sn_smallSys.getChildByIndex(sn_smallSys.numChildren()-2)
-				bs_habi = sn_smallSys.getChildByName('habiParent'+str(i)).getChildByIndex(0)
-					#print 'bs_habi:',bs_habi
-				#t = sn_smallTrans.getChildByIndex(3)
-				t = sn_smallTrans.getChildByName('indicatorParent'+str(i)).getChildByIndex(0)
-				sn_planetParent = sn_smallSys.getChildByName('planetParent'+str(i))
 
-				#bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
+				if sn_smallTrans.numChildren()>1:
+					sn_smallSys = sn_smallTrans.getChildByName('smallSys'+str(i))
+					bs_habi = sn_smallSys.getChildByName('habiParent'+str(i)).getChildByIndex(0)
+					t = sn_smallTrans.getChildByName('indicatorParent'+str(i)).getChildByIndex(0)
+					sn_planetParent = sn_smallSys.getChildByName('planetParent'+str(i))
 
-				curSys = dic_sys[i]
-				habInner = curSys._star._habNear
-				habOuter = curSys._star._habFar
+					curSys = dic_sys[i]
+					habInner = curSys._star._habNear
+					habOuter = curSys._star._habFar
 
-				if habInner < wallLimit:
-					if habOuter > wallLimit:
-						habOuter = wallLimit
-					habCenter = (habOuter+habInner)/2.0
-					#bs_habi.setScale(s.x,s.y,s.z*g_scale_dist/(old))
-					bs_habi.setScale(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
-					bs_habi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
-					bs_habi.setVisible(True)
-				else:
-					bs_habi.setVisible(False)
-
-				outCounter = 0
-				for j in xrange(sn_planetParent.numChildren()):
-					m = sn_planetParent.getChildByIndex(j)
-
-					p = m.getPosition()
-					orbit = (48000 - p.z)/c_scaleWall_dist/(old)
-					m.setPosition(p.x, p.y, 48000-(48000-p.z)*(g_scale_dist)/(old))
-					if orbit > wallLimit:
-						outCounter+=1
-						m.setVisible(False)
+					if habInner < wallLimit:
+						if habOuter > wallLimit:
+							habOuter = wallLimit
+						habCenter = (habOuter+habInner)/2.0
+						#bs_habi.setScale(s.x,s.y,s.z*g_scale_dist/(old))
+						bs_habi.setScale(4, 25000, (1.0 * (habOuter - habInner)) * c_scaleWall_dist * g_scale_dist)
+						bs_habi.setPosition(Vector3(0.0, 0.0, 48000 - habCenter * c_scaleWall_dist * g_scale_dist))
+						bs_habi.setVisible(True)
 					else:
-						m.setVisible(True)
+						bs_habi.setVisible(False)
 
-				if outCounter>0:
-					outCounter /= 2 # a model and a text should be considered as one
-					t.setText(str(outCounter)+' more planets -->>')
-					t.setVisible(True)
-				else:
-					t.setVisible(False)
+					outCounter = 0
+					for j in xrange(sn_planetParent.numChildren()):
+						m = sn_planetParent.getChildByIndex(j)
+
+						p = m.getPosition()
+						orbit = (48000 - p.z)/c_scaleWall_dist/(old)
+						m.setPosition(p.x, p.y, 48000-(48000-p.z)*(g_scale_dist)/(old))
+						if orbit > wallLimit:
+							outCounter+=1
+							m.setVisible(False)
+						else:
+							m.setVisible(True)
+
+					if outCounter>0:
+						outCounter /= 2 # a model and a text should be considered as one
+						t.setText(str(outCounter)+' more planets -->>')
+						t.setVisible(True)
+					else:
+						t.setVisible(False)
 
 			#print 'done'
 			return True
@@ -1984,7 +1992,7 @@ def updateFilter():
 	print 'start updating'
 	res = []
 
-	res.append[0]
+	res.append(0)
 
 	for i in xrange(1,len(li_allSys)):
 		print 'testing system', i
