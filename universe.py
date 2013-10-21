@@ -72,7 +72,7 @@ c_row_on_wall = 8
 
 WALLLIMIT = 247000000 # wallLimit will change, WALLLIMIT won't
 
-c_scaleWall_size = 0.2
+c_scaleWall_size = 0.1
 c_scaleWall_dist = 0.0008
 
 c_scaleCenter_size = 0.01
@@ -891,7 +891,7 @@ def initSmallMulti(preset):
 					t.setVisible(False)
 
 				sn_smallSys.yaw(math.pi/2.0)
-				sn_smallSys.setScale(0.0000001, 0.00001, 0.00001) #scale for panels - flat to screen
+				sn_smallSys.setScale(0.00001, 0.00001, 0.00001) #scale for panels - flat to screen
 
 			smallCount += 1
 
@@ -1121,18 +1121,15 @@ def changeScale(name, add):
 		if add: # +
 			print 'enter +'
 			old = g_scale_dist
-			if old==0.001:
-				g_scale_dist=0.005
-			elif old==0.005:
-				g_scale_dist=0.01
-			elif old==0.01:
+			if old<0.05:
 				g_scale_dist=0.05
-			elif old==0.05:
+			elif old<0.1:
 				g_scale_dist=0.1
-			elif old==0.1:
+			elif old<0.2:
 				g_scale_dist=0.2
 			else:
 				g_scale_dist+=c_delta_scale
+			print 'g_scale_dist:',g_scale_dist
 
 			################ CENTER ######
 			for sn in g_changeDistCircles:
@@ -1183,7 +1180,7 @@ def changeScale(name, add):
 					#print 'bs_outlineBox:',bs_outlineBox
 					curSys = dic_countToSys[i]
 					print 'i:',i
-					print curSys:',curSys._name
+					print 'curSys:',curSys._name
 					#print 'pos:',bs_outlineBox.getPosition()
 					habInner = curSys._star._habNear
 					habOuter = curSys._star._habFar
@@ -1223,20 +1220,24 @@ def changeScale(name, add):
 			return True
 		else: # -
 			old = g_scale_dist
-			if old==0.001:
+			print 'old:',old
+
+			if old<0.01:
+				print 'old<0.01'
 				return False
-			elif old==0.005:
-				g_scale_dist=0.001
-			elif old==0.01:
-				g_scale_dist=0.005
-			elif old==0.05:
+			elif old<=0.051:
+				print 'old<=0.051'
 				g_scale_dist=0.01
-			elif old==0.1:
+			elif old<=0.11:
+				print 'old<=0.11'
 				g_scale_dist=0.05
-			elif old==0.2:
+			elif old<=0.21:
+				print 'old<=0.21'
 				g_scale_dist=0.1
 			else:
+				print 'normal'
 				g_scale_dist-=c_delta_scale
+			print 'g_scale_dist:',g_scale_dist
 
 			################ CENTER ######
 			for sn in g_changeDistCircles:
@@ -1667,11 +1668,11 @@ def onEvent():
 					pointer.setPosition(hitData[1])
 					if e.isButtonDown(EventFlags.Button2):
 						e.setProcessed()
-						if text_univ_highlight!=None:
-							text_univ_highlight.setColor(Color('white'))
-						li_textUniv[i].setColor(Color('red'))
-						text_univ_highlight = li_textUniv[i]
 						if dic_boxToSys[node]!=None:
+							if text_univ_highlight!=None:
+								text_univ_highlight.setColor(Color('white'))
+							li_textUniv[i].setColor(Color('red'))
+							text_univ_highlight = li_textUniv[i]
 							addCenter(1.2,dic_boxToSys[node])
 							g_curCenSys = dic_boxToSys[node]
 							pointer.setVisible(False)
@@ -1701,6 +1702,8 @@ def onEvent():
 						#print 'button 2 clicked'
 						e.setProcessed()
 						g_reorder=2
+						print 'selected smallTrans',g_curOrder[i]
+						print 'num_reorder:',i
 						#print 'g_reoder=2'
 						#bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
 						#print 'box color changed'
@@ -1748,6 +1751,8 @@ def onEvent():
 			 		if e.isButtonDown(EventFlags.Button2):
 			 			#for ii in xrange(sn_smallMulti.numChildren()):
 			 			#	print ii,sn_smallMulti.getChildByIndex(ii)
+			 			print 'selected smallTrans',g_curOrder[i]
+						print 'i:',i
 			 			e.setProcessed()
 			 			if i != num_reorder:
 			 				#bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
@@ -1759,34 +1764,37 @@ def onEvent():
 			 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[j+1]))
 			 						n.setPosition(n1.getPosition())
 			 						n.setOrientation(n1.getOrientation())
-			 					n = sn_smallMulti.getChildByName('smallTrans'+str(num_reorder))
+			 					n = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[num_reorder]))
 			 					n.setPosition(curPos)
 			 					n.setOrientation(curOri)
+
 			 					# update g_curOrder
 			 					tmpNum = g_curOrder[num_reorder]
 			 					j = num_reorder
 		 						while j>i:
 		 							g_curOrder[j]=g_curOrder[j-1]
 		 							j-=1
-		 						g_reorder[i]=tmpNum
+		 						g_curOrder[i]=tmpNum
 
-			 				else:
+			 				else: # num_reorder<i
 			 					j = i
 			 					while j>num_reorder:
-			 						n = sn_smallMulti.getChildByName('smallTrans'+str(j))
-			 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(j-1))
+			 						n = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[j]))
+			 						n1 = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[j-1]))
 			 						n.setPosition(n1.getPosition())
 			 						n.setOrientation(n1.getOrientation())
 			 						j-=1
-			 					n = sn_smallMulti.getChildByName('smallTrans'+str(num_reorder))
+			 					n = sn_smallMulti.getChildByName('smallTrans'+str(g_curOrder[num_reorder]))
 			 					n.setPosition(curPos)
 			 					n.setOrientation(curOri)
+
 			 					#update g_curOrder
 			 					tmpNum = g_curOrder[num_reorder]
 			 					for j in xrange(num_reorder,i):
 			 						g_curOrder[j]=g_curOrder[j+1]
-			 					g_reorder[i]=tmpNum
-
+			 					g_curOrder[i]=tmpNum
+			 					for j in xrange(48):
+			 						print 'g_curOrder['+str(j)+']:',g_curOrder[j]
 			 				playSound(sd_reo_done, cam.getPosition(), 1.0)
 			 				g_reorder=1
 			 		break
@@ -2134,16 +2142,16 @@ def showInfo():
 
 	if g_curCenSys!=None:
 		if g_curCenSys._hasInfo_s:
-			legend_s.setData(loadImage('pic_s/'+g_curCenSys._name.replace(' ','_'))+'.png')
+			legend_s.setData(loadImage('pic_s/'+g_curCenSys._name.replace(' ','_')+'.png'))
 		else:
-			legend_s.setData(loadImage('pic_s/no_info.png')
+			legend_s.setData(loadImage('pic_s/no_info.png'))
 		if g_curCenSys._hasInfo_p:
-			legend_p.setData(loadImage('pic_p/'+g_curCenSys._name.replace(' ','_'))+'.png'))
+			legend_p.setData(loadImage('pic_p/'+g_curCenSys._name.replace(' ','_')+'.png'))
 		else:
-			legend_p.setData(loadImage('pic_p/no_info.png')
+			legend_p.setData(loadImage('pic_p/no_info.png'))
 		legend_s.setVisible(True)
 		legend_p.setVisible(True)
 		legend_s.setPosition(Vector2(15100,0))
-		legend_p.setPosition(Vector2(15000 - legend_p.getSize()[0],0))
+		legend_p.setPosition(Vector2(15000 - legend_p.getSize()[0],800))
 
 		print 'done loading image'
