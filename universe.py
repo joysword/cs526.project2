@@ -140,7 +140,7 @@ def KM_from_AU(n): # exact
 	return n * 149597870.7
 
 ## column names in data file
-g_c = {'sys':0, 'name':1, 'star':2, 'size':3, 'distance':4, 'orbit':4, 'texture':5, 'ra':6, 'dec':7, 'app_mag':8, 'class':9, 'type':10, 'num':11, 'day':12, 'year':13, 'inc':14, 'detection':15, 'mass':16, 'info_s':17, 'info_p':18}
+g_c = {'sys':0, 'name':1, 'star':2, 'size':3, 'distance':4, 'orbit':4, 'texture':5, 'ra':6, 'dec':7, 'app_mag':8, 'class':9, 'type':10, 'num':11, 'day':12, 'year':13, 'inc':14, 'detection':15, 'mass':16, 'binary':16, 'info_s':17, 'info_p':18}
 
 ## bolometric correction constant for calculating habitable zone
 g_BC = {'B':-2.0,'A':-0.3,'F':-0.15,'G':-0.4,'K':-0.8,'M':-2.0}
@@ -275,10 +275,14 @@ class star:
 			return KM_from_AU(ri),KM_from_AU(ro)
 
 class plaSys:
-	def __init__(self,star,dis,name,hasInfo_s,hasInfo_p):
+	def __init__(self,star,dis,name,binary,hasInfo_s,hasInfo_p):
 		self._star = star
 		self._dis = dis
 		self._name = name
+		if cmp(binary,'')!=0:
+			self._binary = ' ('+binary+')'
+		else:
+			self._binary = ''
 		self._hasInfo_s = hasInfo_s
 		self._hasInfo_p = hasInfo_p
 
@@ -378,13 +382,16 @@ btn_speedDown = Button.create(container_speedBtn)
 btn_speedDown.setText('-')
 btn_speedDown.setUIEventCommand('changeScale("time", False)')
 
+lbl_speed_value = Label.carete(container_speed)
+lbl_speed_value.setText(' '+str(g_scale_time))
+
 ## menu to change to four predefined sets of system
 menu_preset = mm.getMainMenu().addSubMenu('predefined sets')
 
-btn_nearest = menu_preset.addButton('system in smallest distance to us','loadPreset("near")')
-btn_farthest = menu_preset.addButton('system in largest distance to us','loadPreset("far")')
-btn_g_type = menu_preset.addButton('system with G type stars','loadPreset("g")')
-btn_most_planets = menu_preset.addButton('system with most planets','loadPreset("most")')
+btn_nearest = menu_preset.addButton('systems of smallest distance','loadPreset("near")')
+btn_farthest = menu_preset.addButton('systems of largest distance','loadPreset("far")')
+btn_g_type = menu_preset.addButton('systems with G type stars','loadPreset("g")')
+btn_most_planets = menu_preset.addButton('systems with most planets','loadPreset("most")')
 
 ## menu to filter small multiples
 menu_filter = mm.getMainMenu().addSubMenu('filter small multiples')
@@ -601,7 +608,7 @@ for p in lines:
 		# def __init__(self,t,mv,r,n,dis,c,ty,num):
 		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']], p[g_c['ra']], p[g_c['dec']], p[g_c['info_s']], p[g_c['info_p']])
 
-		curSys = plaSys(curStar,curStar._dis,p[g_c['sys']],curStar._hasInfo_s,curStar._hasInfo_p)
+		curSys = plaSys(curStar,curStar._dis,p[g_c['sys']],p[g_c['binary'],curStar._hasInfo_s,curStar._hasInfo_p)
 		li_allSys.append(curSys)
 
 	else: # planet
@@ -736,6 +743,7 @@ def initSmallMulti(preset):
 
 	# restore the order if not loading from saved Config
 	if g_isLoadingFromSavedConfig:
+		print 'loading from saved config'
 		g_isLoadingFromSavedConfig = False
 	else:
 		g_curOrder = [i for i in xrange(48)]
@@ -750,7 +758,7 @@ def initSmallMulti(preset):
 
 		for row in xrange(0, 8):
 
-			sn_smallTrans = SceneNode.create('smallTrans'+str(smallCount))
+			sn_smallTrans = SceneNode.create('smallTrans'+str(g_curOrder[smallCount]))
 
 			hLoc = (8-col) + 1.5
 			degreeConvert = 0.2*math.pi # 36 degrees per column
@@ -758,7 +766,7 @@ def initSmallMulti(preset):
 			sn_smallTrans.yaw(hLoc*degreeConvert)
 			sn_smallMulti.addChild(sn_smallTrans)
 
-			sn_boxParent = SceneNode.create('boxParent'+str(smallCount))
+			sn_boxParent = SceneNode.create('boxParent'+str(g_curOrder[smallCount]))
 			sn_smallTrans.addChild(sn_boxParent)
 
 			bs_outlineBox = BoxShape.create(2.0, 0.25, 0.001)
@@ -768,18 +776,18 @@ def initSmallMulti(preset):
 			sn_boxParent.addChild(bs_outlineBox)
 
 			li_boxOnWall.append(bs_outlineBox)
-			set_save[smallCount] = preset[smallCount]
+			set_save[g_curOrder[smallCount]] = preset[g_curOrder[smallCount]]
 
 			dic_boxToSys[bs_outlineBox] = None
-			dic_countToSys[smallCount] = None
+			dic_countToSys[g_curOrder[smallCount]] = None
 
-			if preset[smallCount]!=-1:
-				curSys = li_allSys[preset[smallCount]]
+			if preset[g_curOrder[smallCount]]!=-1:
+				curSys = li_allSys[preset[g_curOrder[smallCount]]]
 
 				dic_boxToSys[bs_outlineBox] = curSys
-				dic_countToSys[smallCount] = curSys
+				dic_countToSys[g_curOrder[smallCount]] = curSys
 
-				sn_smallSys = SceneNode.create('smallSys'+str(smallCount))
+				sn_smallSys = SceneNode.create('smallSys'+str(g_curOrder[smallCount]))
 
 				## get star
 				bs_model = BoxShape.create(100, 25000, 2000)
@@ -791,7 +799,7 @@ def initSmallMulti(preset):
 				habOuter = curSys._star._habFar
 				habInner = curSys._star._habNear
 
-				sn_habiParent = SceneNode.create('habiParent'+str(smallCount))
+				sn_habiParent = SceneNode.create('habiParent'+str(g_curOrder[smallCount]))
 
 				bs_habi = BoxShape.create(1, 1, 1)
 
@@ -815,7 +823,7 @@ def initSmallMulti(preset):
 				sn_smallTrans.addChild(sn_smallSys)
 
 				## get planets
-				sn_planetParent = SceneNode.create('planetParent'+str(smallCount))
+				sn_planetParent = SceneNode.create('planetParent'+str(g_curOrder[smallCount]))
 
 				outCounter = 0
 				for p in curSys._star._children:
@@ -856,7 +864,7 @@ def initSmallMulti(preset):
 				sn_smallSys.addChild(sn_planetParent)
 
 				## get text
-				t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+' | STAR: '+curSys._star._name + ' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | planets discovered by: '+curSys._star._children[0]._detection)
+				t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+curSys._binary+' | STAR: '+curSys._star._name+' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | by: '+curSys._star._children[0]._detection)
 				if CAVE():
 					#t.setFontResolution(120)
 					#t.setFontSize(120)
@@ -874,11 +882,14 @@ def initSmallMulti(preset):
 				t.getMaterial().setTransparent(False)
 				t.getMaterial().setDepthTestEnabled(False)
 				#t.setFixedSize(True)
-				t.setColor(Color('white'))
+				if cmp(curSys._binary,'')!=0:
+					t.setColor(Color('orange'))
+				else:
+					t.setColor(Color('white'))
 				sn_smallTrans.addChild(t)
 
 				## get indicator if some planets are outside
-				sn_indicatorParent = SceneNode.create('indicatorParent'+str(smallCount))
+				sn_indicatorParent = SceneNode.create('indicatorParent'+str(g_curOrder[smallCount]))
 
 				t = Text3D.create('fonts/helvetica.ttf', 1, str(outCounter)+' more planet(s) -->>')
 				if CAVE():
@@ -1402,14 +1413,16 @@ def changeScale(name, add):
 	elif cmp(name,'time')==0:
 		if add: # +
 			g_scale_time*=2
-			if g_scale_time>16:
+			if g_scale_time>1024:
 				g_scale_time*=0.5
 				return False
 		else: # -
 			g_scale_time*=0.5
-			if g_scale_time<0.25:
+			if g_scale_time<0.0625:
 				g_scale_time*=2
 				return False
+
+		lbl_speed_value.setText(' '+str(g_scale_time))
 
 def addCenter(verticalHeight, theSys):
 	global g_cen_rot
@@ -2050,17 +2063,21 @@ def saveConfig():
 	t = datetime.now().strftime("%m-%d-%y %H:%M:%S")
 	filename = t[0]+t[1]+t[3]+t[4]+t[6]+t[7]+t[9]+t[10]+t[12]+t[13]+t[15]+t[16]
 	#print "time:",t
-	print 'file:',filename
+	#print 'file:',filename
 	with open(filename, 'w') as f:
 		pickle.dump(set_save,f)
 		#print 'f:'
 		#print f
 
 	filename1 = str(-int(filename))
-	print 'file1:',filename1
+	#print 'file1:',filename1
 	with open(filename1, 'w') as f:
 		pickle.dump(g_curOrder,f)
 	#print 'saved to '+t
+
+	print 'saved g_curOrder'
+	for i in xrange(len(g_curOrder)):
+		print 'g_curOrder['+str(i)+']:',g_curOrder[i]
 
 	menu_load.addButton(t,'loadConfig('+str(filename)+')')
 	playSound(sd_sav_saved, cam.getPosition(), 1.0)
@@ -2082,6 +2099,10 @@ def loadConfig(filename):
 
 	f = open(str(-int(filename)), 'r')
 	g_curOrder = pickle.load(f)
+
+	print 'loading g_curOrder'
+	for i in xrange(len(g_curOrder)):
+		print 'g_curOrder['+str(i)+']:',g_curOrder[i]
 
 	g_isLoadingFromSavedConfig = True
 
@@ -2181,10 +2202,12 @@ def showInfo():
 	if g_curCenSys!=None:
 		if g_curCenSys._hasInfo_s:
 			legend_s.setData(loadImage('pic_s/'+g_curCenSys._name.replace(' ','_')+'.png'))
+			legend_s.setSize(legend_s.getSize()*1.4)
 		else:
 			legend_s.setData(loadImage('pic_s/no_info.png'))
 		if g_curCenSys._hasInfo_p:
 			legend_p.setData(loadImage('pic_p/'+g_curCenSys._name.replace(' ','_')+'.png'))
+			legend_p.setSize(legend_p.getSize()*1.4)
 		else:
 			legend_p.setData(loadImage('pic_p/no_info.png'))
 		legend_s.setVisible(True)
