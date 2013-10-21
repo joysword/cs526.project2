@@ -35,7 +35,6 @@ g_moveToCenter = 0 # status of bring to center 0: not; 1: in
 g_invisOnes = []
 
 g_curOrder = [i for i in xrange(48)]
-g_curOrder_save = g_curOrder
 
 li_allSys = [] # classes, aaalllllll the systems
 dic_boxToSys = {} # dictionary of small multiple boxes
@@ -50,6 +49,8 @@ text_univ_highlight = None
 g_showInfo = False
 
 g_curCenSys = None
+
+g_isLoadingFromSavedConfig = False
 
 wallLimit = 247000000 # by default, everything closer than this number can be shown
 
@@ -376,7 +377,7 @@ btn_speedDown.setText('-')
 btn_speedDown.setUIEventCommand('changeScale("time", False)')
 
 ## menu to change to four predefined sets of system
-menu_preset = mm.getMainMenu().addSubMenu('predefined set')
+menu_preset = mm.getMainMenu().addSubMenu('predefined sets')
 
 btn_nearest = menu_preset.addButton('system in smallest distance to us','loadPreset("near")')
 btn_farthest = menu_preset.addButton('system in largest distance to us','loadPreset("far")')
@@ -566,7 +567,7 @@ legend_p.setLayer(WidgetLayer.Front)
 legend_s.setVisible(False)
 legend_p.setVisible(False)
 
-toggleStereo()
+#toggleStereo()
 
 InitCamPos = cam.getPosition()
 InitCamOri = cam.getOrientation()
@@ -716,14 +717,19 @@ def initSmallMulti(preset):
 
 	global g_curOrder
 
+	global g_isLoadingFromSavedConfig
+
 	li_boxOnWall = []
 	dic_boxToSys = {}
 	dic_countToSys = {}
 
 	playSound(sd_loading, cam.getPosition(), 1.0)
 
-	# restore the order
-	g_curOrder = [i for i in xrange(48)]
+	# restore the order if not loading from saved Config
+	if g_isLoadingFromSavedConfig:
+		g_isLoadingFromSavedConfig = False
+	else:
+		g_curOrder = [i for i in xrange(48)]
 
 	smallCount = 0
 
@@ -1132,38 +1138,45 @@ def changeScale(name, add):
 			print 'g_scale_dist:',g_scale_dist
 
 			################ CENTER ######
+			print 'here1'
 			for sn in g_changeDistCircles:
 				s = sn.getScale()
 				#print 'former:',s
 				sn.setScale(s.x*(g_scale_dist)/(old), s.y, s.z*(g_scale_dist)/(old))
 				#print 'now:   ',sn.getScale()
+			print 'here2'
 			for hab in g_changeDistCenterHab:
 				s = hab.getScale()
 				#print 'former:',s
 				hab.setScale(s.x*(g_scale_dist)/(old), s.y*(g_scale_dist)/(old), s.z)
 				#print 'now:   ',hab.getScale()
+			print 'here3'
 			for m in g_changeDistCenterPlanets:
 				m.setPosition(m.getPosition()*(g_scale_dist)/(old))
-
+			print 'here4'
 			for sn in g_cen_changeDistCircles:
 				s = sn.getScale()
 				#print 'former:',s
 				sn.setScale(s.x*(g_scale_dist)/(old), s.y, s.z*(g_scale_dist)/(old))
 				#print 'now:   ',sn.getScale()
+			print 'here5'
 			for hab in g_cen_changeDistCenterHab:
 				s = hab.getScale()
 				#print 'former:',s
 				hab.setScale(s.x*(g_scale_dist)/(old), s.y*(g_scale_dist)/(old), s.z)
 				#print 'now:   ',hab.getScale()
+			print 'here6'
 			for m in g_cen_changeDistCenterPlanets:
-				m.setPosition(m.getPosition()*()/(old))
+				m.setPosition(m.getPosition()*(g_scale_dist)/(old))
 
 			################# WALL ########
+			print 'here7'
 			wallLimit*=(old)/(g_scale_dist) # wallLimit will be smaller
 
 			# not work, too slow
 			#removeAllChildren(sn_smallMulti)
 			#initSmallMulti()
+			print 'here8'
 
 			for i in xrange(sn_smallMulti.numChildren()):
 				sn_smallTrans = sn_smallMulti.getChildByName('smallTrans'+str(i))
@@ -1177,11 +1190,9 @@ def changeScale(name, add):
 
 					#bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
 
-					#print 'bs_outlineBox:',bs_outlineBox
 					curSys = dic_countToSys[i]
 					print 'i:',i
 					print 'curSys:',curSys._name
-					#print 'pos:',bs_outlineBox.getPosition()
 					habInner = curSys._star._habNear
 					habOuter = curSys._star._habFar
 
@@ -1416,6 +1427,7 @@ def addCenter(verticalHeight, theSys):
 	model = StaticObject.create('defaultSphere')
 	#model = SphereShape.create(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, 4)
 	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02))
+	model.setPosition(0,1000,0)
 	g_cen_changeSize.append(model)
 	model.getMaterial().setProgram('textured')
 	model.setEffect('textured -v emissive -d '+theSys._star._texture)
@@ -1673,7 +1685,7 @@ def onEvent():
 								text_univ_highlight.setColor(Color('white'))
 							li_textUniv[i].setColor(Color('red'))
 							text_univ_highlight = li_textUniv[i]
-							addCenter(1.2,dic_boxToSys[node])
+							addCenter(1.0,dic_boxToSys[node])
 							g_curCenSys = dic_boxToSys[node]
 							pointer.setVisible(False)
 							g_moveToCenter=0
@@ -1751,8 +1763,8 @@ def onEvent():
 			 		if e.isButtonDown(EventFlags.Button2):
 			 			#for ii in xrange(sn_smallMulti.numChildren()):
 			 			#	print ii,sn_smallMulti.getChildByIndex(ii)
-			 			print 'selected smallTrans',g_curOrder[i]
-						print 'i:',i
+			 			#print 'selected smallTrans',g_curOrder[i]
+						#print 'i:',i
 			 			e.setProcessed()
 			 			if i != num_reorder:
 			 				#bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
@@ -2033,7 +2045,13 @@ def saveConfig():
 		pickle.dump(set_save,f)
 		#print 'f:'
 		#print f
+
+	filename1 = str(-int(filename))
+	print 'file1:',filename1
+	with open(filename1, 'w') as f:
+		pickle.dump(g_curOrder,f)
 	#print 'saved to '+t
+
 	menu_load.addButton(t,'loadConfig('+str(filename)+')')
 	playSound(sd_sav_saved, cam.getPosition(), 1.0)
 
@@ -2041,12 +2059,22 @@ def loadConfig(filename):
 	global set_save
 	global sn_smallMulti
 
+	global g_curOrder
+
+	global g_isLoadingFromSavedConfig
+
 	#print 'filename:', filename
 
 	f = open(str(filename), 'r')
 
 	#with open(filename, 'r') as f:
 	set_save = pickle.load(f)
+
+	f = open(str(-int(filename)), 'r')
+	g_curOrder = pickle.load(f)
+
+	g_isLoadingFromSavedConfig = True
+
 	resetWall(set_save)
 
 def updateFilter():
