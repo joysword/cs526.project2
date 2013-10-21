@@ -38,8 +38,8 @@ g_curOrder = [i for i in xrange(48)]
 g_curOrder_save = g_curOrder
 
 li_allSys = [] # classes, aaalllllll the systems
-dic_allBox = {} # dictionary of small multiple boxes
-dic_sys = {} # dictionary of systems
+dic_boxToSys = {} # dictionary of small multiple boxes
+dic_countToSys = {} # dictionary of systems
 li_boxOnWall = [] # scenenodes (outlineBox)
 
 li_textUniv = []
@@ -48,6 +48,8 @@ text_univ_highlight = None
 
 # whether we are showing the info of a system
 g_showInfo = False
+
+g_curCenSys = None
 
 wallLimit = 247000000 # by default, everything closer than this number can be shown
 
@@ -135,7 +137,7 @@ def KM_from_AU(n): # exact
 	return n * 149597870.7
 
 ## column names in data file
-g_c = {'sys':0 'name':1, 'star':2, 'size':3, 'distance':4, 'orbit':4, 'texture':5, 'ra':6, 'dec':7, 'app_mag':8, 'class':9, 'type':10, 'num':11, 'day':12, 'year':13, 'inc':14, 'detection':15, 'mass':16}
+g_c = {'sys':0, 'name':1, 'star':2, 'size':3, 'distance':4, 'orbit':4, 'texture':5, 'ra':6, 'dec':7, 'app_mag':8, 'class':9, 'type':10, 'num':11, 'day':12, 'year':13, 'inc':14, 'detection':15, 'mass':16, 'info_s':17, 'info_p':18}
 
 ## bolometric correction constant for calculating habitable zone
 g_BC = {'B':-2.0,'A':-0.3,'F':-0.15,'G':-0.4,'K':-0.8,'M':-2.0}
@@ -197,7 +199,7 @@ class planet:
 			self._isEarthSized = False
 
 class star:
-	def __init__(self,t,mv,size,n,dis,c,ty,num,ra,dec):
+	def __init__(self,t,mv,size,n,dis,c,ty,num,ra,dec,infos,infop):
 		self._texture = t
 
 		if cmp(mv,'')==0:
@@ -239,6 +241,16 @@ class star:
 		if cmp(dec[0],'-')==0:
 			self._dec *= -1.0
 
+		if int(infos)==1:
+			self._hasInfo_s = True
+		else:
+			self._hasInfo_s = False
+
+		if int(infop)==1:
+			self._hasInfo_p = True
+		else:
+			self._hasInfo_p = False
+
 	def addPlanet(self,pla):
 		self._children.append(pla)
 
@@ -260,10 +272,12 @@ class star:
 			return KM_from_AU(ri),KM_from_AU(ro)
 
 class plaSys:
-	def __init__(self,star,dis,name):
+	def __init__(self,star,dis,name,hasInfo_s,hasInfo_p):
 		self._star = star
 		self._dis = dis
 		self._name = name
+		self._hasInfo_s = hasInfo_s
+		self._hasInfo_p = hasInfo_p
 
 ##############################################################################################################
 # PLAY SOUND
@@ -293,7 +307,7 @@ def playSound(sd, pos, vol):
 	sd.setPosition(pos)
 	sd.setVolume(vol)
 	sd.setWidth(20)
-	sd.play()
+	#sd.play()
 
 ##############################################################################################################
 # CREATE MENUS
@@ -518,9 +532,9 @@ sn_root.addChild(sn_univTrans)
 sn_centerSys.addChild(sn_cen_sys)
 
 # fix small multiples and 3d universe, no move
-#if CAVE():
-cam.addChild(sn_smallMulti)
-cam.addChild(sn_univTrans)
+if CAVE():
+	cam.addChild(sn_smallMulti)
+	cam.addChild(sn_univTrans)
 
 ## Create a directional light
 light1 = Light.create()
@@ -538,8 +552,19 @@ scene.loadModel(mi)
 
 ## pointer for selecting
 pointer = SphereShape.create(0.01,3)
-#pointer.setEffect('colored -e #ff6600')
+pointer.setEffect('colored -e #ff6600')
 pointer.setVisible(False)
+
+ui = UiModule.createAndInitialize()
+wf = ui.getWidgetFactory()
+uiroot = ui.getUi()
+
+legend_s = wf.createImage('legend_s', uiroot)
+legend_p = wf.createImage('legend_p', uiroot)
+legend_s.setLayer(WidgetLayer.Front)
+legend_p.setLayer(WidgetLayer.Front)
+legend_s.setVisible(False)
+legend_p.setVisible(False)
 
 toggleStereo()
 
@@ -554,7 +579,7 @@ if CAVE():
 # LOAD DATA FROM FILE
 
 atLine = 0
-f = open('data2.csv','rU')
+f = open('data4.csv','rU')
 lines = reader(f)
 for p in lines:
 	atLine+=1
@@ -564,9 +589,9 @@ for p in lines:
 	#print p
 	if int(p[g_c['star']])==1: # star
 		# def __init__(self,t,mv,r,n,dis,c,ty,num):
-		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']], p[g_c['ra']], p[g_c['dec']])
+		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']], p[g_c['ra']], p[g_c['dec']], p[g_c['info_s']], p[g_c['info_p']])
 
-		curSys = plaSys(curStar,curStar._dis,curStar._name)
+		curSys = plaSys(curStar,curStar._dis,p[g_c['sys']],curStar._hasInfo_s,curStar._hasInfo_p)
 		li_allSys.append(curSys)
 
 	else: # planet
@@ -633,10 +658,10 @@ def initUniv(preset):
 			star.setPosition(pos)
 
 			if curSys._star._class in dic_color.keys():
-				#star.setEffect('colored -e '+dic_color[curSys._star._class])
+				star.setEffect('colored -e '+dic_color[curSys._star._class])
 				pass
 			else:
-				#star.setEffect('colored -e '+dic_color['G'])
+				star.setEffect('colored -e '+dic_color['G'])
 				pass
 			sn_univParent.addChild(star)
 
@@ -686,14 +711,14 @@ def highlight(sys,star,p,t,size):
 def initSmallMulti(preset):
 
 	global li_boxOnWall
-	global dic_allBox
-	global dic_sys
+	global dic_boxToSys
+	global dic_countToSys
 
 	global g_curOrder
 
 	li_boxOnWall = []
-	dic_allBox = {}
-	dic_sys = {}
+	dic_boxToSys = {}
+	dic_countToSys = {}
 
 	playSound(sd_loading, cam.getPosition(), 1.0)
 
@@ -723,21 +748,21 @@ def initSmallMulti(preset):
 
 			bs_outlineBox = BoxShape.create(2.0, 0.25, 0.001)
 			bs_outlineBox.setPosition(Vector3(-0.5, 0, 0.01))
-			#bs_outlineBox.setEffect('colored -e #01b2f144')
+			bs_outlineBox.setEffect('colored -e #01b2f144')
 			bs_outlineBox.getMaterial().setTransparent(True)
 			sn_boxParent.addChild(bs_outlineBox)
 
 			li_boxOnWall.append(bs_outlineBox)
 			set_save[smallCount] = preset[smallCount]
 
-			dic_allBox[bs_outlineBox] = None
-			dic_sys[smallCount] = None
+			dic_boxToSys[bs_outlineBox] = None
+			dic_countToSys[smallCount] = None
 
 			if preset[smallCount]!=-1:
 				curSys = li_allSys[preset[smallCount]]
 
-				dic_allBox[bs_outlineBox] = curSys
-				dic_sys[smallCount] = curSys
+				dic_boxToSys[bs_outlineBox] = curSys
+				dic_countToSys[smallCount] = curSys
 
 				sn_smallSys = SceneNode.create('smallSys'+str(smallCount))
 
@@ -784,9 +809,7 @@ def initSmallMulti(preset):
 					model.setScale(Vector3(p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size, p._size * c_scaleWall_size * g_scale_size))
 					model.setPosition(Vector3(0.0,0.0,48000 - p._orbit * c_scaleWall_dist * g_scale_dist))
 					g_changeSize.append(model)
-					print 'here'
 					model.setEffect('textured -v emissive -d '+p._texture)
-					print 'there'
 						#sn_smallSys.addChild(model)
 					sn_planetParent.addChild(model)
 					t = Text3D.create('fonts/helvetica.ttf', 1, p._name)
@@ -818,7 +841,7 @@ def initSmallMulti(preset):
 				sn_smallSys.addChild(sn_planetParent)
 
 				## get text
-				t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+' | type: '+curSys._star._type+' | distance: '+str(curSys._star._dis)+' ly | planets discovered by: '+curSys._star._children[0]._detection)
+				t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+' | STAR: '+curSys._star._name + ' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | planets discovered by: '+curSys._star._children[0]._detection)
 				if CAVE():
 					#t.setFontResolution(120)
 					#t.setFontSize(120)
@@ -868,7 +891,7 @@ def initSmallMulti(preset):
 					t.setVisible(False)
 
 				sn_smallSys.yaw(math.pi/2.0)
-				sn_smallSys.setScale(0.00001, 0.00001, 0.00001) #scale for panels - flat to screen
+				sn_smallSys.setScale(0.0000001, 0.00001, 0.00001) #scale for panels - flat to screen
 
 			smallCount += 1
 
@@ -903,7 +926,7 @@ def addOrbit(orbit, thick):
 
 		circle.setPosition(Vector3(0, 2, -4))
 
-		#circle.setEffect('colored -e white')
+		circle.setEffect('colored -e white')
 
 		# Squish z to turn the torus into a disc-like shape.
 		circle.setScale(Vector3(orbit, 1000.0, orbit))
@@ -935,7 +958,7 @@ def initCenter(verticalHeight):
 	model.setPosition(0,1000,0)
 	g_changeSize.append(model)
 	model.getMaterial().setProgram('textured')
-	#model.setEffect('textured -v emissive -d '+theSys._star._texture)
+	model.setEffect('textured -v emissive -d '+theSys._star._texture)
 
 	# activePlanets[name] = model
 
@@ -950,7 +973,7 @@ def initCenter(verticalHeight):
 	l.setStart(Vector3(0, 0, 0))
 	l.setEnd(Vector3(0, 1000, 0))
 	l.setThickness(1)
-	#sunLine.setEffect('colored -e white')
+	sunLine.setEffect('colored -e white')
 	sn_centerTrans.addChild(sunLine)
 
 	sn_planetCenter = SceneNode.create('planetCenter'+theSys._star._name)
@@ -997,7 +1020,7 @@ def initCenter(verticalHeight):
 		g_changeSize.append(model)
 		g_changeDistCenterPlanets.append(model)
 		model.getMaterial().setProgram('textured')
-		#model.setEffect('textured -d '+p._texture)
+		model.setEffect('textured -d '+p._texture)
 
 		#activePlanets[name] = model
 
@@ -1048,14 +1071,14 @@ def initCenter(verticalHeight):
 	## deal with the habitable zone
 
 	cs_inner = CylinderShape.create(1, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, 10, 128)
-	#cs_inner.setEffect('colored -e #000000')
+	cs_inner.setEffect('colored -e #000000')
 	#cs_inner.getMaterial().setTransparent(True)
 	cs_inner.getMaterial().setTransparent(False)
 	cs_inner.pitch(-math.pi*0.5)
 	cs_inner.setScale(Vector3(1, 1, 1.0))
 
 	cs_outer = CylinderShape.create(1, theSys._star._habFar*c_scaleCenter_dist*g_scale_dist, theSys._star._habFar*c_scaleCenter_dist*g_scale_dist, 10, 128)
-	#cs_outer.setEffect('colored -e #00ff0055')
+	cs_outer.setEffect('colored -e #00ff0055')
 	cs_outer.getMaterial().setTransparent(True)
 	cs_outer.pitch(-math.pi*0.5)
 	cs_outer.setScale(Vector3(1, 1, 0.08))
@@ -1096,7 +1119,7 @@ def changeScale(name, add):
 	if cmp(name,'dist')==0:
 		#print 'enter dist'
 		if add: # +
-			#print 'enter +'
+			print 'enter +'
 			old = g_scale_dist
 			if old==0.001:
 				g_scale_dist=0.005
@@ -1158,8 +1181,9 @@ def changeScale(name, add):
 					#bs_outlineBox = sn_smallTrans.getChildByName('boxParent'+str(i)).getChildByIndex(0)
 
 					#print 'bs_outlineBox:',bs_outlineBox
-					curSys = dic_sys[i]
-					#print 'curSys:',curSys
+					curSys = dic_countToSys[i]
+					print 'i:',i
+					print curSys:',curSys._name
 					#print 'pos:',bs_outlineBox.getPosition()
 					habInner = curSys._star._habNear
 					habOuter = curSys._star._habFar
@@ -1195,6 +1219,7 @@ def changeScale(name, add):
 					else:
 						t.setVisible(False)
 
+			print 'done'
 			return True
 		else: # -
 			old = g_scale_dist
@@ -1248,7 +1273,7 @@ def changeScale(name, add):
 					t = sn_smallTrans.getChildByName('indicatorParent'+str(i)).getChildByIndex(0)
 					sn_planetParent = sn_smallSys.getChildByName('planetParent'+str(i))
 
-					curSys = dic_sys[i]
+					curSys = dic_countToSys[i]
 					habInner = curSys._star._habNear
 					habOuter = curSys._star._habFar
 
@@ -1283,7 +1308,7 @@ def changeScale(name, add):
 					else:
 						t.setVisible(False)
 
-			#print 'done'
+			print 'done'
 			return True
 
 	## size
@@ -1392,7 +1417,7 @@ def addCenter(verticalHeight, theSys):
 	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02))
 	g_cen_changeSize.append(model)
 	model.getMaterial().setProgram('textured')
-	#model.setEffect('textured -v emissive -d '+theSys._star._texture)
+	model.setEffect('textured -v emissive -d '+theSys._star._texture)
 
 	# activePlanets[name] = model
 
@@ -1407,7 +1432,7 @@ def addCenter(verticalHeight, theSys):
 	l.setStart(Vector3(0, 0, 0))
 	l.setEnd(Vector3(0, 1000, 0))
 	l.setThickness(1)
-	#sunLine.setEffect('colored -e white')
+	sunLine.setEffect('colored -e white')
 	sn_centerTrans.addChild(sunLine)
 
 	sn_planetCenter = SceneNode.create('planetCenter'+theSys._star._name)
@@ -1454,7 +1479,7 @@ def addCenter(verticalHeight, theSys):
 		g_cen_changeSize.append(model)
 		g_cen_changeDistCenterPlanets.append(model)
 		model.getMaterial().setProgram('textured')
-		#model.setEffect('textured -d '+p._texture)
+		model.setEffect('textured -d '+p._texture)
 
 		#activePlanets[name] = model
 
@@ -1508,14 +1533,14 @@ def addCenter(verticalHeight, theSys):
 	## deal with the habitable zone
 
 	cs_inner = CylinderShape.create(1, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, 10, 128)
-	#cs_inner.setEffect('colored -e #000000ff')
+	cs_inner.setEffect('colored -e #000000ff')
 	#cs_inner.getMaterial().setTransparent(True)
 	cs_inner.getMaterial().setTransparent(False)
 	cs_inner.pitch(-math.pi*0.5)
 	cs_inner.setScale(Vector3(1, 1, 1.0))
 
 	cs_outer = CylinderShape.create(1, theSys._star._habFar*c_scaleCenter_dist*g_scale_dist, theSys._star._habFar*c_scaleCenter_dist*g_scale_dist, 10, 128)
-	#cs_outer.setEffect('colored -e #00ff0055')
+	cs_outer.setEffect('colored -e #00ff0055')
 	cs_outer.getMaterial().setTransparent(True)
 	cs_outer.pitch(-math.pi*0.5)
 	cs_outer.setScale(Vector3(1, 1, 0.1))
@@ -1566,10 +1591,14 @@ def onEvent():
 
 	global g_curOrder
 
+	global g_curCenSys
+
+	global g_showInfo
+
 	e = getEvent()
 
 	## normal operations
-	if g_reorder==0 and g_moveToCenter==0:
+	if g_reorder==0 and g_moveToCenter==0 and g_showInfo==False:
 		if e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
 			#print 'start dist -'
 			if not changeScale('dist',False):
@@ -1615,6 +1644,12 @@ def onEvent():
 				oriVec = quaternionToEuler(e.getOrientation())
 				cam.rotate( oriVec-oriVecOld, 2*math.pi/180, Space.Local )
 
+	elif g_showInfo==True:
+		if e.isButtonDown(EventFlags.Button3) or e.isButtonDown(EventFlags.Button2):
+			legend_p.setVisible(False)
+			legend_s.setVisible(False)
+			g_showInfo=False
+
 	## move to center
 	elif g_moveToCenter==1:
 		if e.isButtonDown(EventFlags.Button3):
@@ -1636,10 +1671,12 @@ def onEvent():
 							text_univ_highlight.setColor(Color('white'))
 						li_textUniv[i].setColor(Color('red'))
 						text_univ_highlight = li_textUniv[i]
-						addCenter(1.2,dic_allBox[node])
-						pointer.setVisible(False)
-						g_moveToCenter=0
-						playSound(sd_mtc_moving, cam.getPosition(), 1.0)
+						if dic_boxToSys[node]!=None:
+							addCenter(1.2,dic_boxToSys[node])
+							g_curCenSys = dic_boxToSys[node]
+							pointer.setVisible(False)
+							g_moveToCenter=0
+							playSound(sd_mtc_moving, cam.getPosition(), 1.0)
 					break
 
 	## choose to reorder
@@ -1665,11 +1702,11 @@ def onEvent():
 						e.setProcessed()
 						g_reorder=2
 						#print 'g_reoder=2'
-						##bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
+						#bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
 						#print 'box color changed'
 						num_reorder = i # record this node's order
 						box_reorder = bs_outlineBox # record this node
-						##bs_outlineBox.setEffect('colored -e #01b2f144')
+						#bs_outlineBox.setEffect('colored -e #01b2f144')
 						playSound(sd_reo_selected, cam.getPosition(), 1.0)
 					break
 
@@ -1684,7 +1721,7 @@ def onEvent():
 		# 		elif e.isButtonDown(EventFlags.Button2):
 		# 			e.setProcessed()
 		# 			g_reorder=2
-		## 			node.setEffect('colored -e #3274cc44') # change color to mark it
+		# 			node.setEffect('colored -e #3274cc44') # change color to mark it
 		# 			box_reorder = node # record this node as reordering
 		# 			playSound(sd_reo_selected, cam.getPosition(), 1.0)
 		# 		break
@@ -1695,7 +1732,7 @@ def onEvent():
 		if e.isButtonDown(EventFlags.Button3):
 			e.setProcessed()
 			g_reorder=1
-			##box_reorder.setEffect('colored -e #01b2f144') # restore original color
+			#box_reorder.setEffect('colored -e #01b2f144') # restore original color
 			playSound(sd_reo_canceled, cam.getPosition(), 1.0)
  			playSound(sd_reo_please, cam.getPosition(), 1.0)
  			print ('cenceled')
@@ -1713,7 +1750,7 @@ def onEvent():
 			 			#	print ii,sn_smallMulti.getChildByIndex(ii)
 			 			e.setProcessed()
 			 			if i != num_reorder:
-			 				##bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
+			 				#bs_outlineBox.setEffect('colored -e #3274cc44') # change color to mark it
 			 				curPos = sn_smallTrans.getPosition()
 			 				curOri = sn_smallTrans.getOrientation()
 			 				if i<num_reorder:
@@ -1761,7 +1798,7 @@ def onEvent():
 		# 		if e.isButtonDown(EventFlags.Button3):
 		# 			e.setProcessed()
 		# 			g_reorder=1
-		## 			box_reorder.setEffect('colored -e #01b2f144') # restore original color
+		#			box_reorder.setEffect('colored -e #01b2f144') # restore original color
 		# 			playSound(sd_reo_canceled, cam.getPosition(), 1.0)
 		# 			playSound(sd_reo_please, cam.getPosition(), 1.0)
 		# 		elif e.isButtonDown(EventFlags.Button2):
@@ -2094,17 +2131,19 @@ def showInfo():
 	global g_showInfo
 
 	g_showInfo = True
-	ui = UiModule.createAndInitialize()
-	wf = ui.getWidgetFactory()
-	uiroot = ui.getUi()
 
-	legend = wf.createImage('legend', uiroot)
-	legend.setData(loadImage('images/Tau_Ceti_250.png'))
-	legend.setLayer(WidgetLayer.Front)
-	#legend.setSize(Vector2(180, UIScale * 240))
-	#yWidgPos = (UIScale * 480) - legend.getSize()[1]
-	if CAVE():
-		legend.setPosition(Vector2(15025 ,0))
-	else:
-		legend.setPosition(Vector2(0 ,0))
-	print 'done loading image'
+	if g_curCenSys!=None:
+		if g_curCenSys._hasInfo_s:
+			legend_s.setData(loadImage('pic_s/'+g_curCenSys._name.replace(' ','_'))+'.png')
+		else:
+			legend_s.setData(loadImage('pic_s/no_info.png')
+		if g_curCenSys._hasInfo_p:
+			legend_p.setData(loadImage('pic_p/'+g_curCenSys._name.replace(' ','_'))+'.png'))
+		else:
+			legend_p.setData(loadImage('pic_p/no_info.png')
+		legend_s.setVisible(True)
+		legend_p.setVisible(True)
+		legend_s.setPosition(Vector2(15100,0))
+		legend_p.setPosition(Vector2(15000 - legend_p.getSize()[0],0))
+
+		print 'done loading image'
