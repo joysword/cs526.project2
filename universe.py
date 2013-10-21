@@ -382,7 +382,7 @@ btn_speedDown = Button.create(container_speedBtn)
 btn_speedDown.setText('-')
 btn_speedDown.setUIEventCommand('changeScale("time", False)')
 
-lbl_speed_value = Label.carete(container_speed)
+lbl_speed_value = Label.create(container_speed)
 lbl_speed_value.setText(' '+str(g_scale_time))
 
 ## menu to change to four predefined sets of system
@@ -608,7 +608,7 @@ for p in lines:
 		# def __init__(self,t,mv,r,n,dis,c,ty,num):
 		curStar = star(p[g_c['texture']], p[g_c['app_mag']], p[g_c['size']], p[g_c['name']], p[g_c['distance']], p[g_c['class']], p[g_c['type']], p[g_c['num']], p[g_c['ra']], p[g_c['dec']], p[g_c['info_s']], p[g_c['info_p']])
 
-		curSys = plaSys(curStar,curStar._dis,p[g_c['sys']],p[g_c['binary'],curStar._hasInfo_s,curStar._hasInfo_p)
+		curSys = plaSys(curStar,curStar._dis,p[g_c['sys']],p[g_c['binary']],curStar._hasInfo_s,curStar._hasInfo_p)
 		li_allSys.append(curSys)
 
 	else: # planet
