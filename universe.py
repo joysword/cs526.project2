@@ -76,9 +76,11 @@ WALLLIMIT = 247000000 # wallLimit will change, WALLLIMIT won't
 c_scaleWall_size = 0.1
 c_scaleWall_dist = 0.0008
 
-c_scaleCenter_size = 0.01
+c_scaleCenter_size = 0.006
 c_scaleCenter_dist = 0.000005
 c_scaleCenter_overall = 0.00025
+
+c_scale_center_star = 0.06
 
 c_scaleUniv_size = 0.000002
 
@@ -537,13 +539,20 @@ if CAVE():
 	cam.addChild(sn_smallMulti)
 	cam.addChild(sn_univTrans)
 
-## Create a directional light
+## Create a point light
 light1 = Light.create()
 light1.setLightType(LightType.Point)
 light1.setColor(Color(1.0, 1.0, 1.0, 1.0))
 #light1.setPosition(Vector3(0.0, 1.5, 1.0))
 light1.setPosition(Vector3(0.0, 0.0, 0.0))
 light1.setEnabled(True)
+
+light2 = Light.create()
+light2.setLightType(LightType.Point)
+light2.setColor(Color(1.0, 1.0, 1.0, 1.0))
+#light2.setPosition(Vector3(0.0, 1.5, 1.0))
+light2.setPosition(Vector3(0.0, 0.0, 0.0))
+light2.setEnabled(False)
 
 ## Load default sphere model
 mi = ModelInfo()
@@ -880,7 +889,7 @@ def initSmallMulti(preset):
 					#t.setFontResolution(10)
 					t.setFontSize(g_ftszdesk)
 				if CAVE():
-					t.setPosition(Vector3(-1.15, c_smallLabel_y_cave, -0.01))
+					t.setPosition(Vector3(-1.15, -c_smallLabel_y_cave, -0.01))
 				else:
 					t.setPosition(Vector3(-0.9, 0.08, -0.01))
 				t.yaw(math.pi) # back to face, face to back
@@ -960,9 +969,9 @@ def initCenter(verticalHeight):
 	## the star
 	model = StaticObject.create('defaultSphere')
 	#model = SphereShape.create(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, 4)
-	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02))
-	model.setPosition(0,1000,0)
-	g_changeSize.append(model)
+	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size*c_scale_center_star, theSys._star._size*c_scaleCenter_size*g_scale_size*c_scale_center_star, theSys._star._size*c_scaleCenter_size*g_scale_size*c_scale_center_star))
+	model.setPosition(0,850,0)
+	#g_changeSize.append(model)
 	model.getMaterial().setProgram('textured')
 	model.setEffect('textured -v emissive -d '+theSys._star._texture)
 
@@ -977,7 +986,7 @@ def initCenter(verticalHeight):
 
 	l = sunLine.addLine()
 	l.setStart(Vector3(0, 0, 0))
-	l.setEnd(Vector3(0, 1000, 0))
+	l.setEnd(Vector3(0, 850, 0))
 	l.setThickness(1)
 	sunLine.setEffect('colored -e white')
 	sn_centerTrans.addChild(sunLine)
@@ -1008,7 +1017,7 @@ def initCenter(verticalHeight):
 	else:
 		#v.setFontResolution(10)
 		v.setFontSize(g_ftszdesk*10)
-	v.setPosition(Vector3(0, 500, 0))
+	v.setPosition(Vector3(0, 400, 0))
 	#v.setFontResolution(120)
 
 	#v.setFontSize(160)
@@ -1426,9 +1435,9 @@ def addCenter(verticalHeight, theSys):
 	## the star
 	model = StaticObject.create('defaultSphere')
 	#model = SphereShape.create(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, 4)
-	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02, theSys._star._size*c_scaleCenter_size*g_scale_size*0.02))
+	model.setScale(Vector3(theSys._star._size*c_scaleCenter_size*g_scale_size*c_scale_center_star, theSys._star._size*c_scaleCenter_size*g_scale_size*c_scale_center_star, theSys._star._size*c_scaleCenter_size*g_scale_size*c_scale_center_star))
 	model.setPosition(0,1000,0)
-	g_cen_changeSize.append(model)
+	#g_cen_changeSize.append(model)
 	model.getMaterial().setProgram('textured')
 	model.setEffect('textured -v emissive -d '+theSys._star._texture)
 
@@ -1546,9 +1555,9 @@ def addCenter(verticalHeight, theSys):
 	## deal with the habitable zone
 
 	cs_inner = CylinderShape.create(1, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, theSys._star._habNear*c_scaleCenter_dist*g_scale_dist, 10, 128)
-	cs_inner.setEffect('colored -e #000000ff')
-	#cs_inner.getMaterial().setTransparent(True)
-	cs_inner.getMaterial().setTransparent(False)
+	cs_inner.setEffect('colored -e #ff000055')
+	cs_inner.getMaterial().setTransparent(True)
+	#cs_inner.getMaterial().setTransparent(False)
 	cs_inner.pitch(-math.pi*0.5)
 	cs_inner.setScale(Vector3(1, 1, 1.0))
 
@@ -1568,7 +1577,8 @@ def addCenter(verticalHeight, theSys):
 	g_cen_changeDistCenterHab.append(cs_outer)
 	g_cen_changeDistCenterHab.append(cs_inner)
 
-	sn_centerTrans.addChild(light1)
+	sn_centerTrans.addChild(light2)
+	light2.setEnabled(True)
 
 	## add everything to the sn_centerTrans node for scaling and default positioning
 	sn_centerTrans.setScale(Vector3(c_scaleCenter_overall, c_scaleCenter_overall, c_scaleCenter_overall))
@@ -1685,7 +1695,7 @@ def onEvent():
 								text_univ_highlight.setColor(Color('white'))
 							li_textUniv[i].setColor(Color('red'))
 							text_univ_highlight = li_textUniv[i]
-							addCenter(1.0,dic_boxToSys[node])
+							addCenter(1.3,dic_boxToSys[node])
 							g_curCenSys = dic_boxToSys[node]
 							pointer.setVisible(False)
 							g_moveToCenter=0
