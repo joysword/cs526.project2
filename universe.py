@@ -80,11 +80,11 @@ c_scaleCenter_size = 0.006
 c_scaleCenter_dist = 0.000005
 c_scaleCenter_overall = 0.00025
 
-c_scale_center_star = 0.06
+c_scale_center_star = 0.08
 
 c_scaleUniv_size = 0.000002
 
-c_smallLabel_y_cave = 0.08
+c_smallLabel_y_cave = 0.09
 
 c_delta_scale = 0.2 # interval between each scale
 
@@ -514,6 +514,14 @@ btn_reorder = mm.getMainMenu().addButton('reorder small multiples','startReorder
 ## button to reset the scene
 btn_reset = mm.getMainMenu().addButton('reset the scene','resetEverything()')
 
+## menu to read recent scientific discoveries
+menu_discovery = mm.getMainMenu().addSubMenu('recent discoveries')
+
+btn_discovery_1 = menu_discovery.addButton('New Planets, 3 Are Habitable (Gliese 667 C)','showNews("1")')
+btn_discovery_2 = menu_discovery.addButton('New Earth-Sized Exoplanet (Kepler-78b)','showNews("2")')
+btn_discovery_3 = menu_discovery.addButton('Richest Planetary System (HD 10180)','showNews("3")')
+btn_discovery_4 = menu_discovery.addButton('Most Earth-Like ExoPlanet Possibly Found (Kepler-69c)','showNews("4")')
+
 ##############################################################################################################
 # INITIALIZE THE SCENE
 scene = getSceneManager()
@@ -739,7 +747,7 @@ def initSmallMulti(preset):
 	dic_boxToSys = {}
 	dic_countToSys = {}
 
-	playSound(sd_loading, cam.getPosition(), 1.0)
+	playSound(sd_loading, cam.getPosition(), 0.5)
 
 	# restore the order if not loading from saved Config
 	if g_isLoadingFromSavedConfig:
@@ -864,7 +872,16 @@ def initSmallMulti(preset):
 				sn_smallSys.addChild(sn_planetParent)
 
 				## get text
-				t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+curSys._binary+' | STAR: '+curSys._star._name+' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | by: '+curSys._star._children[0]._detection)
+				if cmp(curSys._name,'Gliese 667')==0:
+					t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+curSys._binary+' | STAR: '+curSys._star._name+' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | by: '+curSys._star._children[0]._detection+ '| (RECENT DISCOVERY 1)')
+				elif cmp(curSys._name,'Kepler-78')==0:
+					t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+curSys._binary+' | STAR: '+curSys._star._name+' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | by: '+curSys._star._children[0]._detection+ '| (RECENT DISCOVERY 2)')
+				elif cmp(curSys._name,'HD 10180')==0:
+					t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+curSys._binary+' | STAR: '+curSys._star._name+' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | by: '+curSys._star._children[0]._detection+ '| (RECENT DISCOVERY 3)')
+				elif cmp(curSys._name,'Kepler-69')==0:
+					t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+curSys._binary+' | STAR: '+curSys._star._name+' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | by: '+curSys._star._children[0]._detection+ '| (RECENT DISCOVERY 4)')
+				else:
+					t = Text3D.create('fonts/helvetica.ttf', 1, curSys._name+curSys._binary+' | STAR: '+curSys._star._name+' | TYPE: '+curSys._star._type+' | DISTANCE: '+str(curSys._star._dis)+' ly | by: '+curSys._star._children[0]._detection)
 				if CAVE():
 					#t.setFontResolution(120)
 					#t.setFontSize(120)
@@ -873,7 +890,7 @@ def initSmallMulti(preset):
 					#t.setFontResolution(10)
 					t.setFontSize(g_ftszdesk)
 				if CAVE():
-					t.setPosition(Vector3(0.3, c_smallLabel_y_cave, -0.01))
+					t.setPosition(Vector3(0.45, c_smallLabel_y_cave, -0.01))
 				else:
 					t.setPosition(Vector3(0.3, 0.08, -0.01))
 				t.yaw(math.pi) # back to face, face to back
@@ -882,7 +899,10 @@ def initSmallMulti(preset):
 				t.getMaterial().setTransparent(False)
 				t.getMaterial().setDepthTestEnabled(False)
 				#t.setFixedSize(True)
-				if cmp(curSys._binary,'')!=0:
+				if cmp(curSys._name,'Gliese 667')==0 or cmp(curSys._name,'Kepler-78')==0 or cmp(curSys._name,'HD 10180')==0 or cmp(curSys._name,'Kepler-69')==0:
+					t.setColor(Color('red'))
+					t.setFontSize(g_ftszcave*1.2)
+				elif cmp(curSys._binary,'')!=0:
 					t.setColor(Color('orange'))
 				else:
 					t.setColor(Color('white'))
@@ -891,30 +911,33 @@ def initSmallMulti(preset):
 				## get indicator if some planets are outside
 				sn_indicatorParent = SceneNode.create('indicatorParent'+str(g_curOrder[smallCount]))
 
-				t = Text3D.create('fonts/helvetica.ttf', 1, str(outCounter)+' more planet(s) -->>')
+				if cmp(curSys._binary,'')==0:
+					t_indi = Text3D.create('fonts/helvetica.ttf', 1, str(outCounter)+' more planet(s) -->>')
+				else:
+					t_indi = Text3D.create('fonts/helvetica.ttf', 1, str(outCounter)+' more bodies -->>')
 				if CAVE():
 					#t.setFontResolution(120)
 					#t.setFontSize(120)
-					t.setFontSize(g_ftszcave)
+					t_indi.setFontSize(g_ftszcave)
 				else:
 					#t.setFontResolution(10)
-					t.setFontSize(g_ftszdesk)
+					t_indi.setFontSize(g_ftszdesk)
 				if CAVE():
-					t.setPosition(Vector3(-1.15, -c_smallLabel_y_cave, -0.01))
+					t_indi.setPosition(Vector3(-1.15, -c_smallLabel_y_cave, -0.01))
 				else:
-					t.setPosition(Vector3(-0.9, 0.08, -0.01))
-				t.yaw(math.pi) # back to face, face to back
+					t_indi.setPosition(Vector3(-0.9, 0.08, -0.01))
+				t_indi.yaw(math.pi) # back to face, face to back
 				#t.setFontResolution(120)
 				#t.getMaterial().setDoubleFace(1)
-				t.getMaterial().setTransparent(False)
-				t.getMaterial().setDepthTestEnabled(False)
+				t_indi.getMaterial().setTransparent(False)
+				t_indi.getMaterial().setDepthTestEnabled(False)
 				#t.setFixedSize(True)
-				t.setColor(Color('white'))
+				t_indi.setColor(Color('white'))
 				sn_smallTrans.addChild(sn_indicatorParent)
-				sn_indicatorParent.addChild(t)
+				sn_indicatorParent.addChild(t_indi)
 
 				if outCounter==0:
-					t.setVisible(False)
+					t_indi.setVisible(False)
 
 				sn_smallSys.yaw(math.pi/2.0)
 				sn_smallSys.setScale(0.00001, 0.00001, 0.00001) #scale for panels - flat to screen
@@ -1638,27 +1661,27 @@ def onEvent():
 		if e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
 			#print 'start dist -'
 			if not changeScale('dist',False):
-				playSound(sd_warn, e.getPosition(), 1.0)
+				playSound(sd_warn, e.getPosition(), 0.5)
 		elif e.isButtonDown(EventFlags.ButtonRight) or e.isKeyDown(ord('l')):
 			#print 'start dist +'
 			if not changeScale('dist',True):
-				playSound(sd_warn, e.getPosition(), 1.0)
+				playSound(sd_warn, e.getPosition(), 0.5)
 		elif e.isButtonDown(EventFlags.ButtonUp) or e.isKeyDown(ord('i')):
 			#print 'start size +'
 			if not changeScale('size',True):
-				playSound(sd_warn, e.getPosition(), 1.0)
+				playSound(sd_warn, e.getPosition(), 0.5)
 		elif e.isButtonDown(EventFlags.ButtonDown) or e.isKeyDown(ord('k')):
 			#print 'start size -'
 			if not changeScale('size',False):
-				playSound(sd_warn, e.getPosition(), 1.0)
+				playSound(sd_warn, e.getPosition(), 0.5)
 		elif e.isKeyDown(ord('u')):
 			#print 'start time -'
 			if not changeScale('time',False):
-				playSound(sd_warn, e.getPosition(), 1.0)
+				playSound(sd_warn, e.getPosition(), 0.5)
 		elif e.isKeyDown(ord('o')):
 			#print 'start time +'
 			if not changeScale('time',True):
-				playSound(sd_warn, e.getPosition(), 1.0)
+				playSound(sd_warn, e.getPosition(), 0.5)
 
 		## navigation
 		elif (e.isButtonDown(EventFlags.Button7)):
@@ -1692,7 +1715,7 @@ def onEvent():
 			e.setProcessed()
 			g_moveToCenter=0
 			pointer.setVisible(False)
-			playSound(sd_mtc_quit, cam.getPosition(), 1.0)
+			playSound(sd_mtc_quit, cam.getPosition(), 0.5)
 			print ('quit move to center mode')
 		else:
 			r = getRayFromEvent(e)
@@ -1712,7 +1735,7 @@ def onEvent():
 							g_curCenSys = dic_boxToSys[node]
 							pointer.setVisible(False)
 							g_moveToCenter=0
-							playSound(sd_mtc_moving, cam.getPosition(), 1.0)
+							playSound(sd_mtc_moving, cam.getPosition(), 0.5)
 					break
 
 	## choose to reorder
@@ -1722,7 +1745,7 @@ def onEvent():
 			e.setProcessed()
 			g_reorder=0
 			pointer.setVisible(False)
-			playSound(sd_reo_quit, cam.getPosition(), 1.0)
+			playSound(sd_reo_quit, cam.getPosition(), 0.5)
 			print 'quit reorder mode'
 		else:
 			r = getRayFromEvent(e)
@@ -1745,7 +1768,7 @@ def onEvent():
 						num_reorder = i # record this node's order
 						box_reorder = bs_outlineBox # record this node
 						#bs_outlineBox.setEffect('colored -e #01b2f144')
-						playSound(sd_reo_selected, cam.getPosition(), 1.0)
+						playSound(sd_reo_selected, cam.getPosition(), 0.5)
 					break
 
 		# for node in li_boxOnWall:
@@ -1755,13 +1778,13 @@ def onEvent():
 		# 		if e.isButtonDown(EventFlags.Button3):
 		# 			e.setProcessed()
 		# 			g_reorder=0
-		# 			playSound(sd_reo_quit, cam.getPosition(), 1.0)
+		# 			playSound(sd_reo_quit, cam.getPosition(), 0.5)
 		# 		elif e.isButtonDown(EventFlags.Button2):
 		# 			e.setProcessed()
 		# 			g_reorder=2
 		# 			node.setEffect('colored -e #3274cc44') # change color to mark it
 		# 			box_reorder = node # record this node as reordering
-		# 			playSound(sd_reo_selected, cam.getPosition(), 1.0)
+		# 			playSound(sd_reo_selected, cam.getPosition(), 0.5)
 		# 		break
 
 	## move to reorder
@@ -1771,8 +1794,8 @@ def onEvent():
 			e.setProcessed()
 			g_reorder=1
 			#box_reorder.setEffect('colored -e #01b2f144') # restore original color
-			playSound(sd_reo_canceled, cam.getPosition(), 1.0)
- 			playSound(sd_reo_please, cam.getPosition(), 1.0)
+			playSound(sd_reo_canceled, cam.getPosition(), 0.5)
+ 			#playSound(sd_reo_please, cam.getPosition(), 0.5)
  			print ('cenceled')
  		else:
 			r = getRayFromEvent(e)
@@ -1830,7 +1853,7 @@ def onEvent():
 			 					g_curOrder[i]=tmpNum
 			 					for j in xrange(48):
 			 						print 'g_curOrder['+str(j)+']:',g_curOrder[j]
-			 				playSound(sd_reo_done, cam.getPosition(), 1.0)
+			 				playSound(sd_reo_done, cam.getPosition(), 0.5)
 			 				g_reorder=1
 			 		break
 
@@ -1842,8 +1865,8 @@ def onEvent():
 		# 			e.setProcessed()
 		# 			g_reorder=1
 		#			box_reorder.setEffect('colored -e #01b2f144') # restore original color
-		# 			playSound(sd_reo_canceled, cam.getPosition(), 1.0)
-		# 			playSound(sd_reo_please, cam.getPosition(), 1.0)
+		# 			playSound(sd_reo_canceled, cam.getPosition(), 0.5)
+		# 			playSound(sd_reo_please, cam.getPosition(), 0.5)
 		# 		elif e.isButtonDown(EventFlags.Button2):
 		# 			if node != box_reorder:
 
@@ -1974,6 +1997,10 @@ def resetEverything():
 	global g_moveToCenter
 	global g_invisOnes
 
+	global g_isLoadingFromSavedConfig
+
+	g_isLoadingFromSavedConfig = False
+
 	g_scale_size = 1
 	g_scale_dist = 1
 	g_scale_time = 1
@@ -2009,7 +2036,7 @@ def resetEverything():
 	#cam.setPosition(Vector3(0,0,0))
 	#cam.setOrientation(Quaternion(0,0,0,0))
 
-	playSound(sd_reset, cam.getPosition(), 1.0)
+	playSound(sd_reset, cam.getPosition(), 0.5)
 
 	resetCenter()
 	resetWall(set_nearest)
@@ -2022,7 +2049,7 @@ def startReorder():
 	pointer.setVisible(True)
 	mm.getMainMenu().hide()
 	print 'now in reorder mode'
-	playSound(sd_reo_please,cam.getPosition(),1.0)
+	playSound(sd_reo_please,cam.getPosition(),0.5)
 
 def startMoveToCenter():
 	global g_moveToCenter
@@ -2034,7 +2061,7 @@ def startMoveToCenter():
 	#print 'closing menu'
 	mm.getMainMenu().hide()
 	#print 'done'
-	playSound(sd_mtc_please,cam.getPosition(),1.0)
+	playSound(sd_mtc_please,cam.getPosition(),0.5)
 
 def pointingCallback(node, distance):
 	print 'yawing!'
@@ -2080,7 +2107,7 @@ def saveConfig():
 		print 'g_curOrder['+str(i)+']:',g_curOrder[i]
 
 	menu_load.addButton(t,'loadConfig('+str(filename)+')')
-	playSound(sd_sav_saved, cam.getPosition(), 1.0)
+	playSound(sd_sav_saved, cam.getPosition(), 0.5)
 
 def loadConfig(filename):
 	global set_save
@@ -2216,3 +2243,19 @@ def showInfo():
 		legend_p.setPosition(Vector2(15000 - legend_p.getSize()[0],800))
 
 		print 'done loading image'
+
+def showNews(s):
+	global g_curCenSys
+
+	if cmp(s,'1')==0:
+		addCenter(1.3,li_allSys[4])
+		g_curCenSys = li_allSys[4]
+	elif cmp(s,'2')==0:
+		addCenter(1.3,li_allSys[32])
+		g_curCenSys = li_allSys[32]
+	elif cmp(s,'3')==0:
+		addCenter(1.3,li_allSys[45])
+		g_curCenSys = li_allSys[45]
+	elif cmp(s,'4')==0:
+		addCenter(1.3,li_allSys[89])
+		g_curCenSys = li_allSys[89]
