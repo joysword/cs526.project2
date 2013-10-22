@@ -32,156 +32,70 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="data-and-resource" class="anchor" href="#data-and-resource"><span class="octicon octicon-link"></span></a>Data and Resource</h1>
+<a name="welcome" class="anchor" href="#welcome"><span class="octicon octicon-link"></span></a>Welcome!</h1>
+
+<p>Welcome to the homepage of my second project of Fall 2013 Semester, Straight Away to Orion, project 2 of Professor <a href="http://www.evl.uic.edu/aej/">Andy Johnson</a>'s <a href="http://www.evl.uic.edu/aej/526/">Computer Graphics II</a> course.</p>
 
 <h3>
-<a name="systems" class="anchor" href="#systems"><span class="octicon octicon-link"></span></a>Systems</h3>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h3>
 
-<ul>
-<li>List of multiplanetary system came from <a href="https://en.wikipedia.org/wiki/List_of_multiplanetary_systems">Wikipedia</a>
-</li>
-<li>Made some change from this list. Final list of systems see <strong>data4.csv</strong>
-</li>
-</ul><h3>
-<a name="planets-data" class="anchor" href="#planets-data"><span class="octicon octicon-link"></span></a>Planets Data</h3>
+<p>Generally speaking, this app (when running in CAVE2) allows you to:</p>
+<ol>
+  <li>view at most 48 small multiples of different planetary systems at a time, with the ability to scale size of start and planets as well as orbit distance.</li>
+  <li>view our solar system and one other system running in 3D with same scale change ability.</li>
+  <li>select to show four pre-defined interesting sets of planetary systems as small multiples, and filter what to show based on multiple parameters.</li>
+  <li>select from small multiples to move to show in 3D with our solar system for comparison</li>
+  <li>view a simple 3D universe model to see where all the planetary systems are relative to us</li>
+  <li>read information of different planetary systems as well as newly scientific discoveries</p></li>
+</ol>
+<p>See <a href="features.html">detailed desciption</a> for all the features.</p>
 
-<p>Raw planets data came from:</p>
+<h3>
+<a name="download-and-install" class="anchor" href="#download-and-install"><span class="octicon octicon-link"></span></a>Download and Install</h3>
+
+<ol>
+<li>have omegalib installed. You can get it <a href="https://github.com/uic-evl/omegalib">here</a></li>
+<li>if you are running it on higher than Mac OS X 10.8, you also need to have <a href="http://xquartz.macosforge.org/landing/">XQuartz</a></li>
+<li>download the source code from <a href="https://github.com/joysword/cs526.project2">Github</a> or on top of this page</li>
+<li>to run the project, first run XQuartz, then do as following with Terminal:
+<br><code>$ &gt;cd [omegalib_build]/bin/</code><br>
+                        <code>$ &gt;./orun -s [where_you_put_the_project]/universe.py</code>
+</li>
+</ol><p>Note that to have the best performance from this app, you need to run it in CAVE2. You can buy one <a href="http://www.mechdyne.com/cave2.aspx">here</a></p>
+
+<h3>
+<a name="about-the-data" class="anchor" href="#about-the-data"><span class="octicon octicon-link"></span></a>About the Data</h3>
+
+<p>Data used in this project is coming from different sources, including but not limiting to</p>
 
 <ul>
 <li><a href="http://exoplanets.org/table?datasets=explorer">Exoplanet Data Explorer</a></li>
 <li><a href="http://exoplanetarchive.ipac.caltech.edu">NASA Exoplanet Archive</a></li>
 <li><a href="http://www.openexoplanetcatalogue.com/index.php">Open Exoplanet Catalogue</a></li>
 <li><a href="http://exoplanet.eu">Extrasolar Planets Encyclopedia</a></li>
-</ul><h3>
-<a name="texture-data" class="anchor" href="#texture-data"><span class="octicon octicon-link"></span></a>Texture Data</h3>
+<li><a href="http://en.wikipedia.org">Wikipedia</a></li>
+</ul><p><a href="data.html">More info</a> about the Data</p>
 
-<ul>
-<li>used .ssc files from <a href="http://www.celestiamotherlode.net">celestia motherlode</a> to decide which texture to use on which planets</li>
-<li>texture files are from <a href="http://www.shatters.net/celestia/">celestia software</a>
-</li>
-</ul><h3>
-<a name="data-entries-i-used" class="anchor" href="#data-entries-i-used"><span class="octicon octicon-link"></span></a>Data entries I used:</h3>
+<h3>
+<a name="interesting-findings" class="anchor" href="#interesting-findings"><span class="octicon octicon-link"></span></a>Interesting Findings</h3>
 
-<h5>
-<a name="name-of-the-system" class="anchor" href="#name-of-the-system"><span class="octicon octicon-link"></span></a>Name of the System</h5>
+<p>Using this app, we are able to look into the data and discover things. See <a href="findings.html">more info</a> about what I found</p>
 
-<h5>
-<a name="name-of-the-star" class="anchor" href="#name-of-the-star"><span class="octicon octicon-link"></span></a>Name of the Star</h5>
-
-<ul>
-<li>same of name of the system if not binary/trinary system</li>
-<li>system name + suffix (A/B/C) for binary/trinary systems</li>
-<li>I called the system consists of HD 20781 and HD 20782 'HD 20781 + HD 20782'</li>
-</ul><h5>
-<a name="radius" class="anchor" href="#radius"><span class="octicon octicon-link"></span></a>Radius</h5>
-
-<ul>
-<li>used 'R_sun' for stars and 'R_jupiter' for planets</li>
-</ul><h5>
-<a name="distance-to-us" class="anchor" href="#distance-to-us"><span class="octicon octicon-link"></span></a>Distance to us</h5>
-
-<ul>
-<li>for stars</li>
-</ul><h5>
-<a name="orbit-distance" class="anchor" href="#orbit-distance"><span class="octicon octicon-link"></span></a>Orbit distance</h5>
-
-<ul>
-<li>for planets</li>
-<li>represented by Semi-Major Axis of original data</li>
-<li>used 'AU'</li>
-</ul><h5>
-<a name="texture" class="anchor" href="#texture"><span class="octicon octicon-link"></span></a>texture</h5>
-
-<h5>
-<a name="right-ascension" class="anchor" href="#right-ascension"><span class="octicon octicon-link"></span></a>Right ascension</h5>
-
-<ul>
-<li>for stars</li>
-<li>used for generating 3D universe (see <a href="http://fmwriters.com/Visionback/Issue14/wbputtingstars.htm">here</a>)</li>
-</ul><h5>
-<a name="declination" class="anchor" href="#declination"><span class="octicon octicon-link"></span></a>Declination</h5>
-
-<ul>
-<li>for stars</li>
-<li>used for generating 3D universe (see <a href="http://fmwriters.com/Visionback/Issue14/wbputtingstars.htm">here</a>)</li>
-</ul><h5>
-<a name="apparent-magnitude" class="anchor" href="#apparent-magnitude"><span class="octicon octicon-link"></span></a>Apparent magnitude</h5>
-
-<ul>
-<li>for stars</li>
-<li>used for calculating habitable zone (see <a href="www.planetarybiology.com/calculating_habitable_zone.htm">here</a>)</li>
-</ul><h5>
-<a name="spectral-class" class="anchor" href="#spectral-class"><span class="octicon octicon-link"></span></a>Spectral class</h5>
-
-<ul>
-<li>for stars</li>
-<li>O or B or A or F or G or K or M or unknown</li>
-<li>used for coloring in 3D universe</li>
-<li>used for assigning textures to stars</li>
-</ul><h5>
-<a name="spectral-type" class="anchor" href="#spectral-type"><span class="octicon octicon-link"></span></a>Spectral type</h5>
-
-<ul>
-<li>for stars</li>
-<li>e.g. G5V or K1.5IV</li>
-</ul><h5>
-<a name="confirmed-number-of-planets" class="anchor" href="#confirmed-number-of-planets"><span class="octicon octicon-link"></span></a>(Confirmed) number of planets</h5>
-
-<ul>
-<li>for stars</li>
-<li>only kept confirmed planest</li>
-</ul><h5>
-<a name="day" class="anchor" href="#day"><span class="octicon octicon-link"></span></a>Day</h5>
-
-<ul>
-<li>for planets</li>
-<li>how long to rotate 360 degree</li>
-<li>used 'day'</li>
-</ul><h5>
-<a name="year" class="anchor" href="#year"><span class="octicon octicon-link"></span></a>Year</h5>
-
-<ul>
-<li>for planets</li>
-<li>how long to orbit 360 degree</li>
-<li>used 'year'</li>
-</ul><h5>
-<a name="inclination" class="anchor" href="#inclination"><span class="octicon octicon-link"></span></a>Inclination</h5>
-
-<ul>
-<li>for planets</li>
-<li>degree of inclination</li>
-</ul><h5>
-<a name="detection-method" class="anchor" href="#detection-method"><span class="octicon octicon-link"></span></a>Detection Method</h5>
-
-<ul>
-<li>for planets</li>
-<li>how the planets are discovered</li>
-</ul><h5>
-<a name="binary-or-trinary" class="anchor" href="#binary-or-trinary"><span class="octicon octicon-link"></span></a>Binary Or Trinary</h5>
-
-<ul>
-<li>for stars</li>
-<li>empty not binary/trinary, actual type if binary/trinary</li>
-</ul><h5>
-<a name="mass" class="anchor" href="#mass"><span class="octicon octicon-link"></span></a>Mass</h5>
-
-<ul>
-<li>for planets</li>
-<li>used to estimate radius of planets (see <a href="http://arxiv.org/pdf/1111.3986.pdf">this document</a>)</li>
-<li>used 'M_earth'</li>
-</ul>
+<h3>
+<a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h3>
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Straight Away to Orion maintained by <a href="https://github.com/joysword">joysword</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
+            <footer class="inner">
+                <p class="copyright">
+                    Developed and Maintained by <a href="https://github.com/joysword">Shi Yin</a>
+                </p>
+                <p>
+                    Published with <a href="http://pages.github.com">GitHub Pages</a>
+                </p>
+            </footer>
+        </div>
   </body>
 </html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Straight Away to Orion : a visualization of exoplanetary systems as small multiples and in 3D" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Straight Away to Orion</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/joysword/cs526.project2">View on GitHub</a>
+
+          <h1 id="project_title">Straight Away to Orion</h1>
+          <h2 id="project_tagline">a visualization of exoplanetary systems as small multiples and in 3D</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/joysword/cs526.project2/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/joysword/cs526.project2/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="data-and-resource" class="anchor" href="#data-and-resource"><span class="octicon octicon-link"></span></a>Data and Resource</h1>
+
+<h3>
+<a name="systems" class="anchor" href="#systems"><span class="octicon octicon-link"></span></a>Systems</h3>
+
+<ul>
+<li>List of multiplanetary system came from <a href="https://en.wikipedia.org/wiki/List_of_multiplanetary_systems">Wikipedia</a>
+</li>
+<li>Made some change from this list. Final list of systems see <strong>data4.csv</strong>
+</li>
+</ul><h3>
+<a name="planets-data" class="anchor" href="#planets-data"><span class="octicon octicon-link"></span></a>Planets Data</h3>
+
+<p>Raw planets data came from:</p>
+
+<ul>
+<li><a href="http://exoplanets.org/table?datasets=explorer">Exoplanet Data Explorer</a></li>
+<li><a href="http://exoplanetarchive.ipac.caltech.edu">NASA Exoplanet Archive</a></li>
+<li><a href="http://www.openexoplanetcatalogue.com/index.php">Open Exoplanet Catalogue</a></li>
+<li><a href="http://exoplanet.eu">Extrasolar Planets Encyclopedia</a></li>
+</ul><h3>
+<a name="texture-data" class="anchor" href="#texture-data"><span class="octicon octicon-link"></span></a>Texture Data</h3>
+
+<ul>
+<li>used .ssc files from <a href="http://www.celestiamotherlode.net">celestia motherlode</a> to decide which texture to use on which planets</li>
+<li>texture files are from <a href="http://www.shatters.net/celestia/">celestia software</a>
+</li>
+</ul><h3>
+<a name="data-entries-i-used" class="anchor" href="#data-entries-i-used"><span class="octicon octicon-link"></span></a>Data entries I used:</h3>
+
+<h5>
+<a name="name-of-the-system" class="anchor" href="#name-of-the-system"><span class="octicon octicon-link"></span></a>Name of the System</h5>
+
+<h5>
+<a name="name-of-the-star" class="anchor" href="#name-of-the-star"><span class="octicon octicon-link"></span></a>Name of the Star</h5>
+
+<ul>
+<li>same of name of the system if not binary/trinary system</li>
+<li>system name + suffix (A/B/C) for binary/trinary systems</li>
+<li>I called the system consists of HD 20781 and HD 20782 'HD 20781 + HD 20782'</li>
+</ul><h5>
+<a name="radius" class="anchor" href="#radius"><span class="octicon octicon-link"></span></a>Radius</h5>
+
+<ul>
+<li>used 'R_sun' for stars and 'R_jupiter' for planets</li>
+</ul><h5>
+<a name="distance-to-us" class="anchor" href="#distance-to-us"><span class="octicon octicon-link"></span></a>Distance to us</h5>
+
+<ul>
+<li>for stars</li>
+</ul><h5>
+<a name="orbit-distance" class="anchor" href="#orbit-distance"><span class="octicon octicon-link"></span></a>Orbit distance</h5>
+
+<ul>
+<li>for planets</li>
+<li>represented by Semi-Major Axis of original data</li>
+<li>used 'AU'</li>
+</ul><h5>
+<a name="texture" class="anchor" href="#texture"><span class="octicon octicon-link"></span></a>texture</h5>
+
+<h5>
+<a name="right-ascension" class="anchor" href="#right-ascension"><span class="octicon octicon-link"></span></a>Right ascension</h5>
+
+<ul>
+<li>for stars</li>
+<li>used for generating 3D universe (see <a href="http://fmwriters.com/Visionback/Issue14/wbputtingstars.htm">here</a>)</li>
+</ul><h5>
+<a name="declination" class="anchor" href="#declination"><span class="octicon octicon-link"></span></a>Declination</h5>
+
+<ul>
+<li>for stars</li>
+<li>used for generating 3D universe (see <a href="http://fmwriters.com/Visionback/Issue14/wbputtingstars.htm">here</a>)</li>
+</ul><h5>
+<a name="apparent-magnitude" class="anchor" href="#apparent-magnitude"><span class="octicon octicon-link"></span></a>Apparent magnitude</h5>
+
+<ul>
+<li>for stars</li>
+<li>used for calculating habitable zone (see <a href="www.planetarybiology.com/calculating_habitable_zone.htm">here</a>)</li>
+</ul><h5>
+<a name="spectral-class" class="anchor" href="#spectral-class"><span class="octicon octicon-link"></span></a>Spectral class</h5>
+
+<ul>
+<li>for stars</li>
+<li>O or B or A or F or G or K or M or unknown</li>
+<li>used for coloring in 3D universe</li>
+<li>used for assigning textures to stars</li>
+</ul><h5>
+<a name="spectral-type" class="anchor" href="#spectral-type"><span class="octicon octicon-link"></span></a>Spectral type</h5>
+
+<ul>
+<li>for stars</li>
+<li>e.g. G5V or K1.5IV</li>
+</ul><h5>
+<a name="confirmed-number-of-planets" class="anchor" href="#confirmed-number-of-planets"><span class="octicon octicon-link"></span></a>(Confirmed) number of planets</h5>
+
+<ul>
+<li>for stars</li>
+<li>only kept confirmed planest</li>
+</ul><h5>
+<a name="day" class="anchor" href="#day"><span class="octicon octicon-link"></span></a>Day</h5>
+
+<ul>
+<li>for planets</li>
+<li>how long to rotate 360 degree</li>
+<li>used 'day'</li>
+</ul><h5>
+<a name="year" class="anchor" href="#year"><span class="octicon octicon-link"></span></a>Year</h5>
+
+<ul>
+<li>for planets</li>
+<li>how long to orbit 360 degree</li>
+<li>used 'year'</li>
+</ul><h5>
+<a name="inclination" class="anchor" href="#inclination"><span class="octicon octicon-link"></span></a>Inclination</h5>
+
+<ul>
+<li>for planets</li>
+<li>degree of inclination</li>
+</ul><h5>
+<a name="detection-method" class="anchor" href="#detection-method"><span class="octicon octicon-link"></span></a>Detection Method</h5>
+
+<ul>
+<li>for planets</li>
+<li>how the planets are discovered</li>
+</ul><h5>
+<a name="binary-or-trinary" class="anchor" href="#binary-or-trinary"><span class="octicon octicon-link"></span></a>Binary Or Trinary</h5>
+
+<ul>
+<li>for stars</li>
+<li>empty not binary/trinary, actual type if binary/trinary</li>
+</ul><h5>
+<a name="mass" class="anchor" href="#mass"><span class="octicon octicon-link"></span></a>Mass</h5>
+
+<ul>
+<li>for planets</li>
+<li>used to estimate radius of planets (see <a href="http://arxiv.org/pdf/1111.3986.pdf">this document</a>)</li>
+<li>used 'M_earth'</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Straight Away to Orion maintained by <a href="https://github.com/joysword">joysword</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
