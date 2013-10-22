@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Straight Away to Orion : a visualization of exoplanetary systems as small multiples and in 3D" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Straight Away to Orion</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/joysword/cs526.project2">View on GitHub</a>
+
+          <h1 id="project_title">Straight Away to Orion</h1>
+          <h2 id="project_tagline">a visualization of exoplanetary systems as small multiples and in 3D</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/joysword/cs526.project2/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/joysword/cs526.project2/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="features-and-usage" class="anchor" href="#features-and-usage"><span class="octicon octicon-link"></span></a>Features and Usage</h1>
+
+<h5>
+<a name="all-fatures-and-usages-are-for-running-this-app-on-cave2-if-not-noticed-otherwise" class="anchor" href="#all-fatures-and-usages-are-for-running-this-app-on-cave2-if-not-noticed-otherwise"><span class="octicon octicon-link"></span></a>all fatures and usages are for running this app on <a href="http://www.evl.uic.edu/core.php?mod=4&amp;type=1&amp;indi=424">CAVE2</a> if not noticed otherwise</h5>
+
+<h3>
+<a name="start" class="anchor" href="#start"><span class="octicon octicon-link"></span></a>Start</h3>
+
+<ul>
+<li>Once the app is running, there will be a female voice asking you to wait while program loading data</li>
+<li>Once the app is loaded, there will be a 48 small multiples on two sides of the screen (24 each side)</li>
+<li>A solar system will be running in the center of the displays</li>
+<li>A simple 3D universe will be rotating at the upper-right corner of the center</li>
+</ul><h5>
+<a name="the-small-multiples" class="anchor" href="#the-small-multiples"><span class="octicon octicon-link"></span></a>The Small Multiples</h5>
+
+<ul>
+<li>There are at most 48 small multiples at the same time, each representing a planetary system</li>
+<li>Our solar system will always be at the first one (unless reordered manually. See below)</li>
+<li>Information about each system displayed includes system name, star name (different from system name if it is a binary or trinary system), star type, 
+distance to us, detection method, and an optional discovery indicator that highlights some (4) systems that related to recent scientific discoveries, such systems will have red text</li>
+<li>The relative sizes and distances of planets are scaled correctly</li>
+<li>The planets and stars are textured with appropriate textures (See <a href="data.html">data</a> page)</li>
+<li>Potential habitable zone is showed in green. Earth-sized planets in it, as well as large planets may have moons in it, are highlighted with red text, are highlighted by coloring their names in red</li>
+<li>If a system is either a binary system or a trinary system, it is highlighted with orange text and the actual type is displayed</li>
+<li>If some planets (or stars) in a system are too far away to be displayed, an indicator will be shown</li>
+</ul><h5>
+<a name="the-center-system" class="anchor" href="#the-center-system"><span class="octicon octicon-link"></span></a>The Center System</h5>
+
+<ul>
+<li>By default a 3D solar system will be running in the center.</li>
+<li>The relative sizes and distances between the Sun and eight planets are scaled as they are</li>
+<li>The orbit is in an estimate circle with a radius that equals to the semi-major axis of the actual orbit</li>
+<li>The relative speeds of orbiting and rotating are scaled correctly. And the rotation is with correct inclination</li>
+<li>The Sun and planets are textured using appropriate texture</li>
+</ul><h5>
+<a name="the-3d-universe" class="anchor" href="#the-3d-universe"><span class="octicon octicon-link"></span></a>The 3D universe</h5>
+
+<ul>
+<li>The 3D universe shows relative position and distance between all the systems that currently being showed as small multiples</li>
+<li>Our Sun has been highlighted with red text, and is generally in the center of the visualization</li>
+<li>For different sets of systems, the scale factor of this 3D universe varies</li>
+<li>The stars are colored based on their types (OBAFGKE) (See <a href="data.html">data</a> page)</li>
+<li>Sizes of stars are scaled with square root (means 1:2 on actual radius will become 1:1.41 in this visualization)</li>
+</ul><h3>
+<a name="navigation" class="anchor" href="#navigation"><span class="octicon octicon-link"></span></a>Navigation</h3>
+
+<ul>
+<li>Use the wand to navigate. Keep <strong>Button7</strong> down and move the wand. The camera will transform exactly as your wand moves (translation and rotation). <strong>Tip</strong>: try to move wand slowly at first (Yes, the same navigation as <a href="http://joysword.github.io/cs526.project1/">my previous project</a>)</li>
+<li>If you lost yourself in the universe, can call for the menu (by pressing <strong>Button2</strong>) and select 'reset the scene'. You'll be home</li>
+<li>The 3D universe and the small multiples will remain where they are. Navigation only works for the center system
+<strong>Tip</strong>: keep the wand pointing to a star and move it (e.g. translating right while rotating left), you can orbit the star like a planet</li>
+</ul><h3>
+<a name="changing-scale-factors-distancesizetime" class="anchor" href="#changing-scale-factors-distancesizetime"><span class="octicon octicon-link"></span></a>Changing Scale Factors (distance/size/time)</h3>
+
+<ul>
+<li>Use <strong>ButtonLeft</strong> and <strong>ButtonRight</strong> to change distance scale factor</li>
+<li>Use <strong>ButtonUp</strong> and <strong>ButtonDown</strong> to change size scale factor</li>
+<li>All the three scale factors are also available in the menu</li>
+<li>The scale factors (distance and size) reflect on both the center system and the small multiples</li>
+</ul><h3>
+<a name="showing-different-systems" class="anchor" href="#showing-different-systems"><span class="octicon octicon-link"></span></a>Showing Different Systems</h3>
+
+<ul>
+<li>Four pre-chosen interesting sets of planetary system are available in the menu</li>
+<li>They are: nearest; farthest; G type; most planets (We have 94 planetary systems in total, see <a href="data.html">data</a> page)</li>
+<li>Also available is an interactive filter. You can select what to show based on <strong>type of star</strong>, <strong>distance to us</strong> and <strong>number of planets</strong>. Note that results may have less than 48 systems</li>
+</ul><h3>
+<a name="adding-system-to-center" class="anchor" href="#adding-system-to-center"><span class="octicon octicon-link"></span></a>Adding System to Center</h3>
+
+<ol>
+<li>Use the menu option 'move to center' to enter moving mode</li>
+<li>You will see an orange pointer on the wall. Move it around and select a system as the female voice guides you</li>
+<li>Press <strong>Button3</strong> to cancel, <strong>Button2</strong> to select. There will be voice responses as feedback to keep you knowing what status you are in</li>
+<li>The selected system will be displayed above the Solar system in the center with the same scale factor for comparison</li>
+<li>The name of the selected system will be highlighted with red text in the 3D universe
+<strong>Note 1</strong>: There are three different multi-star systems in my data. 1) part of a binary system (5), where planets orbit around one of the two stars (and the other star is orbiting around this star too), 2) circumbinary system (2), where planets orbit around both stars, and 3) trinary system (1), where are three stars. Currently only the visualization of the first type is available</li>
+</ol><h3>
+<a name="showing-more-information-of-system" class="anchor" href="#showing-more-information-of-system"><span class="octicon octicon-link"></span></a>Showing More Information of System</h3>
+
+<ul>
+<li>Use the menu option 'show info (beta)' to show detailed data with error margins about the system that is currently running in the center</li>
+<li>If information about the system is not available, an image saying 'no info' will be showed (See <a href="data.html">data</a> page)</li>
+</ul><h3>
+<a name="reordering-the-small-multiples" class="anchor" href="#reordering-the-small-multiples"><span class="octicon octicon-link"></span></a>Reordering the Small Multiples</h3>
+
+<ol>
+<li>Use the menu option 'reorder small multiples' to enter ordering mode</li>
+<li>You will see an orange pointer on the wall. Move it around and select a system to order as the female voice guides you, or press <strong>Button3</strong> to quit ordering mode. Voice response will let you know if your selection is successful</li>
+<li>Click on where you want the selected system to go, or press <strong>Button3</strong> to cancel your selection and back to step 2. Voice response will let you know if ordering is successful.</li>
+<li>Other systems in between of the origin and the destination of the selected system will move accordingly, and you will be back to step 2 to make another ordering again</li>
+</ol><h3>
+<a name="hiding-the-small-multiples" class="anchor" href="#hiding-the-small-multiples"><span class="octicon octicon-link"></span></a>Hiding the Small Multiples</h3>
+
+<ul>
+<li>Use the menu option 'hide small multiples' to hide all the small multiples when necessary</li>
+<li>Use the menu option 'show small multiples' to restore small multiples</li>
+</ul><h3>
+<a name="savingloading-configuration" class="anchor" href="#savingloading-configuration"><span class="octicon octicon-link"></span></a>Saving/Loading Configuration</h3>
+
+<ul>
+<li>You can use the menu to save current configuration of small multiples and load them later
+<strong>Note 2</strong>: currently 'later' means 'later this time' (i.e. you can only load configuration during the same run)</li>
+</ul><h3>
+<a name="read-recent-scientific-discoveries" class="anchor" href="#read-recent-scientific-discoveries"><span class="octicon octicon-link"></span></a>Read Recent Scientific Discoveries</h3>
+
+<ul>
+<li>Use the menu option 'recent discoveries' to read four recent interesting discoveries</li>
+<li>The related system will be brought to the center, and more info about the discovery will be showed</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Straight Away to Orion maintained by <a href="https://github.com/joysword">joysword</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
