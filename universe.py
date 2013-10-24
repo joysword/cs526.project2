@@ -594,10 +594,12 @@ legend_p.setLayer(WidgetLayer.Front)
 legend_s.setVisible(False)
 legend_p.setVisible(False)
 
-toggleStereo()
+#toggleStereo()
 
 InitCamPos = cam.getPosition()
 InitCamOri = cam.getOrientation()
+
+playSound(sd_bgm, InitCamPos, 0.05)
 
 if CAVE():
 	cam.setControllerEnabled(False)
@@ -1895,6 +1897,8 @@ def onUpdate(frame, t, dt):
 	global g_rot
 	global g_scale_time
 
+	global bgmDeltaT
+
 	# ALL THINGS IN 3D ROTATE AS TIME PASSES BY
 	for o,y in g_orbit:
 		#i[0].yaw(dt/40*g_scale_time*(1.0/i[1])
@@ -1916,6 +1920,13 @@ def onUpdate(frame, t, dt):
 
 	# 3d universe
 	sn_univParent.yaw(dt/20)
+
+	# replay bgm
+    if (t-bgmDeltaT>=68):
+            print "replaying bgm"
+            bgmDeltaT = t
+            playSound(sd_bgm,InitCamPos,0.05)
+
 
 setUpdateFunction(onUpdate)
 
