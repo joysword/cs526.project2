@@ -1371,7 +1371,10 @@ def changeScale(name, add):
 
 					if outCounter>0:
 						outCounter /= 2 # a model and a text should be considered as one
-						t.setText(str(outCounter)+' more planets -->>')
+						if cmp(curSys._binary,'')==0:
+							t.setText(str(outCounter)+' more planet(s) -->>')
+						else:
+							t.setText(str(outCounter)+' more bodies -->>')
 						t.setVisible(True)
 					else:
 						t.setVisible(False)
