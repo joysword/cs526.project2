@@ -55,6 +55,8 @@ g_curCenSys = None
 
 g_isLoadingFromSavedConfig = False
 
+bgmDeltaT = 0
+
 wallLimit = 247000000 # by default, everything closer than this number can be shown
 
 ## global scale factors
@@ -317,7 +319,7 @@ def playSound(sd, pos, vol):
 	sd.setPosition(pos)
 	sd.setVolume(vol)
 	sd.setWidth(20)
-	#sd.play()
+	sd.play()
 
 ##############################################################################################################
 # CREATE MENUS
@@ -462,6 +464,7 @@ btn_dis_3.setChecked(True)
 btn_dis_4.setChecked(True)
 
 container_pla = menu_pla.getContainer()
+btn_pla_0 = Button.create(container_pla)
 btn_pla_1 = Button.create(container_pla)
 btn_pla_2 = Button.create(container_pla)
 btn_pla_3 = Button.create(container_pla)
@@ -470,6 +473,7 @@ btn_pla_5 = Button.create(container_pla)
 btn_pla_6 = Button.create(container_pla)
 btn_pla_7 = Button.create(container_pla)
 
+btn_pla_0.setText('1')
 btn_pla_1.setText('2')
 btn_pla_2.setText('3')
 btn_pla_3.setText('4')
@@ -478,6 +482,7 @@ btn_pla_5.setText('6')
 btn_pla_6.setText('7')
 btn_pla_7.setText('8')
 
+btn_pla_0.setCheckable(True)
 btn_pla_1.setCheckable(True)
 btn_pla_2.setCheckable(True)
 btn_pla_3.setCheckable(True)
@@ -486,6 +491,7 @@ btn_pla_5.setCheckable(True)
 btn_pla_6.setCheckable(True)
 btn_pla_7.setCheckable(True)
 
+btn_pla_0.setChecked(True)
 btn_pla_1.setChecked(True)
 btn_pla_2.setChecked(True)
 btn_pla_3.setChecked(True)
@@ -550,7 +556,6 @@ sn_root.addChild(sn_centerSys)
 sn_root.addChild(sn_smallMulti)
 sn_root.addChild(sn_univTrans)
 #sn_smallMulti.addChild(sn_allSystems)
-sn_centerSys.addChild(sn_cen_sys)
 
 # fix small multiples and 3d universe, no move
 if CAVE():
@@ -1270,7 +1275,10 @@ def changeScale(name, add):
 
 					if outCounter>0:
 						outCounter /= 2 # a model and a text should be considered as one
-						t.setText(str(outCounter)+' more planets -->>')
+						if cmp(curSys._binary,'')==0:
+							t.setText(str(outCounter)+' more planet(s) -->>')
+						else:
+							t.setText(str(outCounter)+' more bodies -->>')
 						t.setVisible(True)
 					else:
 						t.setVisible(False)
@@ -1462,6 +1470,8 @@ def addCenter(verticalHeight, theSys):
 	global g_cen_changeDistCenterPlanets
 
 	print ('start adding new center')
+
+	sn_centerSys.addChild(sn_cen_sys)
 
 	removeAllChildren(sn_cen_sys)
 	sn_centerTrans = SceneNode.create('centerTrans'+theSys._name)
@@ -1667,6 +1677,7 @@ def onEvent():
 
 	## normal operations
 	if g_reorder==0 and g_moveToCenter==0 and g_showInfo==False and g_showNews==False:
+		#print 'normal operation'
 		if e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
 			#print 'start dist -'
 			if not changeScale('dist',False):
@@ -1712,17 +1723,34 @@ def onEvent():
 				oriVec = quaternionToEuler(e.getOrientation())
 				cam.rotate( oriVec-oriVecOld, 2*math.pi/180, Space.Local )
 
-	elif g_showInfo==True:
+	elif g_showInfo:
+		#print 'showing info'
 		if e.isButtonDown(EventFlags.Button3) or e.isButtonDown(EventFlags.Button2):
 			legend_p.setVisible(False)
 			legend_s.setVisible(False)
 			g_showInfo=False
 
-	elif g_showNew==True:
+	elif g_showNews:
+		#print 'showing news'
 		if e.isButtonDown(EventFlags.Button3) or e.isButtonDown(EventFlags.Button2):
+			#print 'here'
 			legend_p.setVisible(False)
 			legend_s.setVisible(False)
 			g_showNews=False
+		elif e.isButtonDown(EventFlags.ButtonUp):
+			#print 'here11'
+			pos = legend_s.getPosition()
+			#print pos
+			legend_s.setPosition(Vector2(pos[0],pos[1]+100))
+			#print legend_s.getPosition()
+			e.setProcessed()
+		elif e.isButtonDown(EventFlags.ButtonDown):
+			#print 'here22'
+			pos = legend_s.getPosition()
+			#print pos
+			legend_s.setPosition(Vector2(pos[0],pos[1]-100))
+			#print legend_s.getPosition()
+			e.setProcessed()
 
 	## move to center
 	elif g_moveToCenter==1:
@@ -1922,11 +1950,10 @@ def onUpdate(frame, t, dt):
 	sn_univParent.yaw(dt/20)
 
 	# replay bgm
-    if (t-bgmDeltaT>=68):
-            print "replaying bgm"
-            bgmDeltaT = t
-            playSound(sd_bgm,InitCamPos,0.05)
-
+	if t-bgmDeltaT>=68:
+		print "replaying bgm"
+		bgmDeltaT = t
+		playSound(sd_bgm,InitCamPos,0.05)
 
 setUpdateFunction(onUpdate)
 
@@ -2210,27 +2237,56 @@ def updateFilter():
 				continue
 
 		## check number of planets
-		if sys._star._numChildren==2:
-			if btn_pla_1.isChecked()==False:
-				continue
-		elif sys._star._numChildren==3:
-			if btn_pla_2.isChecked()==False:
-				continue
-		elif sys._star._numChildren==4:
-			if btn_pla_3.isChecked()==False:
-				continue
-		elif sys._star._numChildren==5:
-			if btn_pla_4.isChecked()==False:
-				continue
-		elif sys._star._numChildren==6:
-			if btn_pla_5.isChecked()==False:
-				continue
-		elif sys._star._numChildren==7:
-			if btn_pla_6.isChecked()==False:
-				continue
+		if cmp(sys._binary,'')==0:
+			if sys._star._numChildren==1:
+				if btn_pla_0.isChecked()==False:
+					continue
+			elif sys._star._numChildren==2:
+				if btn_pla_1.isChecked()==False:
+					continue
+			elif sys._star._numChildren==3:
+				if btn_pla_2.isChecked()==False:
+					continue
+			elif sys._star._numChildren==4:
+				if btn_pla_3.isChecked()==False:
+					continue
+			elif sys._star._numChildren==5:
+				if btn_pla_4.isChecked()==False:
+					continue
+			elif sys._star._numChildren==6:
+				if btn_pla_5.isChecked()==False:
+					continue
+			elif sys._star._numChildren==7:
+				if btn_pla_6.isChecked()==False:
+					continue
+			else:
+				if btn_pla_7.isChecked()==False:
+					continue
 		else:
-			if btn_pla_7.isChecked()==False:
-				continue
+			if sys._star._numChildren==2: # actual 1
+				if btn_pla_0.isChecked()==False:
+					continue
+			elif sys._star._numChildren==3: # actual 2
+				if btn_pla_1.isChecked()==False:
+					continue
+			elif sys._star._numChildren==4: # actual 3
+				if btn_pla_2.isChecked()==False:
+					continue
+			elif sys._star._numChildren==5: # actual 4
+				if btn_pla_3.isChecked()==False:
+					continue
+			elif sys._star._numChildren==6: # actual 5
+				if btn_pla_4.isChecked()==False:
+					continue
+			elif sys._star._numChildren==7: # actual 6
+				if btn_pla_5.isChecked()==False:
+					continue
+			elif sys._star._numChildren==8: # actual 7
+				if btn_pla_6.isChecked()==False:
+					continue
+			else: # actual 8
+				if btn_pla_7.isChecked()==False:
+					continue
 
 		#print 'need to add'
 		res.append(i)
@@ -2273,6 +2329,8 @@ def showNews(s):
 	global g_showNews
 
 	g_showNews = True
+
+	mm.getMainMenu().hide()
 
 	if cmp(s,'1')==0:
 		addCenter(1.3,li_allSys[4])
