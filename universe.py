@@ -48,6 +48,9 @@ text_univ_highlight = None
 # whether we are showing the info of a system
 g_showInfo = False
 
+# whether we are showing a recent discovery
+g_showNews = False
+
 g_curCenSys = None
 
 g_isLoadingFromSavedConfig = False
@@ -591,7 +594,7 @@ legend_p.setLayer(WidgetLayer.Front)
 legend_s.setVisible(False)
 legend_p.setVisible(False)
 
-#toggleStereo()
+toggleStereo()
 
 InitCamPos = cam.getPosition()
 InitCamOri = cam.getOrientation()
@@ -1456,6 +1459,8 @@ def addCenter(verticalHeight, theSys):
 	global g_cen_changeDistCenterHab
 	global g_cen_changeDistCenterPlanets
 
+	print ('start adding new center')
+
 	removeAllChildren(sn_cen_sys)
 	sn_centerTrans = SceneNode.create('centerTrans'+theSys._name)
 	sn_cen_sys.addChild(sn_centerTrans)
@@ -1620,6 +1625,7 @@ def addCenter(verticalHeight, theSys):
 	sn_centerTrans.setScale(Vector3(c_scaleCenter_overall, c_scaleCenter_overall, c_scaleCenter_overall))
 	sn_centerTrans.setPosition(Vector3(0, verticalHeight, -1.5))
 
+	print ('end adding new center')
 	## end here
 
 ##############################################################################################################
@@ -1653,11 +1659,12 @@ def onEvent():
 	global g_curCenSys
 
 	global g_showInfo
+	global g_showNews
 
 	e = getEvent()
 
 	## normal operations
-	if g_reorder==0 and g_moveToCenter==0 and g_showInfo==False:
+	if g_reorder==0 and g_moveToCenter==0 and g_showInfo==False and g_showNews==False:
 		if e.isButtonDown(EventFlags.ButtonLeft) or e.isKeyDown(ord('j')):
 			#print 'start dist -'
 			if not changeScale('dist',False):
@@ -1708,6 +1715,12 @@ def onEvent():
 			legend_p.setVisible(False)
 			legend_s.setVisible(False)
 			g_showInfo=False
+
+	elif g_showNew==True:
+		if e.isButtonDown(EventFlags.Button3) or e.isButtonDown(EventFlags.Button2):
+			legend_p.setVisible(False)
+			legend_s.setVisible(False)
+			g_showNews=False
 
 	## move to center
 	elif g_moveToCenter==1:
@@ -2229,12 +2242,12 @@ def showInfo():
 	if g_curCenSys!=None:
 		if g_curCenSys._hasInfo_s:
 			legend_s.setData(loadImage('pic_s/'+g_curCenSys._name.replace(' ','_')+'.png'))
-			legend_s.setSize(legend_s.getSize()*1.4)
+			legend_s.setSize(legend_s.getSize()*1.5)
 		else:
 			legend_s.setData(loadImage('pic_s/no_info.png'))
 		if g_curCenSys._hasInfo_p:
 			legend_p.setData(loadImage('pic_p/'+g_curCenSys._name.replace(' ','_')+'.png'))
-			legend_p.setSize(legend_p.getSize()*1.4)
+			legend_p.setSize(legend_p.getSize()*1.5)
 		else:
 			legend_p.setData(loadImage('pic_p/no_info.png'))
 		legend_s.setVisible(True)
@@ -2246,16 +2259,47 @@ def showInfo():
 
 def showNews(s):
 	global g_curCenSys
+	global g_showNews
+
+	g_showNews = True
 
 	if cmp(s,'1')==0:
 		addCenter(1.3,li_allSys[4])
 		g_curCenSys = li_allSys[4]
+
+		legend_s.setData(loadImage('news/1.png'))
+		legend_s.setSize(legend_s.getSize()*1.6)
+
+		legend_s.setVisible(True)
+		legend_s.setPosition(Vector2(15100,0))
+
 	elif cmp(s,'2')==0:
 		addCenter(1.3,li_allSys[32])
 		g_curCenSys = li_allSys[32]
+
+		legend_s.setData(loadImage('news/2.png'))
+		legend_s.setSize(legend_s.getSize()*1.6)
+
+		legend_s.setVisible(True)
+		legend_s.setPosition(Vector2(15100,0))
+
 	elif cmp(s,'3')==0:
 		addCenter(1.3,li_allSys[45])
 		g_curCenSys = li_allSys[45]
+
+		legend_s.setData(loadImage('news/3.png'))
+		legend_s.setSize(legend_s.getSize()*1.6)
+
+		legend_s.setVisible(True)
+		legend_s.setPosition(Vector2(15100,0))
+
 	elif cmp(s,'4')==0:
 		addCenter(1.3,li_allSys[89])
 		g_curCenSys = li_allSys[89]
+
+		legend_s.setData(loadImage('news/4.png'))
+		legend_s.setSize(legend_s.getSize()*1.6)
+
+		legend_s.setVisible(True)
+		legend_s.setPosition(Vector2(15100,0))
+
